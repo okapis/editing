@@ -1,9 +1,11 @@
+import 'package:editing/store/note_list.dart';
 import 'package:editing/ui/screens/idea_list.dart';
 import 'package:editing/ui/screens/knowledgebase.dart';
 import 'package:editing/ui/screens/note_list.dart';
 import 'package:editing/ui/screens/password_list.dart';
 import 'package:editing/ui/screens/tools.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AppScaffold extends StatefulWidget {
   const AppScaffold({super.key});
@@ -12,37 +14,139 @@ class AppScaffold extends StatefulWidget {
   State<AppScaffold> createState() => _AppScaffoldState();
 }
 
-class _AppScaffoldState extends State<AppScaffold> {
+class TabConfig {
+  final String name;
+  final Widget content;
+
+  TabConfig(this.name, this.content);
+}
+
+class PageConfig {
+  final String title;
+  final IconData icon;
+  final IconData selectedIcon;
+  final List<String> tabs;
+  final Widget content;
+
+  PageConfig(
+      {required this.title,
+      required this.icon,
+      required this.selectedIcon,
+      required this.tabs,
+      required this.content});
+}
+
+final List<PageConfig> config = [
+  PageConfig(
+      title: '知识库',
+      icon: Icons.light_outlined,
+      selectedIcon: Icons.light_sharp,
+      tabs: [],
+      content: KnowledgebaseScreen()),
+  PageConfig(
+      title: '笔记',
+      icon: Icons.list_outlined,
+      selectedIcon: Icons.list_sharp,
+      tabs: ['日记', '笔记'],
+      content: TabBarView(
+        children: [NoteListScreen('diary'), NoteListScreen('note')],
+      )),
+  PageConfig(
+      title: '相册',
+      icon: Icons.image_outlined,
+      selectedIcon: Icons.image_sharp,
+      tabs: ['相册', '照片'],
+      content: TabBarView(
+        children: [NoteListScreen('diary'), NoteListScreen('note')],
+      )),
+  PageConfig(
+      title: '密码',
+      icon: Icons.password_outlined,
+      selectedIcon: Icons.password_sharp,
+      tabs: [],
+      content: PasswordListScreen()),
+];
+
+class _AppScaffoldState extends State<AppScaffold>
+    with TickerProviderStateMixin {
   int currentPageIndex = 0;
+  late List<TabController> tabControllers;
+
+  @override
+  void initState() {
+    super.initState();
+    tabControllers = config
+        .map((e) => TabController(vsync: this, length: e.tabs.length))
+        .toList();
+  }
+
+  @override
+  void dispose() {
+    for (var controller in tabControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  Future<void> _onAdd(BuildContext context) async {
+    final notes = Provider.of<NoteList>(context, listen: false);
+    notes.addNote('test', 'test');
+  }
+
+  AppBar _createAppBar() {
+    bool hasTab = config[currentPageIndex].tabs.isNotEmpty;
+    return AppBar(
+      title: const Text('谛听笔记'),
+      bottom: hasTab ? _createTabBar() : null,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
+
+  TabBar _createTabBar() {
+    final List<Tab> tabs = config[currentPageIndex]
+        .tabs
+        .map(
+          (e) => Tab(text: e),
+        )
+        .toList();
+    return TabBar(
+      tabs: tabs,
+      controller: tabControllers[currentPageIndex],
+    );
+  }
+
+  Widget _createBody() {
+    return config[currentPageIndex].content;
+  }
+
+  List<NavigationDestination> _createBottomNavigation() {
+    return config
+        .map((e) => NavigationDestination(
+              selectedIcon: Icon(e.icon),
+              icon: Icon(e.selectedIcon),
+              label: e.title,
+            ))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: const IconButton(
-            icon: Icon(Icons.menu),
-            tooltip: 'Navigation menu',
-            onPressed: null,
-          ),
-          title: const Text('谛听笔记'),
-          actions: const [
-            IconButton(
-              icon: Icon(Icons.search),
-              tooltip: 'Search',
-              onPressed: null,
-            ),
-          ],
-        ),
+        appBar: _createAppBar(),
         body: const <Widget>[
           IdeaListScreen(),
-          NoteListScreen(),
           KnowledgebaseScreen(),
           PasswordListScreen(),
           ToolsScreen(),
         ][currentPageIndex],
-        floatingActionButton: const FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
           tooltip: 'Add',
-          onPressed: null,
+          onPressed: () => _onAdd(context),
           child: Icon(Icons.add),
         ),
         bottomNavigationBar: NavigationBar(
@@ -53,33 +157,7 @@ class _AppScaffoldState extends State<AppScaffold> {
           },
           indicatorColor: Colors.amber[800],
           selectedIndex: currentPageIndex,
-          destinations: const <Widget>[
-            NavigationDestination(
-              selectedIcon: Icon(Icons.light_sharp),
-              icon: Icon(Icons.light_outlined),
-              label: '想法',
-            ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.list_sharp),
-              icon: Icon(Icons.list_outlined),
-              label: '笔记',
-            ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.image_sharp),
-              icon: Icon(Icons.image_outlined),
-              label: '相册',
-            ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.password_sharp),
-              icon: Icon(Icons.password_outlined),
-              label: '密码',
-            ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.settings_sharp),
-              icon: Icon(Icons.settings_outlined),
-              label: '工具',
-            ),
-          ],
+          destinations: _createBottomNavigation(),
         ));
   }
 }
