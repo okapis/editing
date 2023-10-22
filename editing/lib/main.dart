@@ -8,8 +8,9 @@ void main() {
     providers: [
       Provider<NoteList>.value(value: NoteList()),
     ],
-    child: const MaterialApp(
+    child: MaterialApp(
       title: '谛听笔记',
+      theme: ThemeData(useMaterial3: true),
       home: AppScaffold(),
     ),
   ));

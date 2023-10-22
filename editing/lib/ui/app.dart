@@ -47,17 +47,27 @@ final List<PageConfig> config = [
       title: '笔记',
       icon: Icons.list_outlined,
       selectedIcon: Icons.list_sharp,
-      tabs: ['日记', '笔记'],
+      tabs: ['日记', '笔记', '想法', '待办'],
       content: TabBarView(
-        children: [NoteListScreen('diary'), NoteListScreen('note')],
+        children: [
+          NoteListScreen('diary'),
+          NoteListScreen('note'),
+          NoteListScreen('idea'),
+          NoteListScreen('todo')
+        ],
       )),
   PageConfig(
       title: '相册',
       icon: Icons.image_outlined,
       selectedIcon: Icons.image_sharp,
-      tabs: ['相册', '照片'],
+      tabs: ['照片', '视频', '相册', '录音'],
       content: TabBarView(
-        children: [NoteListScreen('diary'), NoteListScreen('note')],
+        children: [
+          NoteListScreen('photo'),
+          NoteListScreen('video'),
+          NoteListScreen('album'),
+          NoteListScreen('recoding')
+        ],
       )),
   PageConfig(
       title: '密码',
