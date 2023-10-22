@@ -1,0 +1,6 @@
+[submodule "deps/kdbx.dart"]
+	path = deps/kdbx.dart
+	url = https://github.com/okapis/kdbx.dart.git
+[submodule "deps/argon2_ffi"]
+	path = deps/argon2_ffi
+	url = https://github.com/okapis/argon2_ffi.git
