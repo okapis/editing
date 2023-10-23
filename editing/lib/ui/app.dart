@@ -104,11 +104,12 @@ class _AppScaffoldState extends State<AppScaffold>
   AppBar _createAppBar() {
     bool hasTab = config[currentPageIndex].tabs.isNotEmpty;
     return AppBar(
-      title: Text('Hello'),
+      leading: Icon(Icons.abc_outlined),
+      title: Text('谛听笔记'),
       bottom: hasTab ? _createTabBar() : null,
       actions: [
         IconButton(
-          icon: const Icon(Icons.add),
+          icon: const Icon(Icons.more_horiz_outlined),
           onPressed: () {},
         ),
       ],
