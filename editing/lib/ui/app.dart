@@ -1,6 +1,6 @@
 import 'package:editing/store/note_list.dart';
 import 'package:editing/ui/screens/idea_list.dart';
-import 'package:editing/ui/screens/knowledgebase.dart';
+import 'package:editing/ui/screens/home.dart';
 import 'package:editing/ui/screens/note_list.dart';
 import 'package:editing/ui/screens/password_list.dart';
 import 'package:editing/ui/screens/tools.dart';
@@ -27,22 +27,29 @@ class PageConfig {
   final IconData selectedIcon;
   final List<String> tabs;
   final List<Widget> content;
+  final IconData floatButtonIcon;
+  final String floatButtonText;
 
   PageConfig(
       {required this.title,
       required this.icon,
       required this.selectedIcon,
       required this.tabs,
-      required this.content});
+      required this.content,
+      required this.floatButtonIcon,
+      required this.floatButtonText});
 }
 
 final List<PageConfig> config = [
   PageConfig(
-      title: '知识库',
-      icon: Icons.light_outlined,
-      selectedIcon: Icons.light_sharp,
-      tabs: [],
-      content: [KnowledgebaseScreen()]),
+    title: '知识库',
+    icon: Icons.light_outlined,
+    selectedIcon: Icons.light_sharp,
+    tabs: [],
+    content: [HomeScreen()],
+    floatButtonIcon: Icons.message_outlined,
+    floatButtonText: 'AI问答',
+  ),
   PageConfig(
     title: '笔记',
     icon: Icons.list_outlined,
@@ -54,6 +61,8 @@ final List<PageConfig> config = [
       NoteListScreen('idea'),
       NoteListScreen('todo')
     ],
+    floatButtonIcon: Icons.add_outlined,
+    floatButtonText: '创建',
   ),
   PageConfig(
     title: '相册',
@@ -66,13 +75,18 @@ final List<PageConfig> config = [
       NoteListScreen('album'),
       NoteListScreen('recoding')
     ],
+    floatButtonIcon: Icons.add_outlined,
+    floatButtonText: '创建',
   ),
   PageConfig(
-      title: '密码',
-      icon: Icons.password_outlined,
-      selectedIcon: Icons.password_sharp,
-      tabs: [],
-      content: [PasswordListScreen()]),
+    title: '密码',
+    icon: Icons.password_outlined,
+    selectedIcon: Icons.password_sharp,
+    tabs: [],
+    content: [PasswordListScreen()],
+    floatButtonIcon: Icons.add_outlined,
+    floatButtonText: '创建',
+  ),
 ];
 
 class _AppScaffoldState extends State<AppScaffold>
@@ -105,13 +119,13 @@ class _AppScaffoldState extends State<AppScaffold>
     bool hasTab = config[currentPageIndex].tabs.isNotEmpty;
     return AppBar(
       leading: Icon(Icons.menu_outlined),
-      title: TextField(
-        decoration: const InputDecoration(
-          hintText: '吾将上下而求索...',
-        ),
-      ),
+      title: Text('谛听笔记'),
       bottom: hasTab ? _createTabBar() : null,
       actions: [
+        IconButton(
+          icon: const Icon(Icons.search_outlined),
+          onPressed: () {},
+        ),
         IconButton(
           icon: const Icon(Icons.more_horiz_outlined),
           onPressed: () {},
@@ -157,9 +171,9 @@ class _AppScaffoldState extends State<AppScaffold>
         appBar: _createAppBar(),
         body: _createBody(),
         floatingActionButton: FloatingActionButton(
-          tooltip: 'Add',
+          tooltip: config[currentPageIndex].floatButtonText,
           onPressed: () => _onAdd(context),
-          child: Icon(Icons.add),
+          child: Icon(config[currentPageIndex].floatButtonIcon),
         ),
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) {
