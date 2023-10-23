@@ -104,8 +104,12 @@ class _AppScaffoldState extends State<AppScaffold>
   AppBar _createAppBar() {
     bool hasTab = config[currentPageIndex].tabs.isNotEmpty;
     return AppBar(
-      leading: Icon(Icons.abc_outlined),
-      title: Text('谛听笔记'),
+      leading: Icon(Icons.menu_outlined),
+      title: TextField(
+        decoration: const InputDecoration(
+          hintText: '吾将上下而求索...',
+        ),
+      ),
       bottom: hasTab ? _createTabBar() : null,
       actions: [
         IconButton(
