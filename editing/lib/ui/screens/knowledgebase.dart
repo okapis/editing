@@ -5,8 +5,6 @@ class KnowledgebaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Notes'),
-    );
+    return Text('Notes');
   }
 }

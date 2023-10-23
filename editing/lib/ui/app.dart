@@ -26,7 +26,7 @@ class PageConfig {
   final IconData icon;
   final IconData selectedIcon;
   final List<String> tabs;
-  final Widget content;
+  final List<Widget> content;
 
   PageConfig(
       {required this.title,
@@ -42,39 +42,37 @@ final List<PageConfig> config = [
       icon: Icons.light_outlined,
       selectedIcon: Icons.light_sharp,
       tabs: [],
-      content: KnowledgebaseScreen()),
+      content: [KnowledgebaseScreen()]),
   PageConfig(
-      title: '笔记',
-      icon: Icons.list_outlined,
-      selectedIcon: Icons.list_sharp,
-      tabs: ['日记', '笔记', '想法', '待办'],
-      content: TabBarView(
-        children: [
-          NoteListScreen('diary'),
-          NoteListScreen('note'),
-          NoteListScreen('idea'),
-          NoteListScreen('todo')
-        ],
-      )),
+    title: '笔记',
+    icon: Icons.list_outlined,
+    selectedIcon: Icons.list_sharp,
+    tabs: ['日记', '笔记', '想法', '待办'],
+    content: [
+      NoteListScreen('diary'),
+      NoteListScreen('note'),
+      NoteListScreen('idea'),
+      NoteListScreen('todo')
+    ],
+  ),
   PageConfig(
-      title: '相册',
-      icon: Icons.image_outlined,
-      selectedIcon: Icons.image_sharp,
-      tabs: ['照片', '视频', '相册', '录音'],
-      content: TabBarView(
-        children: [
-          NoteListScreen('photo'),
-          NoteListScreen('video'),
-          NoteListScreen('album'),
-          NoteListScreen('recoding')
-        ],
-      )),
+    title: '相册',
+    icon: Icons.image_outlined,
+    selectedIcon: Icons.image_sharp,
+    tabs: ['照片', '视频', '相册', '录音'],
+    content: [
+      NoteListScreen('photo'),
+      NoteListScreen('video'),
+      NoteListScreen('album'),
+      NoteListScreen('recoding')
+    ],
+  ),
   PageConfig(
       title: '密码',
       icon: Icons.password_outlined,
       selectedIcon: Icons.password_sharp,
       tabs: [],
-      content: PasswordListScreen()),
+      content: [PasswordListScreen()]),
 ];
 
 class _AppScaffoldState extends State<AppScaffold>
@@ -106,7 +104,7 @@ class _AppScaffoldState extends State<AppScaffold>
   AppBar _createAppBar() {
     bool hasTab = config[currentPageIndex].tabs.isNotEmpty;
     return AppBar(
-      title: const Text('谛听笔记'),
+      title: Text('Hello'),
       bottom: hasTab ? _createTabBar() : null,
       actions: [
         IconButton(
@@ -131,7 +129,11 @@ class _AppScaffoldState extends State<AppScaffold>
   }
 
   Widget _createBody() {
-    return config[currentPageIndex].content;
+    bool hasTab = config[currentPageIndex].tabs.isNotEmpty;
+    if (!hasTab) return config[currentPageIndex].content[0];
+    return TabBarView(
+        controller: tabControllers[currentPageIndex],
+        children: config[currentPageIndex].content);
   }
 
   List<NavigationDestination> _createBottomNavigation() {
@@ -148,12 +150,7 @@ class _AppScaffoldState extends State<AppScaffold>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: _createAppBar(),
-        body: const <Widget>[
-          IdeaListScreen(),
-          KnowledgebaseScreen(),
-          PasswordListScreen(),
-          ToolsScreen(),
-        ][currentPageIndex],
+        body: _createBody(),
         floatingActionButton: FloatingActionButton(
           tooltip: 'Add',
           onPressed: () => _onAdd(context),

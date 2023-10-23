@@ -13,18 +13,19 @@ class NoteListScreen extends StatelessWidget {
     return Row(
       children: [
         Observer(
-          builder: (_) => Expanded(
-              child: ListView.builder(
-                  itemCount: notes.list.length,
-                  itemBuilder: (_, index) {
-                    final note = notes.list[index];
-                    return Observer(
-                      builder: (_) => Center(
-                        child: Text(note.title),
-                      ),
-                    );
-                  })),
-        )
+            builder: (_) => Expanded(
+                  child: Scrollbar(
+                      child: ListView.builder(
+                          itemCount: notes.list.length,
+                          itemBuilder: (_, index) {
+                            final note = notes.list[index];
+                            return Observer(
+                              builder: (_) => Center(
+                                child: Text(note.title),
+                              ),
+                            );
+                          })),
+                )),
       ],
     );
   }
