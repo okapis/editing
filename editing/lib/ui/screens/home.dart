@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/activity.dart';
+import '../widgets/task.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,21 +15,24 @@ class _KnowledgebaseScreenState extends State<HomeScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Activity(),
-          const Expanded(
-              child: Row(
+          const Padding(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Text('待办事项'),
+          ),
+          const Row(
             children: [
               Expanded(
-                  child: Card(
-                child: Text('15'),
-              )),
+                child: Task('今天', 3, Icons.alarm_outlined),
+              ),
               Expanded(
-                  child: Card(
-                child: Text('15'),
-              )),
+                child: Task('计划中', 15, Icons.calendar_month_outlined),
+              ),
             ],
-          ))
+          ),
         ],
       ),
     );
