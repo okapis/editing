@@ -2,21 +2,17 @@ import 'package:flutter/material.dart';
 
 import 'tag.dart';
 
-class Journal extends StatelessWidget {
+class Note extends StatelessWidget {
   final String title;
   final DateTime createTime;
-  final String weather;
   final String location;
-  final String mood;
   final String content;
 
-  const Journal({
+  const Note({
     super.key,
     required this.title,
     required this.createTime,
-    required this.weather,
     required this.location,
-    required this.mood,
     required this.content,
   });
 
@@ -37,7 +33,6 @@ class Journal extends StatelessWidget {
                     title,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                  const Icon(Icons.wb_sunny_outlined),
                 ],
               ),
             ),

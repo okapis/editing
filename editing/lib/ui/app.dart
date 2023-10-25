@@ -42,7 +42,7 @@ class PageConfig {
 
 final List<PageConfig> config = [
   PageConfig(
-    title: '知识库',
+    title: '主页',
     icon: Icons.light_outlined,
     selectedIcon: Icons.light_sharp,
     tabs: [],
@@ -56,7 +56,7 @@ final List<PageConfig> config = [
     selectedIcon: Icons.list_sharp,
     tabs: ['日记', '笔记', '想法', '待办'],
     content: [
-      NoteListScreen('diary'),
+      NoteListScreen('journal'),
       NoteListScreen('note'),
       NoteListScreen('idea'),
       NoteListScreen('todo')

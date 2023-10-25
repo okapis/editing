@@ -2,21 +2,17 @@ import 'package:flutter/material.dart';
 
 import 'tag.dart';
 
-class Journal extends StatelessWidget {
+class Idea extends StatelessWidget {
   final String title;
   final DateTime createTime;
-  final String weather;
   final String location;
-  final String mood;
   final String content;
 
-  const Journal({
+  const Idea({
     super.key,
     required this.title,
     required this.createTime,
-    required this.weather,
     required this.location,
-    required this.mood,
     required this.content,
   });
 
@@ -37,22 +33,8 @@ class Journal extends StatelessWidget {
                     title,
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                  const Icon(Icons.wb_sunny_outlined),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: Text(
-                content,
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ),
-            const Row(
-              children: [
-                Tag("旅行"),
-                Tag("杂记"),
-              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
