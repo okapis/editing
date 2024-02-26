@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
+import '../../database/database.dart';
 import '../widgets/activity.dart';
 import '../widgets/task.dart';
 
@@ -10,8 +12,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _KnowledgebaseScreenState extends State<HomeScreen> {
+  final _database = AppDb();
+
   @override
   Widget build(BuildContext context) {
+    final count = _database.journals.count().getSingle();
+    count.then((c) => print(c));
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(

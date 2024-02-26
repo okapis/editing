@@ -9,9 +9,9 @@ abstract class _NoteList with Store {
   @observable
   ObservableList<Note> list = ObservableList();
 
-  @action
-  void addNote(String title, String content) {
-    final note = Note(title, content);
-    list.add(note);
-  }
+  // @action
+  // void createNote(String title, String content) {
+  //   final note = Note(1, title, content);
+  //   list.add(note);
+  // }
 }

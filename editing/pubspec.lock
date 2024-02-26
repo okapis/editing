@@ -178,7 +178,7 @@ packages:
     source: hosted
     version: "3.1.1"
   crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: crypto
       sha256: ff625774173754681d66daaf4a448684fb04b78f902da9cb3d308c19cc5e8bab
@@ -193,6 +193,62 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  dargon2_core:
+    dependency: transitive
+    description:
+      name: dargon2_core
+      sha256: a105fc3837782d02fff09a4aa355181c882962bf2a31c58f1905c401a6d1d6e5
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
+  dargon2_flutter:
+    dependency: "direct main"
+    description:
+      name: dargon2_flutter
+      sha256: "2ec4ed0cf5d80f92758ba2b2c600f237c35849aa723563ffe4c73e02d1904c0c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.0"
+  dargon2_flutter_desktop:
+    dependency: transitive
+    description:
+      name: dargon2_flutter_desktop
+      sha256: ca4a064f5b8e1fa1be62e5be50599567e13b68dca26eec31cbbc0928a276e777
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
+  dargon2_flutter_mobile:
+    dependency: transitive
+    description:
+      name: dargon2_flutter_mobile
+      sha256: "22b1b5229371c229cb55ca214262c6cb2189d40f7ef4ab87c1bea75bc2c582bf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.0"
+  dargon2_flutter_platform_interface:
+    dependency: transitive
+    description:
+      name: dargon2_flutter_platform_interface
+      sha256: d9fa9193c7c263a57d53411ccac0339e353e5b199426d861f8649f31564eeef7
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
+  dargon2_flutter_web:
+    dependency: transitive
+    description:
+      name: dargon2_flutter_web
+      sha256: c2607b07047f2937fc8ee0845b7b19fd80c26bf87f122473ee3cf307b8bc3249
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
+  dargon2_interface:
+    dependency: transitive
+    description:
+      name: dargon2_interface
+      sha256: e352efec19afac3fba5b4c1d4833bec7825ac43bdec88f33117cd68dfccfca40
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   dart_style:
     dependency: transitive
     description:
@@ -296,6 +352,11 @@ packages:
     version: "2.2.0+2"
   flutter_test:
     dependency: "direct dev"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -616,22 +677,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
-  sqlite3:
+  sprintf:
     dependency: transitive
+    description:
+      name: sprintf
+      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
+  sqlcipher_flutter_libs:
+    dependency: "direct main"
+    description:
+      name: sqlcipher_flutter_libs
+      sha256: "60fe3444ff5b1b298a9ca3003c6c7f1f7ee4c90aa6035a8647f3aeaf05a073e2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.1"
+  sqlite3:
+    dependency: "direct main"
     description:
       name: sqlite3
       sha256: "072128763f1547e3e9b4735ce846bfd226d68019ccda54db4cd427b12dfdedc9"
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
-  sqlite3_flutter_libs:
-    dependency: "direct main"
-    description:
-      name: sqlite3_flutter_libs
-      sha256: d6c31c8511c441d1f12f20b607343df1afe4eddf24a1cf85021677c8eea26060
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.20"
   sqlparser:
     dependency: transitive
     description:
@@ -704,6 +773,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  uuid:
+    dependency: "direct main"
+    description:
+      name: uuid
+      sha256: cd210a09f7c18cbe5a02511718e0334de6559871052c90a90c0cca46a4aa81c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.3"
   vector_math:
     dependency: transitive
     description:

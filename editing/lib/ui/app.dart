@@ -112,7 +112,7 @@ class _AppScaffoldState extends State<AppScaffold>
 
   Future<void> _onAdd(BuildContext context) async {
     final notes = Provider.of<NoteList>(context, listen: false);
-    notes.addNote('test', 'test');
+    //notes.addNote('test', 'test');
   }
 
   AppBar _createAppBar() {

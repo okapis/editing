@@ -9,6 +9,21 @@ part of 'note.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$Note on _Note, Store {
+  late final _$idAtom = Atom(name: '_Note.id', context: context);
+
+  @override
+  int? get id {
+    _$idAtom.reportRead();
+    return super.id;
+  }
+
+  @override
+  set id(int? value) {
+    _$idAtom.reportWrite(value, super.id, () {
+      super.id = value;
+    });
+  }
+
   late final _$titleAtom = Atom(name: '_Note.title', context: context);
 
   @override
@@ -39,11 +54,94 @@ mixin _$Note on _Note, Store {
     });
   }
 
+  late final _$formatAtom = Atom(name: '_Note.format', context: context);
+
+  @override
+  String get format {
+    _$formatAtom.reportRead();
+    return super.format;
+  }
+
+  @override
+  set format(String value) {
+    _$formatAtom.reportWrite(value, super.format, () {
+      super.format = value;
+    });
+  }
+
+  late final _$tagsAtom = Atom(name: '_Note.tags', context: context);
+
+  @override
+  List<String> get tags {
+    _$tagsAtom.reportRead();
+    return super.tags;
+  }
+
+  @override
+  set tags(List<String> value) {
+    _$tagsAtom.reportWrite(value, super.tags, () {
+      super.tags = value;
+    });
+  }
+
+  late final _$locationAtom = Atom(name: '_Note.location', context: context);
+
+  @override
+  String get location {
+    _$locationAtom.reportRead();
+    return super.location;
+  }
+
+  @override
+  set location(String value) {
+    _$locationAtom.reportWrite(value, super.location, () {
+      super.location = value;
+    });
+  }
+
+  late final _$createTimeAtom =
+      Atom(name: '_Note.createTime', context: context);
+
+  @override
+  DateTime get createTime {
+    _$createTimeAtom.reportRead();
+    return super.createTime;
+  }
+
+  @override
+  set createTime(DateTime value) {
+    _$createTimeAtom.reportWrite(value, super.createTime, () {
+      super.createTime = value;
+    });
+  }
+
+  late final _$lastUpdateTimeAtom =
+      Atom(name: '_Note.lastUpdateTime', context: context);
+
+  @override
+  DateTime get lastUpdateTime {
+    _$lastUpdateTimeAtom.reportRead();
+    return super.lastUpdateTime;
+  }
+
+  @override
+  set lastUpdateTime(DateTime value) {
+    _$lastUpdateTimeAtom.reportWrite(value, super.lastUpdateTime, () {
+      super.lastUpdateTime = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
+id: ${id},
 title: ${title},
-content: ${content}
+content: ${content},
+format: ${format},
+tags: ${tags},
+location: ${location},
+createTime: ${createTime},
+lastUpdateTime: ${lastUpdateTime}
     ''';
   }
 }

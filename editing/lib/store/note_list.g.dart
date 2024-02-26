@@ -24,20 +24,6 @@ mixin _$NoteList on _NoteList, Store {
     });
   }
 
-  late final _$_NoteListActionController =
-      ActionController(name: '_NoteList', context: context);
-
-  @override
-  void addNote(String title, String content) {
-    final _$actionInfo =
-        _$_NoteListActionController.startAction(name: '_NoteList.addNote');
-    try {
-      return super.addNote(title, content);
-    } finally {
-      _$_NoteListActionController.endAction(_$actionInfo);
-    }
-  }
-
   @override
   String toString() {
     return '''

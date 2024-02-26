@@ -48,7 +48,7 @@ class NoteListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //final notes = Provider.of<NoteList>(context);
     final notes = NoteList();
-    notes.addNote("1", "1");
+    //notes.addNote("1", "1");
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(

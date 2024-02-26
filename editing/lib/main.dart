@@ -1,9 +1,18 @@
+import 'dart:ffi';
+
+import 'package:dargon2_flutter/dargon2_flutter.dart';
+import 'package:drift/drift.dart';
+import 'package:sqlite3/open.dart';
 import 'package:editing/store/note_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
+
 import 'ui/app.dart';
 
 void main() {
+  DArgon2Flutter.init();
+
   runApp(MultiProvider(
     providers: [
       Provider<NoteList>.value(value: NoteList()),

@@ -40,10 +40,17 @@ dependencies:
   provider: ^6.1.1
   fl_chart: ^0.66.2
   flutter_heatmap_calendar: ^1.0.5
+  sqlite3: ^2.4.0
   drift: ^2.15.0
-  sqlite3_flutter_libs: ^0.5.20
+  # see: https://drift.simonbinder.eu/docs/platforms/encryption/
+  # If you already have a dependency on sqlite3_flutter_libs, drop that dependency. sqlite3_flutter_libs and sqlcipher_flutter_libs are not compatible as they both provide a (different) set of sqlite3 native apis.
+  # sqlite3_flutter_libs: ^0.5.20
+  sqlcipher_flutter_libs: ^0.6.1
   path_provider: ^2.1.2
   path: ^1.9.0
+  uuid: ^4.3.3
+  crypto: ^3.0.3
+  dargon2_flutter: ^3.3.0
 
 dev_dependencies:
   flutter_test:
