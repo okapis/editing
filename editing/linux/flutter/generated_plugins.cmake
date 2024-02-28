@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  dargon2_flutter_desktop
   sqlcipher_flutter_libs
 )
 
