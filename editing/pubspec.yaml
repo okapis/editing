@@ -51,6 +51,9 @@ dependencies:
   uuid: ^4.3.3
   crypto: ^3.0.3
   convert: ^3.1.1
+  kdbx:
+    path: ../deps/kdbx.dart
+  l10n_flutter: ^1.0.7
 
 dev_dependencies:
   flutter_test:
