@@ -2,10 +2,10 @@ import 'package:mobx/mobx.dart';
 
 part 'app.g.dart';
 
-class App = _App with _$App;
+class App = AppBase with _$App;
 
-abstract class _App with Store {
-  _App(
+abstract class AppBase with Store {
+  AppBase(
     this.isAuthenticated,
   );
 

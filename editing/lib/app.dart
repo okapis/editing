@@ -19,21 +19,16 @@ class EditingApp extends StatefulWidget {
 class _EditingAppState extends State<EditingApp> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<NoteList>.value(value: NoteList()),
-      ],
-      child: MaterialApp(
-        title: '谛听笔记',
-        theme: ThemeData(useMaterial3: true),
-        routes: {
-          "/onboard": (context) => OnboardingScreen(),
-          "/login": (context) => LoginScreen(),
-          "/home": (context) => HomeScreen(),
-        },
-        initialRoute: "/onboard",
-        home: AppScaffold(),
-      ),
+    return MaterialApp(
+      title: '谛听笔记',
+      theme: ThemeData(useMaterial3: true),
+      routes: {
+        "/onboard": (context) => OnboardingScreen(),
+        "/login": (context) => LoginScreen(),
+        "/home": (context) => HomeScreen(),
+      },
+      initialRoute: "/onboard",
+      home: AppScaffold(),
     );
   }
 }

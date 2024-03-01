@@ -8,8 +8,8 @@ part of 'note.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$Note on _Note, Store {
-  late final _$idAtom = Atom(name: '_Note.id', context: context);
+mixin _$Note on NoteBase, Store {
+  late final _$idAtom = Atom(name: 'NoteBase.id', context: context);
 
   @override
   int? get id {
@@ -24,7 +24,7 @@ mixin _$Note on _Note, Store {
     });
   }
 
-  late final _$titleAtom = Atom(name: '_Note.title', context: context);
+  late final _$titleAtom = Atom(name: 'NoteBase.title', context: context);
 
   @override
   String get title {
@@ -39,7 +39,7 @@ mixin _$Note on _Note, Store {
     });
   }
 
-  late final _$contentAtom = Atom(name: '_Note.content', context: context);
+  late final _$contentAtom = Atom(name: 'NoteBase.content', context: context);
 
   @override
   String get content {
@@ -54,7 +54,7 @@ mixin _$Note on _Note, Store {
     });
   }
 
-  late final _$formatAtom = Atom(name: '_Note.format', context: context);
+  late final _$formatAtom = Atom(name: 'NoteBase.format', context: context);
 
   @override
   String get format {
@@ -69,7 +69,7 @@ mixin _$Note on _Note, Store {
     });
   }
 
-  late final _$tagsAtom = Atom(name: '_Note.tags', context: context);
+  late final _$tagsAtom = Atom(name: 'NoteBase.tags', context: context);
 
   @override
   List<String> get tags {
@@ -84,7 +84,7 @@ mixin _$Note on _Note, Store {
     });
   }
 
-  late final _$locationAtom = Atom(name: '_Note.location', context: context);
+  late final _$locationAtom = Atom(name: 'NoteBase.location', context: context);
 
   @override
   String get location {
@@ -100,7 +100,7 @@ mixin _$Note on _Note, Store {
   }
 
   late final _$createTimeAtom =
-      Atom(name: '_Note.createTime', context: context);
+      Atom(name: 'NoteBase.createTime', context: context);
 
   @override
   DateTime get createTime {
@@ -116,7 +116,7 @@ mixin _$Note on _Note, Store {
   }
 
   late final _$lastUpdateTimeAtom =
-      Atom(name: '_Note.lastUpdateTime', context: context);
+      Atom(name: 'NoteBase.lastUpdateTime', context: context);
 
   @override
   DateTime get lastUpdateTime {

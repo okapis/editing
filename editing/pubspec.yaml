@@ -54,7 +54,8 @@ dependencies:
   kdbx:
     path: ../deps/kdbx.dart
   l10n_flutter: ^1.0.7
-
+  flutter_html: ^3.0.0-beta.2
+  flutter_onboarding_slider: ^1.0.11
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -81,7 +82,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  assets:
+    - assets/
+    - assets/images/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

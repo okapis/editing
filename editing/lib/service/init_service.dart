@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:convert/convert.dart';
 import 'package:flutter/services.dart';
-import '../common/protected_value.dart';
+import 'package:kdbx/kdbx.dart';
 
 class InitializeService {
   InitializeService();

@@ -1,6 +1,6 @@
+import 'package:kdbx/kdbx.dart';
 import 'package:mobx/mobx.dart';
 
-import '../common/protected_value.dart';
 import '../service/init_service.dart';
 
 part 'initialize_store.g.dart';

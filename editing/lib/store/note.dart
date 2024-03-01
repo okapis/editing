@@ -2,10 +2,10 @@ import 'package:mobx/mobx.dart';
 
 part 'note.g.dart';
 
-class Note = _Note with _$Note;
+class Note = NoteBase with _$Note;
 
-abstract class _Note with Store {
-  _Note(
+abstract class NoteBase with Store {
+  NoteBase(
     this.id,
     this.title,
     this.content,

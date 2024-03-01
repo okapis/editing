@@ -3,9 +3,9 @@ import './note.dart';
 
 part 'note_list.g.dart';
 
-class NoteList = _NoteList with _$NoteList;
+class NoteList = NoteListBase with _$NoteList;
 
-abstract class _NoteList with Store {
+abstract class NoteListBase with Store {
   @observable
   ObservableList<Note> list = ObservableList();
 
