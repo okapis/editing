@@ -3,6 +3,8 @@ import 'package:editing/ui/screens/onboarding/getting_started.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'onboarding/about.dart';
@@ -15,100 +17,77 @@ class OnboardingScreen extends StatefulWidget {
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
 
+const pageDecoration = PageDecoration(
+  imagePadding: EdgeInsets.only(top: 24, bottom: 24),
+  bodyAlignment: Alignment.topRight,
+  bodyTextStyle: TextStyle(fontSize: 14),
+);
+
 class _OnboardingScreenState extends State<OnboardingScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  _OnboardingScreenState();
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = new TabController(vsync: this, length: 3);
-  }
-
-  Widget _createBackground() {
-    return Opacity(
-      opacity: 0.8,
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/green.jpeg"),
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-          ),
+  final onboardingPages = [
+    PageViewModel(
+        title: "Comprehensive Secret Protection",
+        body:
+            "eDiting SecureVault goes beyond passwords, providing comprehensive protection for all your sensitive information. Safely store and manage passwords, notes, photos, files, and more within our app's encrypted vault. Advanced algorithms like AES-256 and Argon2 ensure that your secrets remain secure and inaccessible to unauthorized individuals.",
+        image: SvgPicture.asset(
+          "assets/images/authentication-flatline-48804.svg",
+        ),
+        decoration: pageDecoration),
+    PageViewModel(
+      title: "Strong Encryption with AES-256 and Argon2",
+      body:
+          "Your secrets are encrypted with the highest level of security using AES-256 and Argon2. These industry-standard algorithms make it virtually impossible for anyone to decipher your encrypted data. Rest assured that your secrets are safe from brute-force and dictionary attacks, keeping them confidential and protected.",
+      image: SvgPicture.asset(
+        "assets/images/super-man-flatline.svg",
+      ),
+      decoration: pageDecoration,
+    ),
+    PageViewModel(
+      title: "Cross-Platform Support",
+      body:
+          "Access and manage your secrets seamlessly across multiple platforms with eDiting SecureVault. Whether you're using iOS, Android, or desktop, our app synchronizes your encrypted data, ensuring that changes you make on one device are instantly reflected on all others. Enjoy a consistent and user-friendly experience, no matter which platform you're using.",
+      image: SvgPicture.asset(
+        "assets/images/idea-applications-outline.svg",
+      ),
+      decoration: pageDecoration,
+    ),
+    PageViewModel(
+      title: "Getting Started",
+      bodyWidget: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            Text(
+                "Access and manage your secrets seamlessly across multiple platforms with eDiting SecureVault. Whether you're using iOS, Android, or desktop, our app synchronizes your encrypted data, ensuring that changes you make on one device are instantly reflected on all others. Enjoy a consistent and user-friendly experience, no matter which platform you're using."),
+            Icon(Icons.edit),
+            Text(" to edit a post"),
+          ],
         ),
       ),
-    );
-  }
-
-  int currentStep = 0;
+      image: SvgPicture.asset(
+        "assets/images/startup-flatline-0066b.svg",
+      ),
+      decoration: pageDecoration,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     OnboardingStore store = Provider.of<OnboardingStore>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Onboarding'),
-      ),
       body: Observer(
-        builder: (_) => Stepper(
-          currentStep: store.currentStep,
-          controlsBuilder: (BuildContext ctx, ControlsDetails dtl) {
-            return Row(
-              children: <Widget>[
-                TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.blue,
-                  ),
-                  onPressed: dtl.onStepContinue,
-                  child: Text(store.isLastStep ? 'Finish' : 'Continue'),
-                ),
-                if (!store.isFirstStep)
-                  TextButton(
-                    onPressed: dtl.onStepCancel,
-                    child: Text('Back'),
-                  ),
-              ],
-            );
+        builder: (_) => IntroductionScreen(
+          pages: onboardingPages,
+          showSkipButton: true,
+          showNextButton: false,
+          showDoneButton: false,
+          skip: const Text("Skip"),
+          onDone: () {
+            // On button pressed
           },
-          onStepContinue: store.continueStep,
-          onStepCancel: store.cancelStep,
-          steps: [
-            Step(
-              title: Text('Welcome'),
-              subtitle: Text('Features overview'),
-              content: Column(
-                children: <Widget>[
-                  Container(
-                    constraints: BoxConstraints(
-                      maxHeight: 200,
-                    ),
-                    child: Image(
-                      image: AssetImage(
-                          'assets/images/undraw_mobile_encryption_cl5q.png'),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 10),
-                    child: Html(
-                        data:
-                            "<h5>Fully encrypted</h5><br/><p>Everything inside Editing is fully encrypted with <strong>AES-256</strong> algorithm, it\'s theoretically impossible to decrypt without your master password.</p><p><a href=\"#\""
-                            ">Learn more about security details</a></p>"),
-                  ),
-                ],
-              ),
-            ),
-            Step(
-              title: Text('Step 2'),
-              content: Text('Content for Step 2'),
-            ),
-            Step(
-              title: Text('Step 3'),
-              content: Text('Content for Step 3'),
-            ),
-          ],
         ),
       ),
     );

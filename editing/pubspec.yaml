@@ -55,7 +55,8 @@ dependencies:
     path: ../deps/kdbx.dart
   l10n_flutter: ^1.0.7
   flutter_html: ^3.0.0-beta.2
-  flutter_onboarding_slider: ^1.0.11
+  introduction_screen: ^3.1.12
+  flutter_svg: ^2.0.10+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
