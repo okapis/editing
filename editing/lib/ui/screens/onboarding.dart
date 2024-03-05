@@ -155,9 +155,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           showDoneButton: false,
           skip: const Text("Skip"),
           next: const Icon(Icons.arrow_right_alt),
-          onDone: () {
-            // On button pressed
-          },
         ),
       ),
     );

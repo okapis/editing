@@ -20,6 +20,17 @@ class AppService {
     return config.existsSync();
   }
 
+  Future<bool> verifyPassword(ProtectedValue password) async {
+    final File config = await getAppConfigFile();
+    final data = await config.readAsBytes();
+    try {
+      await kdbxFormat.read(data, Credentials(password));
+      return true;
+    } on KdbxInvalidKeyException catch (e) {
+      return false;
+    }
+  }
+
   Future<KdbxFile> initialize(ProtectedValue masterPassword) async {
     final credentials = Credentials(masterPassword);
     final kdbx = kdbxFormat.create(

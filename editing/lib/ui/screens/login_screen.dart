@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kdbx/kdbx.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../../service/app_service.dart';
@@ -50,7 +52,28 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _input(BuildContext context) {
-    AppStore _appStore = Provider.of<AppStore>(context);
+    AppStore appStore = Provider.of<AppStore>(context);
+    AppService appService = Provider.of<AppService>(context);
+    final logger = Logger();
+
+    onLogin(ProtectedValue p) async {
+      appStore.setLogging(true);
+      try {
+        final isPasswordCorrect = await appService.verifyPassword(p);
+        await Future.delayed(const Duration(seconds: 1));
+        if (!isPasswordCorrect && context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            showCloseIcon: true,
+            backgroundColor: Colors.redAccent,
+            content: Text("Incorrect password!"),
+          ));
+        }
+      } catch (e) {
+        logger.e(e);
+      } finally {
+        appStore.setLogging(false);
+      }
+    }
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(50, 10.0, 50, 10),
@@ -60,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
           TextField(
             obscureText: true,
             autofocus: false,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Please input master password",
               prefixIcon: Icon(
                 Icons.lock_outline,
@@ -68,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 size: 22.0,
               ),
             ),
-            onSubmitted: (value) => _appStore.setLogging(true),
+            onSubmitted: (value) => onLogin(ProtectedValue.fromString(value)),
           ),
         ],
       ),
@@ -76,16 +99,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _progressBar() {
-    return Column(
+    return const Column(
       children: <Widget>[
-        const CircularProgressIndicator(),
+        CircularProgressIndicator(),
         Center(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0),
             child: Text("Loading..."),
           ),
         ),
       ],
     );
   }
+
+  Future<void> onLogin(ProtectedValue password) async {}
 }
