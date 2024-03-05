@@ -2,13 +2,17 @@ import 'package:mobx/mobx.dart';
 
 part 'app.g.dart';
 
-class App = AppBase with _$App;
+class AppStore = AppBase with _$AppStore;
 
 abstract class AppBase with Store {
-  AppBase(
-    this.isAuthenticated,
-  );
-
   @observable
   bool isAuthenticated = false;
+
+  @observable
+  bool isLogging = false;
+
+  @action
+  void setLogging(bool isLogging) {
+    this.isLogging = isLogging;
+  }
 }

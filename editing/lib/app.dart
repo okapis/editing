@@ -1,5 +1,5 @@
 import 'package:editing/ui/screens/home.dart';
-import 'package:editing/ui/screens/login.dart';
+import 'package:editing/ui/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,8 +27,7 @@ class _EditingAppState extends State<EditingApp> {
         "/login": (context) => LoginScreen(),
         "/home": (context) => HomeScreen(),
       },
-      initialRoute: "/onboard",
-      home: AppScaffold(),
+      initialRoute: widget.isFirstRun ? "/onboard" : "/login",
     );
   }
 }
