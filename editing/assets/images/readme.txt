@@ -1,0 +1,1 @@
+Svgs downloaded from: https://www.manypixels.co/gallery

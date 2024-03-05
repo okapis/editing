@@ -1,3 +1,4 @@
+import 'package:kdbx/kdbx.dart';
 import 'package:mobx/mobx.dart';
 
 part 'onboarding.g.dart';
@@ -5,24 +6,23 @@ part 'onboarding.g.dart';
 class OnboardingStore = OnboardingBase with _$OnboardingStore;
 
 abstract class OnboardingBase with Store {
-  final totalSteps = 3;
-
-  @observable
-  int currentStep = 0;
+  ProtectedValue? _password1;
+  ProtectedValue? _password2;
 
   @action
-  void continueStep() {
-    if (currentStep < totalSteps - 1) currentStep++;
+  void setPassword1(ProtectedValue password) {
+    _password1 = password;
   }
 
   @action
-  void cancelStep() {
-    if (currentStep > 0) currentStep--;
+  void setPassword2(ProtectedValue password) {
+    _password2 = password;
   }
 
   @computed
-  bool get isLastStep => currentStep == totalSteps - 1;
+  ProtectedValue get password => _password1!;
 
   @computed
-  bool get isFirstStep => currentStep == 0;
+  bool get isPasswordValid =>
+      _password1 != null && _password2 != null && _password1 == _password2;
 }

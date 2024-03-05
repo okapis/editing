@@ -10,8 +10,6 @@ class InitializeService {
 
   Future<void> initialize(
     final ProtectedValue masterPassword,
-    final ProtectedValue secondaryPassword,
-    bool enableFingerPrint,
   ) async {}
 
   Future<void> _saveConfig(

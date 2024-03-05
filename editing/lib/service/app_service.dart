@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:kdbx/kdbx.dart';
+import 'package:logger/logger.dart';
 
 import '../common/path_util.dart';
 
 class AppService {
+  final logger = Logger();
+
   static const String configFileName = "app.kdbx";
   static KdbxFormat kdbxFormat = KdbxFormat();
 
@@ -28,6 +31,9 @@ class AppService {
     entry.setString(KdbxKey("KEY"), ProtectedValue.fromString("123456789"));
     final saved = await kdbx.save();
     final configFile = await getAppConfigFile();
+
+    logger.i("Initializing config:$configFile");
+
     assert(!configFile.existsSync());
     configFile.writeAsBytesSync(saved);
 

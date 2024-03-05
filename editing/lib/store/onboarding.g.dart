@@ -9,57 +9,34 @@ part of 'onboarding.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$OnboardingStore on OnboardingBase, Store {
-  Computed<bool>? _$isLastStepComputed;
+  Computed<bool>? _$isPasswordValidComputed;
 
   @override
-  bool get isLastStep =>
-      (_$isLastStepComputed ??= Computed<bool>(() => super.isLastStep,
-              name: 'OnboardingBase.isLastStep'))
+  bool get isPasswordValid =>
+      (_$isPasswordValidComputed ??= Computed<bool>(() => super.isPasswordValid,
+              name: 'OnboardingBase.isPasswordValid'))
           .value;
-  Computed<bool>? _$isFirstStepComputed;
-
-  @override
-  bool get isFirstStep =>
-      (_$isFirstStepComputed ??= Computed<bool>(() => super.isFirstStep,
-              name: 'OnboardingBase.isFirstStep'))
-          .value;
-
-  late final _$currentStepAtom =
-      Atom(name: 'OnboardingBase.currentStep', context: context);
-
-  @override
-  int get currentStep {
-    _$currentStepAtom.reportRead();
-    return super.currentStep;
-  }
-
-  @override
-  set currentStep(int value) {
-    _$currentStepAtom.reportWrite(value, super.currentStep, () {
-      super.currentStep = value;
-    });
-  }
 
   late final _$OnboardingBaseActionController =
       ActionController(name: 'OnboardingBase', context: context);
 
   @override
-  void continueStep() {
+  void setPassword1(ProtectedValue password) {
     final _$actionInfo = _$OnboardingBaseActionController.startAction(
-        name: 'OnboardingBase.continueStep');
+        name: 'OnboardingBase.setPassword1');
     try {
-      return super.continueStep();
+      return super.setPassword1(password);
     } finally {
       _$OnboardingBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void cancelStep() {
+  void setPassword2(ProtectedValue password) {
     final _$actionInfo = _$OnboardingBaseActionController.startAction(
-        name: 'OnboardingBase.cancelStep');
+        name: 'OnboardingBase.setPassword2');
     try {
-      return super.cancelStep();
+      return super.setPassword2(password);
     } finally {
       _$OnboardingBaseActionController.endAction(_$actionInfo);
     }
@@ -68,9 +45,7 @@ mixin _$OnboardingStore on OnboardingBase, Store {
   @override
   String toString() {
     return '''
-currentStep: ${currentStep},
-isLastStep: ${isLastStep},
-isFirstStep: ${isFirstStep}
+isPasswordValid: ${isPasswordValid}
     ''';
   }
 }
