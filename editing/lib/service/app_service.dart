@@ -1,15 +1,19 @@
 import 'dart:io';
 
+import 'package:editing/service/kdbx_service.dart';
 import 'package:kdbx/kdbx.dart';
 import 'package:logger/logger.dart';
 
 import '../common/path_util.dart';
 
 class AppService {
-  final logger = Logger();
-
   static const String configFileName = "app.kdbx";
   static KdbxFormat kdbxFormat = KdbxFormat();
+
+  final logger = Logger();
+  final KdbxService _kdbxService;
+
+  AppService(this._kdbxService);
 
   static Future<File> getAppConfigFile() async {
     return File(await PathUtil.getLocalPath(configFileName));
@@ -24,7 +28,8 @@ class AppService {
     final File config = await getAppConfigFile();
     final data = await config.readAsBytes();
     try {
-      await kdbxFormat.read(data, Credentials(password));
+      final file = await kdbxFormat.read(data, Credentials(password));
+      print(file.body.rootGroup.entries);
       return true;
     } on KdbxInvalidKeyException catch (e) {
       return false;
@@ -32,14 +37,7 @@ class AppService {
   }
 
   Future<KdbxFile> initialize(ProtectedValue masterPassword) async {
-    final credentials = Credentials(masterPassword);
-    final kdbx = kdbxFormat.create(
-      credentials,
-      'master.kdbx',
-    );
-    final rootGroup = kdbx.body.rootGroup;
-    final entry = KdbxEntry.create(kdbx, rootGroup);
-    entry.setString(KdbxKey("KEY"), ProtectedValue.fromString("123456789"));
+    final kdbx = await _kdbxService.create(masterPassword);
     final saved = await kdbx.save();
     final configFile = await getAppConfigFile();
 

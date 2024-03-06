@@ -136,9 +136,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     Padding(
                       padding: const EdgeInsets.only(top: 12, bottom: 12),
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            appService.initialize(store.password);
+                            await appService.initialize(store.password);
+                            if (context.mounted) {
+                              Navigator.pushReplacementNamed(context, "/login");
+                            }
                           }
                         },
                         child: const Text("Let's Go!"),

@@ -1,6 +1,6 @@
 import 'package:editing/store/note_list.dart';
 import 'package:editing/ui/screens/idea_list.dart';
-import 'package:editing/ui/screens/home.dart';
+import 'package:editing/ui/screens/home_screen.dart';
 import 'package:editing/ui/screens/note_list.dart';
 import 'package:editing/ui/screens/password_list.dart';
 import 'package:editing/ui/screens/tools.dart';

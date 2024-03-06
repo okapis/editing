@@ -1,3 +1,4 @@
+import 'package:kdbx/kdbx.dart';
 import 'package:mobx/mobx.dart';
 
 part 'app.g.dart';

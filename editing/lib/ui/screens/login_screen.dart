@@ -60,13 +60,19 @@ class _LoginScreenState extends State<LoginScreen> {
       appStore.setLogging(true);
       try {
         final isPasswordCorrect = await appService.verifyPassword(p);
-        await Future.delayed(const Duration(seconds: 1));
-        if (!isPasswordCorrect && context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            showCloseIcon: true,
-            backgroundColor: Colors.redAccent,
-            content: Text("Incorrect password!"),
-          ));
+        if (isPasswordCorrect) {
+          if (context.mounted) {
+            Navigator.pushReplacementNamed(context, "/home");
+          }
+        } else {
+          await Future.delayed(const Duration(seconds: 1));
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              showCloseIcon: true,
+              backgroundColor: Colors.redAccent,
+              content: Text("Incorrect password!"),
+            ));
+          }
         }
       } catch (e) {
         logger.e(e);
