@@ -9,6 +9,10 @@ import 'package:pointycastle/pointycastle.dart';
 
 import '../config/version.dart';
 
+/// Argon2 parameters recommendation by OWASP:
+/// see: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#:~:text=To%20sum%20up%20our%20recommendations,a%20parallelization%20parameter%20of%201.
+///
+
 class KdbxService {
   static KdbxFormat kdbxFormat = KdbxFormat();
   static final valueKey = KdbxKey("value");
@@ -39,20 +43,6 @@ class KdbxService {
     dbEncryptKeyEntry.setString(KdbxKey("memory"), PlainValue("1024 * 1024"));
     dbEncryptKeyEntry.setString(KdbxKey("parallelism"), PlainValue("2"));
     return kdbx;
-  }
-
-  Uint8List _generateKey(Uint8List salt, ProtectedValue password) {
-    final kdf = Argon2BytesGenerator();
-    kdf.init(Argon2Parameters(
-      Argon2Parameters.ARGON2_d,
-      salt,
-      desiredKeyLength: 32,
-      iterations: 32,
-      memory: 1024 * 1024,
-      lanes: 2,
-      version: Argon2Parameters.ARGON2_VERSION_13,
-    ));
-    return kdf.process(password.binaryValue);
   }
 
   KdbxEntry _createEntry(
