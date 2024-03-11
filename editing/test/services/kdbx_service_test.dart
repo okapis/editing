@@ -13,6 +13,16 @@ void main() {
 
     final file = await kdbxFormat.read(data, Credentials(password));
     expect(file.body.rootGroup.entries, isNotNull);
-    expect(file.body.rootGroup.entries.length, 4);
+    expect(file.body.rootGroup.entries.length, 1);
+    expect(
+        file.body.rootGroup.entries[0]
+            .getString(KdbxKeyCommon.TITLE)
+            ?.getText(),
+        "APP_VERSION");
+    expect(
+        file.body.rootGroup.entries[0]
+            .getString(KdbxKeyCommon.PASSWORD)
+            ?.getText(),
+        startsWith("\$argon2id"));
   });
 }

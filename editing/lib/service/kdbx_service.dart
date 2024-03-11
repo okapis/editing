@@ -24,24 +24,33 @@ class KdbxService {
       'eDiting KeyStore',
     );
     final rootGroup = kdbx.body.rootGroup;
-    _createEntry(kdbx, rootGroup, "APP_VERSION", APP_VERSION);
-    _createEntry(kdbx, rootGroup, "SQLCIPHER_VERSION", SQLCIPHER_VERSION);
-    _createEntry(kdbx, rootGroup, "SEED", UuidUtil.generateUUID());
+    final entry = KdbxEntry.create(kdbx, rootGroup);
+    rootGroup.addEntry(entry);
 
-    final dbEncryptKey = sha256
+    final random1 = sha256
         .convert(sha256.convert(utf8.encode(UuidUtil.generateUUID())).bytes)
         .bytes as Uint8List;
-    final dbSalt = sha256
+    final random2 = sha256
         .convert(sha256.convert(utf8.encode(UuidUtil.generateUUID())).bytes)
         .bytes as Uint8List;
-    final dbEncryptKeyEntry = _createEntryRaw(kdbx, rootGroup,
-        "SQLCIPHER_PASSWORD", ProtectedValue.fromRawBinary(dbEncryptKey));
-    dbEncryptKeyEntry.setString(
-        KdbxKey("salt"), ProtectedValue.fromRawBinary(dbSalt));
-    dbEncryptKeyEntry.setString(KdbxKey("type"), PlainValue("argon2d"));
-    dbEncryptKeyEntry.setString(KdbxKey("iterations"), PlainValue("32"));
-    dbEncryptKeyEntry.setString(KdbxKey("memory"), PlainValue("1024 * 1024"));
-    dbEncryptKeyEntry.setString(KdbxKey("parallelism"), PlainValue("2"));
+
+    final args = Argon2Arguments(
+      random1,
+      random2,
+      128 * 1024, // 128 Mb
+      32,
+      32,
+      2,
+      ARGON2_id,
+      19,
+    );
+    entry.setString(KdbxKeyCommon.TITLE, PlainValue("APP_VERSION"));
+    entry.setString(
+        KdbxKey("SQLCIPHER_VERSION"), PlainValue(SQLCIPHER_VERSION));
+    entry.setString(KdbxKey("INSTANCE"), PlainValue(UuidUtil.generateUUID()));
+    entry.setString(
+        KdbxKeyCommon.PASSWORD, ProtectedValue.fromString(args.toString()));
+
     return kdbx;
   }
 
