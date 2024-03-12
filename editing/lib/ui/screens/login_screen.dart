@@ -1,3 +1,4 @@
+import 'package:editing/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,23 +60,22 @@ class _LoginScreenState extends State<LoginScreen> {
     onLogin(ProtectedValue p) async {
       appStore.setLogging(true);
       try {
-        final isPasswordCorrect = await appService.verifyPassword(p);
-        if (isPasswordCorrect) {
-          if (context.mounted) {
-            Navigator.pushReplacementNamed(context, "/home");
-          }
-        } else {
-          await Future.delayed(const Duration(seconds: 1));
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              showCloseIcon: true,
-              backgroundColor: Colors.redAccent,
-              content: Text("Incorrect password!"),
-            ));
-          }
+        final meta = await appService.login(p);
+        AppDb db = AppDb.open("${meta.dbInstance}.enc", meta.dbEncryptionKey);
+        appStore.authenticate(meta, db);
+        if (context.mounted) {
+          Navigator.pushReplacementNamed(context, "/home");
         }
       } catch (e) {
         logger.e(e);
+        await Future.delayed(const Duration(seconds: 1));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            showCloseIcon: true,
+            backgroundColor: Colors.redAccent,
+            content: Text("Login failed!"),
+          ));
+        }
       } finally {
         appStore.setLogging(false);
       }

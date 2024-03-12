@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:editing/config/meta.dart';
 import 'package:editing/database/database.dart';
 import 'package:editing/service/kdbx_service.dart';
 import 'package:kdbx/kdbx.dart';
 import 'package:logger/logger.dart';
 
+import '../common/exceptions.dart';
 import '../common/path_util.dart';
 
 class AppService {
@@ -25,14 +27,15 @@ class AppService {
     return config.existsSync();
   }
 
-  Future<bool> verifyPassword(ProtectedValue password) async {
+  Future<Meta> login(ProtectedValue password) async {
     final File config = await getAppConfigFile();
     final data = await config.readAsBytes();
     try {
-      final file = await kdbxFormat.read(data, Credentials(password));
-      return true;
+      final kdbx = await kdbxFormat.read(data, Credentials(password));
+      return _kdbxService.loadMeta(kdbx);
     } on KdbxInvalidKeyException catch (e) {
-      return false;
+      logger.e("Login failed, password incorrect", error: e);
+      throw IncorrectPasswordException();
     }
   }
 
