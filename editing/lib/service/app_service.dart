@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:editing/database/database.dart';
 import 'package:editing/service/kdbx_service.dart';
 import 'package:kdbx/kdbx.dart';
 import 'package:logger/logger.dart';
@@ -29,7 +30,6 @@ class AppService {
     final data = await config.readAsBytes();
     try {
       final file = await kdbxFormat.read(data, Credentials(password));
-      print(file.body.rootGroup.entries);
       return true;
     } on KdbxInvalidKeyException catch (e) {
       return false;
@@ -46,6 +46,13 @@ class AppService {
     assert(!configFile.existsSync());
     configFile.writeAsBytesSync(saved);
 
+    final meta = await _kdbxService.loadMeta(kdbx);
+    final dbFile = "${meta.dbInstance}.enc";
+    logger.i("Initializing database:$dbFile");
+    final db = AppDb.open(dbFile, meta.dbEncryptionKey);
+
+    // force to trigger database creation
+    await db.select(db.journals).get();
     return kdbx;
   }
 }

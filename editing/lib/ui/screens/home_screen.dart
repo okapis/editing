@@ -12,13 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _KnowledgebaseScreenState extends State<HomeScreen> {
-  final _database = AppDb();
-
   @override
   Widget build(BuildContext context) {
-    final count = _database.journals.count().getSingle();
-    count.then((c) => print(c));
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
+import 'package:editing/common/argon2_util.dart';
 import 'package:editing/common/uuid_util.dart';
 import 'package:kdbx/kdbx.dart';
-import 'package:pointycastle/key_derivators/argon2_native_int_impl.dart';
-import 'package:pointycastle/pointycastle.dart';
 
+import '../config/meta.dart';
 import '../config/version.dart';
 
 /// Argon2 parameters recommendation by OWASP:
@@ -34,17 +34,19 @@ class KdbxService {
         .convert(sha256.convert(utf8.encode(UuidUtil.generateUUID())).bytes)
         .bytes as Uint8List;
 
+    // see: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#argon2id
     final args = Argon2Arguments(
       random1,
       random2,
-      128 * 1024, // 128 Mb
+      12288,
+      3,
       32,
-      32,
-      2,
+      1,
       ARGON2_id,
       19,
     );
-    entry.setString(KdbxKeyCommon.TITLE, PlainValue("APP_VERSION"));
+    entry.setString(KdbxKeyCommon.TITLE, PlainValue("CONFIG"));
+    entry.setString(KdbxKey("APP_VERSION"), PlainValue(APP_VERSION));
     entry.setString(
         KdbxKey("SQLCIPHER_VERSION"), PlainValue(SQLCIPHER_VERSION));
     entry.setString(KdbxKey("INSTANCE"), PlainValue(UuidUtil.generateUUID()));
@@ -54,17 +56,20 @@ class KdbxService {
     return kdbx;
   }
 
-  KdbxEntry _createEntry(
-      KdbxFile file, KdbxGroup group, String title, String value) {
-    return _createEntryRaw(file, group, title, PlainValue(value));
-  }
-
-  KdbxEntry _createEntryRaw(
-      KdbxFile file, KdbxGroup group, String title, StringValue value) {
-    final entry = KdbxEntry.create(file, group);
-    group.addEntry(entry);
-    entry.setString(KdbxKeyCommon.TITLE, PlainValue(title));
-    entry.setString(valueKey, value);
-    return entry;
+  Future<Meta> loadMeta(KdbxFile kdbx) async {
+    final configEntry = kdbx.body.rootGroup.entries.singleWhere((element) =>
+        element.getString(KdbxKeyCommon.TITLE)?.getText() == "CONFIG");
+    final appVersion =
+        configEntry.getString(KdbxKey("APP_VERSION"))?.getText() ?? "";
+    final sqlCipherVersion =
+        configEntry.getString(KdbxKey("SQLCIPHER_VERSION"))?.getText() ?? "";
+    final instance =
+        configEntry.getString(KdbxKey("INSTANCE"))?.getText() ?? "";
+    final passwordArgs =
+        configEntry.getString(KdbxKeyCommon.PASSWORD)?.getText() ?? "";
+    final argon2Arguments = Argon2Arguments.parse(passwordArgs);
+    final derivedKey = await Argon2Util.deriveKey(argon2Arguments);
+    return Meta(appVersion, sqlCipherVersion, instance,
+        ProtectedValue.fromBinary(derivedKey));
   }
 }

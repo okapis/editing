@@ -1,13 +1,6 @@
-CREATE TABLE configuration (
-    name TEXT NOT NULL PRIMARY KEY,
-    value TEXT NOT NULL,
-    create_time TEXT,
-    last_update_time TEXT
-);
-
 CREATE TABLE journals (
-    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    format INT NOT NULL,
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    format INTEGER NOT NULL,
     title TEXT,
     content TEXT,
     tags TEXT,
@@ -19,15 +12,15 @@ CREATE TABLE journals (
 );
 
 CREATE TABLE journal_images (
-    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    journals_id INT REFERENCES journals (id),
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    journals_id INTEGER REFERENCES journals (id),
     file_path TEXT NOT NULL,
     thumbnail_path TEXT
 );
 
 CREATE TABLE notes (
-    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
-    format INT NOT NULL,
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    format INTEGER NOT NULL,
     title TEXT,
     content TEXT,
     tags TEXT,
