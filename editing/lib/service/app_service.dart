@@ -55,7 +55,8 @@ class AppService {
     final db = AppDb.open(dbFile, meta.dbEncryptionKey);
 
     // force to trigger database creation
-    await db.select(db.journals).get();
+    await db.select(db.notes).get();
+    await db.close();
     return kdbx;
   }
 }

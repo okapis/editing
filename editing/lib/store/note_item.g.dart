@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'note.dart';
+part of 'note_item.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,7 +8,7 @@ part of 'note.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$Note on NoteBase, Store {
+mixin _$NoteItem on NoteBase, Store {
   late final _$idAtom = Atom(name: 'NoteBase.id', context: context);
 
   @override
@@ -54,31 +54,16 @@ mixin _$Note on NoteBase, Store {
     });
   }
 
-  late final _$formatAtom = Atom(name: 'NoteBase.format', context: context);
-
-  @override
-  String get format {
-    _$formatAtom.reportRead();
-    return super.format;
-  }
-
-  @override
-  set format(String value) {
-    _$formatAtom.reportWrite(value, super.format, () {
-      super.format = value;
-    });
-  }
-
   late final _$tagsAtom = Atom(name: 'NoteBase.tags', context: context);
 
   @override
-  List<String> get tags {
+  List<String>? get tags {
     _$tagsAtom.reportRead();
     return super.tags;
   }
 
   @override
-  set tags(List<String> value) {
+  set tags(List<String>? value) {
     _$tagsAtom.reportWrite(value, super.tags, () {
       super.tags = value;
     });
@@ -87,13 +72,13 @@ mixin _$Note on NoteBase, Store {
   late final _$locationAtom = Atom(name: 'NoteBase.location', context: context);
 
   @override
-  String get location {
+  String? get location {
     _$locationAtom.reportRead();
     return super.location;
   }
 
   @override
-  set location(String value) {
+  set location(String? value) {
     _$locationAtom.reportWrite(value, super.location, () {
       super.location = value;
     });
@@ -137,7 +122,6 @@ mixin _$Note on NoteBase, Store {
 id: ${id},
 title: ${title},
 content: ${content},
-format: ${format},
 tags: ${tags},
 location: ${location},
 createTime: ${createTime},

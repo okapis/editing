@@ -1,8 +1,10 @@
 import 'package:drift/drift.dart' as drift;
+import 'package:editing/store/note_list.dart';
 import 'package:flutter/material.dart';
 import '../../database/database.dart';
 import '../widgets/activity.dart';
 import '../widgets/task.dart';
+import 'note_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,33 +14,67 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _KnowledgebaseScreenState extends State<HomeScreen> {
+  int currentPageIndex = 0;
+  final List<Widget> pages = <Widget>[
+    NoteListPage(),
+    Placeholder(),
+    Placeholder(),
+    Placeholder(),
+    Placeholder(),
+  ];
+
+  void _onTabActivate(int index) {
+    setState(() {
+      currentPageIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Activity(),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Text('待办事项'),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        indicatorColor: Colors.amber,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            selectedIcon: Icon(Icons.notes),
+            icon: Icon(Icons.notes_outlined),
+            label: 'Notes',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.image),
+            icon: Icon(Icons.image_outlined),
+            label: 'Images',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.security),
+            icon: Icon(Icons.security_outlined),
+            label: 'Passwords',
+          ),
+          NavigationDestination(
+            selectedIcon: Badge(
+              label: Text('2'),
+              child: Icon(Icons.message),
             ),
-            const Row(
-              children: [
-                Expanded(
-                  child: Task('今天', 3, Icons.alarm_outlined),
-                ),
-                Expanded(
-                  child: Task('计划中', 15, Icons.calendar_month_outlined),
-                ),
-              ],
+            icon: Badge(
+              label: Text('2'),
+              child: Icon(Icons.message_outlined),
             ),
-          ],
-        ),
+            label: 'Messages',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.settings),
+            icon: Icon(Icons.settings_outlined),
+            label: 'Settings',
+          ),
+        ],
       ),
+      body: pages.elementAt(currentPageIndex),
     );
   }
 }

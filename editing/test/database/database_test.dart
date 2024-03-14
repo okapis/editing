@@ -33,7 +33,7 @@ void main() {
   });
 
   test('should get all notes', () async {
-    final list = await database.select(database.journals).get();
+    final list = await database.select(database.notes).get();
     expect(list.length, 0);
   });
 }

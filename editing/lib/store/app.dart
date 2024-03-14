@@ -9,9 +9,6 @@ class AppStore = AppBase with _$AppStore;
 
 abstract class AppBase with Store {
   @observable
-  bool isAuthenticated = false;
-
-  @observable
   bool isLogging = false;
 
   @observable
@@ -19,6 +16,9 @@ abstract class AppBase with Store {
 
   @observable
   AppDb? openedDb;
+
+  @computed
+  bool get isAuthenticated => meta != null;
 
   @action
   void setLogging(bool isLogging) {
@@ -28,7 +28,6 @@ abstract class AppBase with Store {
   @action
   void authenticate(Meta meta, AppDb db) {
     this.meta = meta;
-    isAuthenticated = true;
     openedDb = db;
   }
 
@@ -36,7 +35,6 @@ abstract class AppBase with Store {
   Future<void> logout() async {
     await openedDb?.close();
     meta = null;
-    isAuthenticated = false;
     openedDb = null;
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'store/note_list.dart';
-import 'ui/app.dart';
 import 'ui/screens/onboarding.dart';
 
 class EditingApp extends StatefulWidget {
