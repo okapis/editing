@@ -13,7 +13,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _KnowledgebaseScreenState();
 }
 
-class _KnowledgebaseScreenState extends State<HomeScreen> {
+class _KnowledgebaseScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   int currentPageIndex = 0;
   final List<Widget> pages = <Widget>[
     NoteListPage(),
@@ -29,9 +30,77 @@ class _KnowledgebaseScreenState extends State<HomeScreen> {
     });
   }
 
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.menu_outlined),
+          tooltip: 'Menu',
+          onPressed: () {},
+        ),
+        title: Text("Notes"),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.search_outlined),
+            tooltip: 'Search',
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.add_outlined),
+            tooltip: 'Create',
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.more_horiz),
+            tooltip: 'More options',
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      title: const Text('Next page'),
+                    ),
+                    body: const Center(
+                      child: Text(
+                        'This is the next page',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  );
+                },
+              ));
+            },
+          ),
+        ],
+        bottom: TabBar(
+          tabAlignment: TabAlignment.fill,
+          controller: _tabController,
+          isScrollable: false,
+          tabs: const [
+            Tab(
+              text: "Journal",
+            ),
+            Tab(
+              text: "Notes",
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
@@ -75,6 +144,10 @@ class _KnowledgebaseScreenState extends State<HomeScreen> {
         ],
       ),
       body: pages.elementAt(currentPageIndex),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {},
+      ),
     );
   }
 }

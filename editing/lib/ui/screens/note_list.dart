@@ -34,27 +34,24 @@ class _NoteListPageState extends State<NoteListPage> {
   Widget build(BuildContext context) {
     final noteListStore = Provider.of<NoteListStore>(context);
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Observer(
-            builder: (_) => Expanded(
-              child: ListView.builder(
-                itemCount: noteListStore.list.length,
-                itemBuilder: (_, index) {
-                  final note = noteListStore.list[index];
-                  return Note(
-                      title: note.title,
-                      createTime: note.createTime,
-                      location: "",
-                      content: note.content);
-                },
-              ),
+    return Row(
+      children: [
+        Observer(
+          builder: (_) => Expanded(
+            child: ListView.builder(
+              itemCount: noteListStore.list.length,
+              itemBuilder: (_, index) {
+                final note = noteListStore.list[index];
+                return Note(
+                    title: note.title,
+                    createTime: note.createTime,
+                    location: "",
+                    content: note.content);
+              },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

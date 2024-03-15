@@ -18,53 +18,12 @@ class Note extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: Text(
-                content,
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ),
-            const Row(
-              children: [
-                Tag("旅行"),
-                Tag("杂记"),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  location,
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
-                ),
-                Text(
-                  '${createTime.year}-${createTime.month}-${createTime.day}',
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
-                ),
-              ],
-            ),
-          ],
-        ),
+    return ListTile(
+      leading: const Icon(Icons.cloudy_snowing),
+      title: Text(
+        content,
       ),
+      subtitle: Text("今天天气十分好"),
     );
   }
 }
