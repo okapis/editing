@@ -9,7 +9,13 @@ import 'package:provider/provider.dart';
 
 import '../widgets/journal.dart';
 
+enum NoteType { jounral, note, idea, checklist }
+
 class NoteListPage extends StatefulWidget {
+  final NoteType type;
+
+  const NoteListPage({super.key, required this.type});
+
   @override
   State<NoteListPage> createState() => _NoteListPageState();
 }

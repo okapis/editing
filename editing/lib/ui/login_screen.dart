@@ -6,8 +6,8 @@ import 'package:kdbx/kdbx.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import '../../service/app_service.dart';
-import '../../store/app.dart';
+import '../service/app_service.dart';
+import '../store/app.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

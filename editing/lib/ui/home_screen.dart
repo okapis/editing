@@ -1,28 +1,45 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:editing/store/note_list.dart';
+import 'package:editing/ui/pages/activity.dart';
+import 'package:editing/ui/pages/assistant.dart';
 import 'package:flutter/material.dart';
-import '../../database/database.dart';
-import '../widgets/activity.dart';
-import '../widgets/task.dart';
-import 'note_list.dart';
+import 'package:flutter/widgets.dart';
+import '../database/database.dart';
+import 'widgets/activity.dart';
+import 'widgets/task.dart';
+import 'pages/note_list.dart';
+
+class SecondaryTab {
+  List<Widget> tabWidgets;
+  TabController tabController;
+  List<Tab> tabs;
+
+  SecondaryTab({
+    required this.tabController,
+    required this.tabWidgets,
+    required this.tabs,
+  });
+}
+
+class PageMeta {
+  Widget? widget;
+  SecondaryTab? secondaryTab;
+  Widget? floatingActionButton;
+
+  PageMeta({this.widget, this.secondaryTab, this.floatingActionButton});
+}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _KnowledgebaseScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _KnowledgebaseScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   int currentPageIndex = 0;
-  final List<Widget> pages = <Widget>[
-    NoteListPage(),
-    Placeholder(),
-    Placeholder(),
-    Placeholder(),
-    Placeholder(),
-  ];
 
   void _onTabActivate(int index) {
     setState(() {
@@ -47,13 +64,16 @@ class _KnowledgebaseScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu_outlined),
           tooltip: 'Menu',
-          onPressed: () {},
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
         ),
-        title: Text("Notes"),
+        title: Text("Curator"),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search_outlined),
@@ -87,19 +107,6 @@ class _KnowledgebaseScreenState extends State<HomeScreen>
             },
           ),
         ],
-        bottom: TabBar(
-          tabAlignment: TabAlignment.fill,
-          controller: _tabController,
-          isScrollable: false,
-          tabs: const [
-            Tab(
-              text: "Journal",
-            ),
-            Tab(
-              text: "Notes",
-            ),
-          ],
-        ),
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -111,6 +118,11 @@ class _KnowledgebaseScreenState extends State<HomeScreen>
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
+            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          NavigationDestination(
             selectedIcon: Icon(Icons.notes),
             icon: Icon(Icons.notes_outlined),
             label: 'Notes',
@@ -118,7 +130,7 @@ class _KnowledgebaseScreenState extends State<HomeScreen>
           NavigationDestination(
             selectedIcon: Icon(Icons.image),
             icon: Icon(Icons.image_outlined),
-            label: 'Images',
+            label: 'Files',
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.security),
@@ -128,7 +140,7 @@ class _KnowledgebaseScreenState extends State<HomeScreen>
           NavigationDestination(
             selectedIcon: Badge(
               label: Text('2'),
-              child: Icon(Icons.message),
+              child: Icon(Icons.file_open),
             ),
             icon: Badge(
               label: Text('2'),
@@ -136,16 +148,29 @@ class _KnowledgebaseScreenState extends State<HomeScreen>
             ),
             label: 'Messages',
           ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.settings),
-            icon: Icon(Icons.settings_outlined),
-            label: 'Settings',
-          ),
         ],
       ),
-      body: pages.elementAt(currentPageIndex),
+      body: ActivityPage(),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Settings'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout_outlined),
+              title: Text('Logout'),
+              onTap: () {
+                // Handle option 2 tap
+              },
+            ),
+            // Add more ListTile options as needed
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.chat_outlined),
         onPressed: () {},
       ),
     );

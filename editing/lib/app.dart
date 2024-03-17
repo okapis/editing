@@ -1,10 +1,10 @@
-import 'package:editing/ui/screens/home_screen.dart';
-import 'package:editing/ui/screens/login_screen.dart';
+import 'package:editing/ui/home_screen.dart';
+import 'package:editing/ui/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'store/note_list.dart';
-import 'ui/screens/onboarding.dart';
+import 'ui/pages/onboarding.dart';
 
 class EditingApp extends StatefulWidget {
   final bool isFirstRun;
@@ -19,7 +19,7 @@ class _EditingAppState extends State<EditingApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '谛听笔记',
+      title: 'Curator',
       theme: ThemeData(useMaterial3: true),
       routes: {
         "/onboard": (context) => OnboardingScreen(),

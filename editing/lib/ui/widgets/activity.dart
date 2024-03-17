@@ -9,7 +9,7 @@ class Activity extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-          child: Text('最近一年您一共记录了253次'),
+          child: Text('You have submitted 253 times this year'),
         ),
         HeatMap(
           datasets: {
@@ -17,7 +17,7 @@ class Activity extends StatelessWidget {
             DateTime(2023, 10, 7): 7,
             DateTime(2023, 10, 8): 10,
             DateTime(2023, 10, 9): 13,
-            DateTime(2023, 10, 13): 6,
+            DateTime(2024, 03, 16): 6,
           },
           size: 15,
           fontSize: 10,
