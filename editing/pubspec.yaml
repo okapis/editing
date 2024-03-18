@@ -59,6 +59,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   logger: ^2.1.0
   pointycastle: ^3.7.4
+  rive: 0.11.11
 dev_dependencies:
   flutter_test:
     sdk: flutter

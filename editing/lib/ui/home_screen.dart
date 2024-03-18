@@ -2,6 +2,7 @@ import 'package:drift/drift.dart' as drift;
 import 'package:editing/store/note_list.dart';
 import 'package:editing/ui/pages/activity.dart';
 import 'package:editing/ui/pages/assistant.dart';
+import 'package:editing/ui/pages/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../database/database.dart';
@@ -150,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
         ],
       ),
-      body: ActivityPage(),
+      body: WelcomePage(),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
