@@ -24,13 +24,9 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(20.0),
       child: Column(
         children: [
-          Text(
-            "Welcome, my lord! Today is 25th, May. You have 2 pending tasks to complete.",
-            style: TextStyle(fontSize: 16),
-          ),
           SizedBox(
             height: 200,
             width: 400,
@@ -42,14 +38,9 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
             ),
           ),
-          TextField(
-            decoration: const InputDecoration(
-              hintText: "Ask me anything",
-              suffixIcon: Icon(
-                Icons.send_outlined,
-                color: Colors.indigo,
-              ),
-            ),
+          Text(
+            "Welcome, my master! Today is 25th, May. You have 2 pending tasks to complete.",
+            style: TextStyle(fontSize: 16),
           ),
         ],
       ),

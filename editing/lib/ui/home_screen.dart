@@ -26,13 +26,15 @@ class PageMeta {
   String title;
   Widget? widget;
   SecondaryTab? secondaryTab;
-  Widget? floatingActionButton;
+  IconData? floatingButtonIcon;
+  List<Widget>? actions;
 
   PageMeta(
       {required this.title,
       this.widget,
       this.secondaryTab,
-      this.floatingActionButton});
+      this.floatingButtonIcon,
+      this.actions});
 }
 
 class HomeScreen extends StatefulWidget {
@@ -49,12 +51,90 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   final List<PageMeta> metas = [
     PageMeta(
-        title: "Curator",
-        widget: WelcomePage(),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add_outlined),
+      title: "Curator",
+      widget: WelcomePage(),
+      floatingButtonIcon: Icons.chat_outlined,
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.info_outline),
+          tooltip: 'About',
           onPressed: () {},
-        ))
+        ),
+        IconButton(
+          icon: const Icon(Icons.more_horiz),
+          tooltip: 'More options',
+          onPressed: () {},
+        ),
+      ],
+    ),
+    PageMeta(
+      title: "Notes",
+      widget: Placeholder(),
+      floatingButtonIcon: Icons.add_outlined,
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.search_outlined),
+          tooltip: 'Search',
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: const Icon(Icons.more_horiz),
+          tooltip: 'More options',
+          onPressed: () {},
+        ),
+      ],
+    ),
+    PageMeta(
+      title: "Files",
+      widget: Placeholder(),
+      floatingButtonIcon: Icons.add_outlined,
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.search_outlined),
+          tooltip: 'Search',
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: const Icon(Icons.more_horiz),
+          tooltip: 'More options',
+          onPressed: () {},
+        ),
+      ],
+    ),
+    PageMeta(
+      title: "Passwords",
+      widget: Placeholder(),
+      floatingButtonIcon: Icons.add_outlined,
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.search_outlined),
+          tooltip: 'Search',
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: const Icon(Icons.more_horiz),
+          tooltip: 'More options',
+          onPressed: () {},
+        ),
+      ],
+    ),
+    PageMeta(
+      title: "Messages",
+      widget: Placeholder(),
+      floatingButtonIcon: Icons.add_outlined,
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.search_outlined),
+          tooltip: 'Search',
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: const Icon(Icons.more_horiz),
+          tooltip: 'More options',
+          onPressed: () {},
+        ),
+      ],
+    ),
   ];
 
   @override
@@ -82,39 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           },
         ),
         title: Text(meta.title),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.search_outlined),
-            tooltip: 'Search',
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.add_outlined),
-            tooltip: 'Create',
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.more_horiz),
-            tooltip: 'More options',
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Next page'),
-                    ),
-                    body: const Center(
-                      child: Text(
-                        'This is the next page',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  );
-                },
-              ));
-            },
-          ),
-        ],
+        actions: meta.actions,
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -177,7 +225,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
       ),
-      floatingActionButton: meta.floatingActionButton,
+      floatingActionButton: meta.floatingButtonIcon == null
+          ? null
+          : FloatingActionButton(
+              child: Icon(meta.floatingButtonIcon),
+              onPressed: () {},
+            ),
     );
   }
 }
