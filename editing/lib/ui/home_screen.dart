@@ -1,14 +1,5 @@
-import 'package:drift/drift.dart' as drift;
-import 'package:editing/store/note_list.dart';
-import 'package:editing/ui/pages/activity.dart';
-import 'package:editing/ui/pages/assistant.dart';
 import 'package:editing/ui/pages/welcome.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import '../database/database.dart';
-import 'widgets/activity.dart';
-import 'widgets/task.dart';
 import 'pages/note_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,25 +24,28 @@ const titles = {
 };
 
 const noteTypes = {
-  "Journal": NoteType.jounral,
-  "Idea": NoteType.idea,
-  "Checklist": NoteType.checklist,
-  "Note": NoteType.note,
+  "Journals": NoteType.jounral,
+  "Notes": NoteType.note,
+  "Todos": NoteType.checklist,
+  "Ideas": NoteType.idea,
 };
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int currentPageIndex = 0;
+  late TabController notesTabController;
 
   @override
   void initState() {
     super.initState();
+    notesTabController = TabController(length: noteTypes.length, vsync: this);
   }
 
   @override
   void dispose() {
     super.dispose();
+    notesTabController.dispose();
   }
 
   @override
@@ -132,8 +126,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   TabBar? _renderTab() {
     if (currentPageIndex == pageNotes) {
+      final tabs = noteTypes.keys.toList().map((k) => Tab(text: k)).toList();
       return TabBar(
-          tabs: noteTypes.keys.toList().map((k) => Tab(text: k)).toList());
+        tabs: tabs,
+        controller: notesTabController,
+      );
     }
     return null;
   }
