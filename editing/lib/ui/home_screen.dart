@@ -23,11 +23,16 @@ class SecondaryTab {
 }
 
 class PageMeta {
+  String title;
   Widget? widget;
   SecondaryTab? secondaryTab;
   Widget? floatingActionButton;
 
-  PageMeta({this.widget, this.secondaryTab, this.floatingActionButton});
+  PageMeta(
+      {required this.title,
+      this.widget,
+      this.secondaryTab,
+      this.floatingActionButton});
 }
 
 class HomeScreen extends StatefulWidget {
@@ -42,28 +47,30 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   int currentPageIndex = 0;
 
-  void _onTabActivate(int index) {
-    setState(() {
-      currentPageIndex = index;
-    });
-  }
-
-  late TabController _tabController;
+  final List<PageMeta> metas = [
+    PageMeta(
+        title: "Curator",
+        widget: WelcomePage(),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add_outlined),
+          onPressed: () {},
+        ))
+  ];
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _tabController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final meta = metas.elementAt(currentPageIndex);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -74,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             _scaffoldKey.currentState?.openDrawer();
           },
         ),
-        title: Text("Curator"),
+        title: Text(meta.title),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search_outlined),
@@ -151,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
         ],
       ),
-      body: WelcomePage(),
+      body: metas.elementAt(currentPageIndex).widget,
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -170,10 +177,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.chat_outlined),
-        onPressed: () {},
-      ),
+      floatingActionButton: meta.floatingActionButton,
     );
   }
 }

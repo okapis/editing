@@ -14,21 +14,11 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  SMITrigger? _trigger;
-
-  void _hitBite() => _trigger?.fire();
-
-  late StateMachineController _controller;
-
   void _onRiveInit(Artboard artboard) {
-    var ctrl = StateMachineController.fromArtboard(artboard, 'State Machine 1')
+    var ctrl = StateMachineController.fromArtboard(artboard, 'Main animation')
         as StateMachineController;
     ctrl.isActive = true;
     artboard.addController(ctrl);
-    _trigger = ctrl.findInput<bool>('bite') as SMITrigger;
-    setState(() {
-      _controller = ctrl;
-    });
   }
 
   @override
@@ -46,11 +36,10 @@ class _WelcomePageState extends State<WelcomePage> {
             width: 400,
             child: GestureDetector(
               child: RiveAnimation.asset(
-                'assets/hippo.riv',
+                'assets/welcome_dog.riv',
                 fit: BoxFit.cover,
                 onInit: _onRiveInit,
               ),
-              onTap: _hitBite,
             ),
           ),
           TextField(
