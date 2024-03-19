@@ -1,5 +1,9 @@
+import 'package:editing/store/home.dart';
+import 'package:editing/ui/pages/file_list.dart';
 import 'package:editing/ui/pages/welcome.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import 'pages/note_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,49 +34,62 @@ const noteTypes = {
   "Ideas": NoteType.idea,
 };
 
+const fileTypes = {
+  "Photos": FileType.photo,
+  "Videos": FileType.video,
+  "Documents": FileType.document,
+  "Others": FileType.other,
+};
+
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int currentPageIndex = 0;
   late TabController notesTabController;
+  late TabController filesTabController;
 
   @override
   void initState() {
     super.initState();
     notesTabController = TabController(length: noteTypes.length, vsync: this);
+    filesTabController = TabController(length: fileTypes.length, vsync: this);
   }
 
   @override
   void dispose() {
     super.dispose();
     notesTabController.dispose();
+    filesTabController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu_outlined),
-          tooltip: 'Menu',
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
+    HomeStore homeStore = Provider.of<HomeStore>(context);
+
+    return Observer(
+      builder: (ctx) => Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.menu_outlined),
+            tooltip: 'Menu',
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+          ),
+          title: Text(titles[homeStore.pageIndex] ?? "Curator"),
+          actions: _renderActions(homeStore),
+          bottom: _renderTab(homeStore),
         ),
-        title: Text(titles[currentPageIndex] ?? "Curator"),
-        actions: _renderActions(),
-        bottom: _renderTab(),
+        bottomNavigationBar: _renderNavigationBar(homeStore),
+        body: _renderPage(homeStore),
+        drawer: _renderDrawer(),
+        floatingActionButton: _renderFloatingButton(homeStore),
       ),
-      bottomNavigationBar: _renderNavigationBar(),
-      body: _renderPage(),
-      drawer: _renderDrawer(),
-      floatingActionButton: _renderFloatingButton(),
     );
   }
 
-  List<Widget> _renderActions() {
-    if (currentPageIndex == pageHome) {
+  List<Widget> _renderActions(HomeStore homeStore) {
+    if (homeStore.pageIndex == pageHome) {
       return <Widget>[
         IconButton(
           icon: const Icon(Icons.info_outline),
@@ -101,21 +118,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
-  Widget _renderFloatingButton() {
-    final iconData =
-        currentPageIndex == pageHome ? Icons.chat_outlined : Icons.add_outlined;
+  Widget _renderFloatingButton(HomeStore homeStore) {
+    final iconData = homeStore.pageIndex == pageHome
+        ? Icons.chat_outlined
+        : Icons.add_outlined;
     return FloatingActionButton(
       child: Icon(iconData),
       onPressed: () {},
     );
   }
 
-  Widget _renderPage() {
-    switch (currentPageIndex) {
+  Widget _renderPage(HomeStore homeStore) {
+    switch (homeStore.pageIndex) {
       case pageHome:
         return WelcomePage();
       case pageNotes:
+        return NoteListPage(type: homeStore.noteType);
       case pageFiles:
+        return FileListPage(type: homeStore.fileType);
       case pagePasswords:
       case pageMessages:
         return const Placeholder();
@@ -124,26 +144,34 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
-  TabBar? _renderTab() {
-    if (currentPageIndex == pageNotes) {
+  TabBar? _renderTab(HomeStore homeStore) {
+    if (homeStore.pageIndex == pageNotes) {
       final tabs = noteTypes.keys.toList().map((k) => Tab(text: k)).toList();
       return TabBar(
         tabs: tabs,
         controller: notesTabController,
+        onTap: (index) =>
+            homeStore.noteType = noteTypes.values.elementAt(index),
+      );
+    } else if (homeStore.pageIndex == pageFiles) {
+      final tabs = fileTypes.keys.toList().map((k) => Tab(text: k)).toList();
+      return TabBar(
+        tabs: tabs,
+        controller: filesTabController,
+        onTap: (index) =>
+            homeStore.fileType = fileTypes.values.elementAt(index),
       );
     }
     return null;
   }
 
-  NavigationBar _renderNavigationBar() {
+  NavigationBar _renderNavigationBar(HomeStore homeStore) {
     return NavigationBar(
       onDestinationSelected: (int index) {
-        setState(() {
-          currentPageIndex = index;
-        });
+        homeStore.changePage(index);
       },
       indicatorColor: Colors.amber,
-      selectedIndex: currentPageIndex,
+      selectedIndex: homeStore.pageIndex,
       destinations: const <Widget>[
         NavigationDestination(
           selectedIcon: Icon(Icons.home),

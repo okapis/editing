@@ -21,9 +21,9 @@ class Note extends StatelessWidget {
     return ListTile(
       leading: const Icon(Icons.cloudy_snowing),
       title: Text(
-        content,
+        title,
       ),
-      subtitle: Text("今天天气十分好"),
+      subtitle: Text(content),
     );
   }
 }

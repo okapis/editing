@@ -24,10 +24,42 @@ mixin _$NoteListStore on NoteListBase, Store {
     });
   }
 
+  late final _$errorAtom = Atom(name: 'NoteListBase.error', context: context);
+
+  @override
+  String? get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(String? value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
+  late final _$fetchAsyncAction =
+      AsyncAction('NoteListBase.fetch', context: context);
+
+  @override
+  Future<void> fetch() {
+    return _$fetchAsyncAction.run(() => super.fetch());
+  }
+
+  late final _$insertAsyncAction =
+      AsyncAction('NoteListBase.insert', context: context);
+
+  @override
+  Future<void> insert() {
+    return _$insertAsyncAction.run(() => super.insert());
+  }
+
   @override
   String toString() {
     return '''
-list: ${list}
+list: ${list},
+error: ${error}
     ''';
   }
 }

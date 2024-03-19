@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'app.dart';
+import 'store/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ Future<void> main() async {
         Provider<NoteService>.value(value: NoteService()),
         Provider<OnboardingStore>.value(value: OnboardingStore()),
         Provider<AppStore>.value(value: AppStore()),
+        Provider<HomeStore>.value(value: HomeStore()),
         ProxyProvider2<AppStore, NoteService, NoteListStore>(
             update: (_, appStore, noteService, previous) =>
                 NoteListStore(appStore, noteService)),
