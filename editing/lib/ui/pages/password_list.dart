@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PasswordListScreen extends StatelessWidget {
-  const PasswordListScreen({super.key});
+class PasswordListPage extends StatelessWidget {
+  const PasswordListPage();
 
   @override
   Widget build(BuildContext context) {

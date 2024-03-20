@@ -1,5 +1,8 @@
+import 'package:editing/ui/widgets/image_grid.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
+import '../../common/responsive_util.dart';
 import 'tag.dart';
 
 class Note extends StatelessWidget {
@@ -18,12 +21,15 @@ class Note extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.cloudy_snowing),
-      title: Text(
-        title,
-      ),
-      subtitle: Text(content),
+    // if (ResponsiveUtils.isDesktop(context))
+    //   return Text("desktop");
+    // else if (ResponsiveUtils.isTablet(context)) return Text("tablet");
+    // return Text("mobile");
+    return Column(
+      children: [
+        ImageGrid(imageFiles: ["assets/1.jpeg"]),
+        Text(title),
+      ],
     );
   }
 }

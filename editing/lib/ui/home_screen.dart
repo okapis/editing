@@ -1,5 +1,6 @@
 import 'package:editing/store/home.dart';
 import 'package:editing/ui/pages/file_list.dart';
+import 'package:editing/ui/pages/password_list.dart';
 import 'package:editing/ui/pages/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -137,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       case pageFiles:
         return FileListPage(type: homeStore.fileType);
       case pagePasswords:
+        return PasswordListPage();
       case pageMessages:
         return const Placeholder();
       default:

@@ -78,6 +78,10 @@ QueryExecutor _openDatabase(String file, ProtectedValue key) {
         // set key without key derivation:
         // see: https://github.com/sqlcipher/sqlcipher/blob/master/README.md
         // PRAGMA key = "x'2DD29CA851E7B56E4697B0E1F08507293D761A05CE4D1B628663F411A8086D99'";
+
+        // fixme: for debug only
+        print("pragma key = \"x'${hex.encode(key.binaryValue)}'\";");
+
         rawDb.execute("pragma key = \"x'${hex.encode(key.binaryValue)}'\";");
         rawDb.execute('select count(*) from sqlite_master');
       },

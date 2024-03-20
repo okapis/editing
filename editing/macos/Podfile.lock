@@ -5,6 +5,8 @@ PODS:
     - FlutterMacOS
   - rive_common (0.0.1):
     - FlutterMacOS
+  - screen_retriever (0.0.1):
+    - FlutterMacOS
   - SQLCipher (4.5.6):
     - SQLCipher/standard (= 4.5.6)
   - SQLCipher/common (4.5.6)
@@ -13,12 +15,16 @@ PODS:
   - sqlcipher_flutter_libs (0.0.1):
     - FlutterMacOS
     - SQLCipher (~> 4.5.6)
+  - window_manager (0.2.0):
+    - FlutterMacOS
 
 DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - rive_common (from `Flutter/ephemeral/.symlinks/plugins/rive_common/macos`)
+  - screen_retriever (from `Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos`)
   - sqlcipher_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/sqlcipher_flutter_libs/macos`)
+  - window_manager (from `Flutter/ephemeral/.symlinks/plugins/window_manager/macos`)
 
 SPEC REPOS:
   trunk:
@@ -31,15 +37,21 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
   rive_common:
     :path: Flutter/ephemeral/.symlinks/plugins/rive_common/macos
+  screen_retriever:
+    :path: Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos
   sqlcipher_flutter_libs:
     :path: Flutter/ephemeral/.symlinks/plugins/sqlcipher_flutter_libs/macos
+  window_manager:
+    :path: Flutter/ephemeral/.symlinks/plugins/window_manager/macos
 
 SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   rive_common: acedcab7802c0ece4b0d838b71d7deb637e1309a
+  screen_retriever: 59634572a57080243dd1bf715e55b6c54f241a38
   SQLCipher: 838309284f29953a28ad2e81d87d55ea6b7c74fd
   sqlcipher_flutter_libs: eba6362bc0c24c4db90855bc06507ab25093f6d7
+  window_manager: 3a1844359a6295ab1e47659b1a777e36773cd6e8
 
 PODFILE CHECKSUM: 236401fc2c932af29a9fcf0e97baeeb2d750d367
 
