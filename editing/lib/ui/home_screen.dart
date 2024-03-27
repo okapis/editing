@@ -125,7 +125,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         : Icons.add_outlined;
     return FloatingActionButton(
       child: Icon(iconData),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context).pushNamed("/journal/add");
+      },
     );
   }
 

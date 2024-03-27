@@ -1,4 +1,5 @@
 import 'package:editing/ui/home_screen.dart';
+import 'package:editing/ui/journal_edit_screen.dart';
 import 'package:editing/ui/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,18 @@ class _EditingAppState extends State<EditingApp> {
         "/home": (context) => HomeScreen(),
       },
       initialRoute: widget.isFirstRun ? "/onboard" : "/login",
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case "/journal/edit":
+          case "/journal/add":
+            {
+              return MaterialPageRoute(
+                  builder: (context) => JournalEditScreen());
+            }
+          default:
+            break;
+        }
+      },
     );
   }
 }
