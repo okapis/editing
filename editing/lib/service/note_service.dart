@@ -4,7 +4,7 @@ import 'package:editing/database/database.dart';
 import '../store/note_item.dart';
 
 class NoteService {
-  NoteItem convertToViewModel(Note x) {
+  NoteItem convertToViewModel(NoteEntity x) {
     return NoteItem(
       id: x.id,
       title: x.title,

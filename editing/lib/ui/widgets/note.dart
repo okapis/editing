@@ -10,6 +10,7 @@ class Note extends StatelessWidget {
   final DateTime createTime;
   final String location;
   final String content;
+  final List<String>? images;
 
   const Note({
     super.key,
@@ -17,6 +18,7 @@ class Note extends StatelessWidget {
     required this.createTime,
     required this.location,
     required this.content,
+    this.images,
   });
 
   @override
@@ -25,11 +27,25 @@ class Note extends StatelessWidget {
     //   return Text("desktop");
     // else if (ResponsiveUtils.isTablet(context)) return Text("tablet");
     // return Text("mobile");
-    return Column(
-      children: [
-        ImageGrid(imageFiles: ["assets/1.jpeg"]),
-        Text(title),
-      ],
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (images != null) ImageGrid(imageFiles: images!),
+            Text(
+              title,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Text("25th Jan"),
+            Text(
+              "Today was a day filled with unexpected surprises and a whirlwind of emotions. As I woke up to the sound of raindrops gently tapping on my window, I couldn't help but feel a sense of tranquility and coziness. It was the perfect setting to start my day.",
+            )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -15,7 +15,6 @@ class ImageGrid extends StatelessWidget {
   Widget _renderSingleImage(String file) {
     return Image.asset(
       file,
-      height: 100,
     );
   }
 

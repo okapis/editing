@@ -1,11 +1,79 @@
 CREATE TABLE notes (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    type INTEGER NOT NULL,
     format INTEGER NOT NULL,
     title TEXT NOT NULL,
     content TEXT NOT NULL,
     tags TEXT,
     location TEXT,
+    weather TEXT,
+    mood TEXT,
+    encryption_type INTEGER NOT NULL,
+    encryption_arguments TEXT,
     create_time TEXT NOT NULL,
     last_update_time TEXT NOT NULL
-);
+) As NoteEntity;
 
+CREATE TABLE categories (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    create_time TEXT NOT NULL,
+    last_update_time TEXT NOT NULL
+) As CategoryEntity;
+
+CREATE TABLE files(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    type INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    path TEXT NOT NULL,
+    thumbnail_path TEXT,
+    format TEXT NOT NULL,
+    checksum TEXT,
+    encryption_type INTEGER NOT NULL,
+    encryption_arguments TEXT,
+    remark TEXT,
+    category_id INTEGER,
+    create_time TEXT NOT NULL,
+    last_update_time TEXT NOT NULL,
+    FOREIGN KEY(category_id) REFERENCES categories(id)
+) As FileEntity;
+
+CREATE TABLE note_files (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    note_id INTEGER NOT NULL,
+    file_id INTEGER NOT NULL,
+    create_time TEXT NOT NULL,
+    last_update_time TEXT NOT NULL,
+    FOREIGN KEY(note_id) REFERENCES notes(id),
+    FOREIGN KEY(file_id) REFERENCES files(id)
+) As NoteFileEntity;
+
+CREATE TABLE checklists (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    status INTEGER NOT NULL,
+    deadline TEXT,
+    create_time TEXT NOT NULL,
+    last_update_time TEXT NOT NULL
+) As ChecklistEntity;
+
+CREATE TABLE note_checklists (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    note_id INTEGER NOT NULL,
+    checklist_id INTEGER NOT NULL,
+    create_time TEXT NOT NULL,
+    last_update_time TEXT NOT NULL,
+    FOREIGN KEY(note_id) REFERENCES notes(id),
+    FOREIGN KEY(checklist_id) REFERENCES checklists(id)
+) As NoteChecklistEntity;
+
+CREATE TABLE passwords (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    password TEXT NOT NULL,
+    encryption_type INTEGER NOT NULL,
+    encryption_arguments TEXT,
+    remark TEXT,
+    create_time TEXT NOT NULL,
+    last_update_time TEXT NOT NULL
+) As PasswordEntity;

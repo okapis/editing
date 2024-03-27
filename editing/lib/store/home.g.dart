@@ -55,6 +55,42 @@ mixin _$HomeStore on HomeBase, Store {
     });
   }
 
+  late final _$HomeBaseActionController =
+      ActionController(name: 'HomeBase', context: context);
+
+  @override
+  void changePage(int i) {
+    final _$actionInfo =
+        _$HomeBaseActionController.startAction(name: 'HomeBase.changePage');
+    try {
+      return super.changePage(i);
+    } finally {
+      _$HomeBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void changeNoteType(NoteType t) {
+    final _$actionInfo =
+        _$HomeBaseActionController.startAction(name: 'HomeBase.changeNoteType');
+    try {
+      return super.changeNoteType(t);
+    } finally {
+      _$HomeBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void changeFileType(FileType t) {
+    final _$actionInfo =
+        _$HomeBaseActionController.startAction(name: 'HomeBase.changeFileType');
+    try {
+      return super.changeFileType(t);
+    } finally {
+      _$HomeBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
