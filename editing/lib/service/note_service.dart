@@ -39,6 +39,8 @@ class NoteService {
           title: Value(title),
           content: Value(content),
           format: Value(1),
+          type: Value(1),
+          encryptionType: Value(1),
           createTime: Value(now),
           lastUpdateTime: Value(now),
         ));

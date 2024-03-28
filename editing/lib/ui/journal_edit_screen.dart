@@ -1,4 +1,5 @@
 import 'package:editing/database/database.dart';
+import 'package:editing/store/note_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,7 +21,7 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
   @override
   Widget build(BuildContext context) {
     AppStore _appStore = Provider.of<AppStore>(context);
-
+    NoteListStore _noteStore = Provider.of<NoteListStore>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("New Journal"),
@@ -28,8 +29,11 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
           IconButton(
             icon: const Icon(Icons.check_outlined),
             tooltip: 'Save',
-            onPressed: () {
-              Navigator.of(context).pop();
+            onPressed: () async {
+              await _noteStore.insert();
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
           ),
         ],

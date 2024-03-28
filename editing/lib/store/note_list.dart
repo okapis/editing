@@ -21,6 +21,7 @@ abstract class NoteListBase with Store {
   NoteListBase(this._appStore, this._noteService);
 
   AppDb getDb() {
+    assert(_appStore.openedDb != null);
     return _appStore.openedDb!;
   }
 
