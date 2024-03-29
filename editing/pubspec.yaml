@@ -61,6 +61,7 @@ dependencies:
   pointycastle: ^3.7.4
   rive: 0.11.11
   window_manager: ^0.3.8
+  flutter_quill: ^9.3.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -3,6 +3,355 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
+class Categories extends Table with TableInfo<Categories, CategoryEntity> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Categories(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  static const VerificationMeta _encryptionTypeMeta =
+      const VerificationMeta('encryptionType');
+  late final GeneratedColumn<int> encryptionType = GeneratedColumn<int>(
+      'encryption_type', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  static const VerificationMeta _encryptionArgumentsMeta =
+      const VerificationMeta('encryptionArguments');
+  late final GeneratedColumn<String> encryptionArguments =
+      GeneratedColumn<String>('encryption_arguments', aliasedName, true,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          $customConstraints: '');
+  static const VerificationMeta _createTimeMeta =
+      const VerificationMeta('createTime');
+  late final GeneratedColumn<String> createTime = GeneratedColumn<String>(
+      'create_time', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  static const VerificationMeta _lastUpdateTimeMeta =
+      const VerificationMeta('lastUpdateTime');
+  late final GeneratedColumn<String> lastUpdateTime = GeneratedColumn<String>(
+      'last_update_time', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        name,
+        encryptionType,
+        encryptionArguments,
+        createTime,
+        lastUpdateTime
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'categories';
+  @override
+  VerificationContext validateIntegrity(Insertable<CategoryEntity> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('encryption_type')) {
+      context.handle(
+          _encryptionTypeMeta,
+          encryptionType.isAcceptableOrUnknown(
+              data['encryption_type']!, _encryptionTypeMeta));
+    } else if (isInserting) {
+      context.missing(_encryptionTypeMeta);
+    }
+    if (data.containsKey('encryption_arguments')) {
+      context.handle(
+          _encryptionArgumentsMeta,
+          encryptionArguments.isAcceptableOrUnknown(
+              data['encryption_arguments']!, _encryptionArgumentsMeta));
+    }
+    if (data.containsKey('create_time')) {
+      context.handle(
+          _createTimeMeta,
+          createTime.isAcceptableOrUnknown(
+              data['create_time']!, _createTimeMeta));
+    } else if (isInserting) {
+      context.missing(_createTimeMeta);
+    }
+    if (data.containsKey('last_update_time')) {
+      context.handle(
+          _lastUpdateTimeMeta,
+          lastUpdateTime.isAcceptableOrUnknown(
+              data['last_update_time']!, _lastUpdateTimeMeta));
+    } else if (isInserting) {
+      context.missing(_lastUpdateTimeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CategoryEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CategoryEntity(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      encryptionType: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}encryption_type'])!,
+      encryptionArguments: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}encryption_arguments']),
+      createTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}create_time'])!,
+      lastUpdateTime: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}last_update_time'])!,
+    );
+  }
+
+  @override
+  Categories createAlias(String alias) {
+    return Categories(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
+  final int id;
+  final String name;
+  final int encryptionType;
+  final String? encryptionArguments;
+  final String createTime;
+  final String lastUpdateTime;
+  const CategoryEntity(
+      {required this.id,
+      required this.name,
+      required this.encryptionType,
+      this.encryptionArguments,
+      required this.createTime,
+      required this.lastUpdateTime});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['encryption_type'] = Variable<int>(encryptionType);
+    if (!nullToAbsent || encryptionArguments != null) {
+      map['encryption_arguments'] = Variable<String>(encryptionArguments);
+    }
+    map['create_time'] = Variable<String>(createTime);
+    map['last_update_time'] = Variable<String>(lastUpdateTime);
+    return map;
+  }
+
+  CategoriesCompanion toCompanion(bool nullToAbsent) {
+    return CategoriesCompanion(
+      id: Value(id),
+      name: Value(name),
+      encryptionType: Value(encryptionType),
+      encryptionArguments: encryptionArguments == null && nullToAbsent
+          ? const Value.absent()
+          : Value(encryptionArguments),
+      createTime: Value(createTime),
+      lastUpdateTime: Value(lastUpdateTime),
+    );
+  }
+
+  factory CategoryEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CategoryEntity(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      encryptionType: serializer.fromJson<int>(json['encryption_type']),
+      encryptionArguments:
+          serializer.fromJson<String?>(json['encryption_arguments']),
+      createTime: serializer.fromJson<String>(json['create_time']),
+      lastUpdateTime: serializer.fromJson<String>(json['last_update_time']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'encryption_type': serializer.toJson<int>(encryptionType),
+      'encryption_arguments': serializer.toJson<String?>(encryptionArguments),
+      'create_time': serializer.toJson<String>(createTime),
+      'last_update_time': serializer.toJson<String>(lastUpdateTime),
+    };
+  }
+
+  CategoryEntity copyWith(
+          {int? id,
+          String? name,
+          int? encryptionType,
+          Value<String?> encryptionArguments = const Value.absent(),
+          String? createTime,
+          String? lastUpdateTime}) =>
+      CategoryEntity(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        encryptionType: encryptionType ?? this.encryptionType,
+        encryptionArguments: encryptionArguments.present
+            ? encryptionArguments.value
+            : this.encryptionArguments,
+        createTime: createTime ?? this.createTime,
+        lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('CategoryEntity(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('encryptionType: $encryptionType, ')
+          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('createTime: $createTime, ')
+          ..write('lastUpdateTime: $lastUpdateTime')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, encryptionType, encryptionArguments,
+      createTime, lastUpdateTime);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CategoryEntity &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.encryptionType == this.encryptionType &&
+          other.encryptionArguments == this.encryptionArguments &&
+          other.createTime == this.createTime &&
+          other.lastUpdateTime == this.lastUpdateTime);
+}
+
+class CategoriesCompanion extends UpdateCompanion<CategoryEntity> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<int> encryptionType;
+  final Value<String?> encryptionArguments;
+  final Value<String> createTime;
+  final Value<String> lastUpdateTime;
+  const CategoriesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.encryptionType = const Value.absent(),
+    this.encryptionArguments = const Value.absent(),
+    this.createTime = const Value.absent(),
+    this.lastUpdateTime = const Value.absent(),
+  });
+  CategoriesCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required int encryptionType,
+    this.encryptionArguments = const Value.absent(),
+    required String createTime,
+    required String lastUpdateTime,
+  })  : name = Value(name),
+        encryptionType = Value(encryptionType),
+        createTime = Value(createTime),
+        lastUpdateTime = Value(lastUpdateTime);
+  static Insertable<CategoryEntity> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<int>? encryptionType,
+    Expression<String>? encryptionArguments,
+    Expression<String>? createTime,
+    Expression<String>? lastUpdateTime,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (encryptionType != null) 'encryption_type': encryptionType,
+      if (encryptionArguments != null)
+        'encryption_arguments': encryptionArguments,
+      if (createTime != null) 'create_time': createTime,
+      if (lastUpdateTime != null) 'last_update_time': lastUpdateTime,
+    });
+  }
+
+  CategoriesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? name,
+      Value<int>? encryptionType,
+      Value<String?>? encryptionArguments,
+      Value<String>? createTime,
+      Value<String>? lastUpdateTime}) {
+    return CategoriesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      encryptionType: encryptionType ?? this.encryptionType,
+      encryptionArguments: encryptionArguments ?? this.encryptionArguments,
+      createTime: createTime ?? this.createTime,
+      lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (encryptionType.present) {
+      map['encryption_type'] = Variable<int>(encryptionType.value);
+    }
+    if (encryptionArguments.present) {
+      map['encryption_arguments'] = Variable<String>(encryptionArguments.value);
+    }
+    if (createTime.present) {
+      map['create_time'] = Variable<String>(createTime.value);
+    }
+    if (lastUpdateTime.present) {
+      map['last_update_time'] = Variable<String>(lastUpdateTime.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CategoriesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('encryptionType: $encryptionType, ')
+          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('createTime: $createTime, ')
+          ..write('lastUpdateTime: $lastUpdateTime')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class Notes extends Table with TableInfo<Notes, NoteEntity> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -40,6 +389,13 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
+  static const VerificationMeta _abstractMeta =
+      const VerificationMeta('abstract');
+  late final GeneratedColumn<String> abstract = GeneratedColumn<String>(
+      'abstract', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _tagsMeta = const VerificationMeta('tags');
   late final GeneratedColumn<String> tags = GeneratedColumn<String>(
       'tags', aliasedName, true,
@@ -94,6 +450,13 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
+  static const VerificationMeta _categoryIdMeta =
+      const VerificationMeta('categoryId');
+  late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
+      'category_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -101,6 +464,7 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
         format,
         title,
         content,
+        abstract,
         tags,
         location,
         weather,
@@ -108,7 +472,8 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
         encryptionType,
         encryptionArguments,
         createTime,
-        lastUpdateTime
+        lastUpdateTime,
+        categoryId
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -146,6 +511,10 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
           content.isAcceptableOrUnknown(data['content']!, _contentMeta));
     } else if (isInserting) {
       context.missing(_contentMeta);
+    }
+    if (data.containsKey('abstract')) {
+      context.handle(_abstractMeta,
+          abstract.isAcceptableOrUnknown(data['abstract']!, _abstractMeta));
     }
     if (data.containsKey('tags')) {
       context.handle(
@@ -193,6 +562,12 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
     } else if (isInserting) {
       context.missing(_lastUpdateTimeMeta);
     }
+    if (data.containsKey('category_id')) {
+      context.handle(
+          _categoryIdMeta,
+          categoryId.isAcceptableOrUnknown(
+              data['category_id']!, _categoryIdMeta));
+    }
     return context;
   }
 
@@ -212,6 +587,8 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       content: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
+      abstract: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}abstract']),
       tags: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}tags']),
       location: attachedDatabase.typeMapping
@@ -228,6 +605,8 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
           .read(DriftSqlType.string, data['${effectivePrefix}create_time'])!,
       lastUpdateTime: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}last_update_time'])!,
+      categoryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}category_id']),
     );
   }
 
@@ -236,6 +615,9 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
     return Notes(attachedDatabase, alias);
   }
 
+  @override
+  List<String> get customConstraints =>
+      const ['FOREIGN KEY(category_id)REFERENCES categories(id)'];
   @override
   bool get dontWriteConstraints => true;
 }
@@ -246,6 +628,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
   final int format;
   final String title;
   final String content;
+  final String? abstract;
   final String? tags;
   final String? location;
   final String? weather;
@@ -254,12 +637,14 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
   final String? encryptionArguments;
   final String createTime;
   final String lastUpdateTime;
+  final int? categoryId;
   const NoteEntity(
       {required this.id,
       required this.type,
       required this.format,
       required this.title,
       required this.content,
+      this.abstract,
       this.tags,
       this.location,
       this.weather,
@@ -267,7 +652,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       required this.encryptionType,
       this.encryptionArguments,
       required this.createTime,
-      required this.lastUpdateTime});
+      required this.lastUpdateTime,
+      this.categoryId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -276,6 +662,9 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
     map['format'] = Variable<int>(format);
     map['title'] = Variable<String>(title);
     map['content'] = Variable<String>(content);
+    if (!nullToAbsent || abstract != null) {
+      map['abstract'] = Variable<String>(abstract);
+    }
     if (!nullToAbsent || tags != null) {
       map['tags'] = Variable<String>(tags);
     }
@@ -294,6 +683,9 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
     }
     map['create_time'] = Variable<String>(createTime);
     map['last_update_time'] = Variable<String>(lastUpdateTime);
+    if (!nullToAbsent || categoryId != null) {
+      map['category_id'] = Variable<int>(categoryId);
+    }
     return map;
   }
 
@@ -304,6 +696,9 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       format: Value(format),
       title: Value(title),
       content: Value(content),
+      abstract: abstract == null && nullToAbsent
+          ? const Value.absent()
+          : Value(abstract),
       tags: tags == null && nullToAbsent ? const Value.absent() : Value(tags),
       location: location == null && nullToAbsent
           ? const Value.absent()
@@ -318,6 +713,9 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           : Value(encryptionArguments),
       createTime: Value(createTime),
       lastUpdateTime: Value(lastUpdateTime),
+      categoryId: categoryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(categoryId),
     );
   }
 
@@ -330,6 +728,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       format: serializer.fromJson<int>(json['format']),
       title: serializer.fromJson<String>(json['title']),
       content: serializer.fromJson<String>(json['content']),
+      abstract: serializer.fromJson<String?>(json['abstract']),
       tags: serializer.fromJson<String?>(json['tags']),
       location: serializer.fromJson<String?>(json['location']),
       weather: serializer.fromJson<String?>(json['weather']),
@@ -339,6 +738,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           serializer.fromJson<String?>(json['encryption_arguments']),
       createTime: serializer.fromJson<String>(json['create_time']),
       lastUpdateTime: serializer.fromJson<String>(json['last_update_time']),
+      categoryId: serializer.fromJson<int?>(json['category_id']),
     );
   }
   @override
@@ -350,6 +750,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       'format': serializer.toJson<int>(format),
       'title': serializer.toJson<String>(title),
       'content': serializer.toJson<String>(content),
+      'abstract': serializer.toJson<String?>(abstract),
       'tags': serializer.toJson<String?>(tags),
       'location': serializer.toJson<String?>(location),
       'weather': serializer.toJson<String?>(weather),
@@ -358,6 +759,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       'encryption_arguments': serializer.toJson<String?>(encryptionArguments),
       'create_time': serializer.toJson<String>(createTime),
       'last_update_time': serializer.toJson<String>(lastUpdateTime),
+      'category_id': serializer.toJson<int?>(categoryId),
     };
   }
 
@@ -367,6 +769,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           int? format,
           String? title,
           String? content,
+          Value<String?> abstract = const Value.absent(),
           Value<String?> tags = const Value.absent(),
           Value<String?> location = const Value.absent(),
           Value<String?> weather = const Value.absent(),
@@ -374,13 +777,15 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           int? encryptionType,
           Value<String?> encryptionArguments = const Value.absent(),
           String? createTime,
-          String? lastUpdateTime}) =>
+          String? lastUpdateTime,
+          Value<int?> categoryId = const Value.absent()}) =>
       NoteEntity(
         id: id ?? this.id,
         type: type ?? this.type,
         format: format ?? this.format,
         title: title ?? this.title,
         content: content ?? this.content,
+        abstract: abstract.present ? abstract.value : this.abstract,
         tags: tags.present ? tags.value : this.tags,
         location: location.present ? location.value : this.location,
         weather: weather.present ? weather.value : this.weather,
@@ -391,6 +796,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
             : this.encryptionArguments,
         createTime: createTime ?? this.createTime,
         lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
+        categoryId: categoryId.present ? categoryId.value : this.categoryId,
       );
   @override
   String toString() {
@@ -400,6 +806,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           ..write('format: $format, ')
           ..write('title: $title, ')
           ..write('content: $content, ')
+          ..write('abstract: $abstract, ')
           ..write('tags: $tags, ')
           ..write('location: $location, ')
           ..write('weather: $weather, ')
@@ -407,7 +814,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           ..write('encryptionType: $encryptionType, ')
           ..write('encryptionArguments: $encryptionArguments, ')
           ..write('createTime: $createTime, ')
-          ..write('lastUpdateTime: $lastUpdateTime')
+          ..write('lastUpdateTime: $lastUpdateTime, ')
+          ..write('categoryId: $categoryId')
           ..write(')'))
         .toString();
   }
@@ -419,6 +827,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       format,
       title,
       content,
+      abstract,
       tags,
       location,
       weather,
@@ -426,7 +835,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       encryptionType,
       encryptionArguments,
       createTime,
-      lastUpdateTime);
+      lastUpdateTime,
+      categoryId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -436,6 +846,7 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           other.format == this.format &&
           other.title == this.title &&
           other.content == this.content &&
+          other.abstract == this.abstract &&
           other.tags == this.tags &&
           other.location == this.location &&
           other.weather == this.weather &&
@@ -443,7 +854,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           other.encryptionType == this.encryptionType &&
           other.encryptionArguments == this.encryptionArguments &&
           other.createTime == this.createTime &&
-          other.lastUpdateTime == this.lastUpdateTime);
+          other.lastUpdateTime == this.lastUpdateTime &&
+          other.categoryId == this.categoryId);
 }
 
 class NotesCompanion extends UpdateCompanion<NoteEntity> {
@@ -452,6 +864,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
   final Value<int> format;
   final Value<String> title;
   final Value<String> content;
+  final Value<String?> abstract;
   final Value<String?> tags;
   final Value<String?> location;
   final Value<String?> weather;
@@ -460,12 +873,14 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
   final Value<String?> encryptionArguments;
   final Value<String> createTime;
   final Value<String> lastUpdateTime;
+  final Value<int?> categoryId;
   const NotesCompanion({
     this.id = const Value.absent(),
     this.type = const Value.absent(),
     this.format = const Value.absent(),
     this.title = const Value.absent(),
     this.content = const Value.absent(),
+    this.abstract = const Value.absent(),
     this.tags = const Value.absent(),
     this.location = const Value.absent(),
     this.weather = const Value.absent(),
@@ -474,6 +889,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     this.encryptionArguments = const Value.absent(),
     this.createTime = const Value.absent(),
     this.lastUpdateTime = const Value.absent(),
+    this.categoryId = const Value.absent(),
   });
   NotesCompanion.insert({
     this.id = const Value.absent(),
@@ -481,6 +897,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     required int format,
     required String title,
     required String content,
+    this.abstract = const Value.absent(),
     this.tags = const Value.absent(),
     this.location = const Value.absent(),
     this.weather = const Value.absent(),
@@ -489,6 +906,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     this.encryptionArguments = const Value.absent(),
     required String createTime,
     required String lastUpdateTime,
+    this.categoryId = const Value.absent(),
   })  : type = Value(type),
         format = Value(format),
         title = Value(title),
@@ -502,6 +920,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     Expression<int>? format,
     Expression<String>? title,
     Expression<String>? content,
+    Expression<String>? abstract,
     Expression<String>? tags,
     Expression<String>? location,
     Expression<String>? weather,
@@ -510,6 +929,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     Expression<String>? encryptionArguments,
     Expression<String>? createTime,
     Expression<String>? lastUpdateTime,
+    Expression<int>? categoryId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -517,6 +937,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
       if (format != null) 'format': format,
       if (title != null) 'title': title,
       if (content != null) 'content': content,
+      if (abstract != null) 'abstract': abstract,
       if (tags != null) 'tags': tags,
       if (location != null) 'location': location,
       if (weather != null) 'weather': weather,
@@ -526,6 +947,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
         'encryption_arguments': encryptionArguments,
       if (createTime != null) 'create_time': createTime,
       if (lastUpdateTime != null) 'last_update_time': lastUpdateTime,
+      if (categoryId != null) 'category_id': categoryId,
     });
   }
 
@@ -535,6 +957,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
       Value<int>? format,
       Value<String>? title,
       Value<String>? content,
+      Value<String?>? abstract,
       Value<String?>? tags,
       Value<String?>? location,
       Value<String?>? weather,
@@ -542,13 +965,15 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
       Value<int>? encryptionType,
       Value<String?>? encryptionArguments,
       Value<String>? createTime,
-      Value<String>? lastUpdateTime}) {
+      Value<String>? lastUpdateTime,
+      Value<int?>? categoryId}) {
     return NotesCompanion(
       id: id ?? this.id,
       type: type ?? this.type,
       format: format ?? this.format,
       title: title ?? this.title,
       content: content ?? this.content,
+      abstract: abstract ?? this.abstract,
       tags: tags ?? this.tags,
       location: location ?? this.location,
       weather: weather ?? this.weather,
@@ -557,6 +982,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
       encryptionArguments: encryptionArguments ?? this.encryptionArguments,
       createTime: createTime ?? this.createTime,
       lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
+      categoryId: categoryId ?? this.categoryId,
     );
   }
 
@@ -577,6 +1003,9 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     }
     if (content.present) {
       map['content'] = Variable<String>(content.value);
+    }
+    if (abstract.present) {
+      map['abstract'] = Variable<String>(abstract.value);
     }
     if (tags.present) {
       map['tags'] = Variable<String>(tags.value);
@@ -602,6 +1031,9 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     if (lastUpdateTime.present) {
       map['last_update_time'] = Variable<String>(lastUpdateTime.value);
     }
+    if (categoryId.present) {
+      map['category_id'] = Variable<int>(categoryId.value);
+    }
     return map;
   }
 
@@ -613,6 +1045,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
           ..write('format: $format, ')
           ..write('title: $title, ')
           ..write('content: $content, ')
+          ..write('abstract: $abstract, ')
           ..write('tags: $tags, ')
           ..write('location: $location, ')
           ..write('weather: $weather, ')
@@ -620,265 +1053,8 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
           ..write('encryptionType: $encryptionType, ')
           ..write('encryptionArguments: $encryptionArguments, ')
           ..write('createTime: $createTime, ')
-          ..write('lastUpdateTime: $lastUpdateTime')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class Categories extends Table with TableInfo<Categories, CategoryEntity> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  Categories(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      $customConstraints: 'NOT NULL');
-  static const VerificationMeta _createTimeMeta =
-      const VerificationMeta('createTime');
-  late final GeneratedColumn<String> createTime = GeneratedColumn<String>(
-      'create_time', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      $customConstraints: 'NOT NULL');
-  static const VerificationMeta _lastUpdateTimeMeta =
-      const VerificationMeta('lastUpdateTime');
-  late final GeneratedColumn<String> lastUpdateTime = GeneratedColumn<String>(
-      'last_update_time', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      $customConstraints: 'NOT NULL');
-  @override
-  List<GeneratedColumn> get $columns => [id, name, createTime, lastUpdateTime];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'categories';
-  @override
-  VerificationContext validateIntegrity(Insertable<CategoryEntity> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
-    } else if (isInserting) {
-      context.missing(_nameMeta);
-    }
-    if (data.containsKey('create_time')) {
-      context.handle(
-          _createTimeMeta,
-          createTime.isAcceptableOrUnknown(
-              data['create_time']!, _createTimeMeta));
-    } else if (isInserting) {
-      context.missing(_createTimeMeta);
-    }
-    if (data.containsKey('last_update_time')) {
-      context.handle(
-          _lastUpdateTimeMeta,
-          lastUpdateTime.isAcceptableOrUnknown(
-              data['last_update_time']!, _lastUpdateTimeMeta));
-    } else if (isInserting) {
-      context.missing(_lastUpdateTimeMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  CategoryEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CategoryEntity(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      createTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}create_time'])!,
-      lastUpdateTime: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}last_update_time'])!,
-    );
-  }
-
-  @override
-  Categories createAlias(String alias) {
-    return Categories(attachedDatabase, alias);
-  }
-
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
-  final int id;
-  final String name;
-  final String createTime;
-  final String lastUpdateTime;
-  const CategoryEntity(
-      {required this.id,
-      required this.name,
-      required this.createTime,
-      required this.lastUpdateTime});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['name'] = Variable<String>(name);
-    map['create_time'] = Variable<String>(createTime);
-    map['last_update_time'] = Variable<String>(lastUpdateTime);
-    return map;
-  }
-
-  CategoriesCompanion toCompanion(bool nullToAbsent) {
-    return CategoriesCompanion(
-      id: Value(id),
-      name: Value(name),
-      createTime: Value(createTime),
-      lastUpdateTime: Value(lastUpdateTime),
-    );
-  }
-
-  factory CategoryEntity.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return CategoryEntity(
-      id: serializer.fromJson<int>(json['id']),
-      name: serializer.fromJson<String>(json['name']),
-      createTime: serializer.fromJson<String>(json['create_time']),
-      lastUpdateTime: serializer.fromJson<String>(json['last_update_time']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'name': serializer.toJson<String>(name),
-      'create_time': serializer.toJson<String>(createTime),
-      'last_update_time': serializer.toJson<String>(lastUpdateTime),
-    };
-  }
-
-  CategoryEntity copyWith(
-          {int? id,
-          String? name,
-          String? createTime,
-          String? lastUpdateTime}) =>
-      CategoryEntity(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        createTime: createTime ?? this.createTime,
-        lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('CategoryEntity(')
-          ..write('id: $id, ')
-          ..write('name: $name, ')
-          ..write('createTime: $createTime, ')
-          ..write('lastUpdateTime: $lastUpdateTime')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, name, createTime, lastUpdateTime);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is CategoryEntity &&
-          other.id == this.id &&
-          other.name == this.name &&
-          other.createTime == this.createTime &&
-          other.lastUpdateTime == this.lastUpdateTime);
-}
-
-class CategoriesCompanion extends UpdateCompanion<CategoryEntity> {
-  final Value<int> id;
-  final Value<String> name;
-  final Value<String> createTime;
-  final Value<String> lastUpdateTime;
-  const CategoriesCompanion({
-    this.id = const Value.absent(),
-    this.name = const Value.absent(),
-    this.createTime = const Value.absent(),
-    this.lastUpdateTime = const Value.absent(),
-  });
-  CategoriesCompanion.insert({
-    this.id = const Value.absent(),
-    required String name,
-    required String createTime,
-    required String lastUpdateTime,
-  })  : name = Value(name),
-        createTime = Value(createTime),
-        lastUpdateTime = Value(lastUpdateTime);
-  static Insertable<CategoryEntity> custom({
-    Expression<int>? id,
-    Expression<String>? name,
-    Expression<String>? createTime,
-    Expression<String>? lastUpdateTime,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (name != null) 'name': name,
-      if (createTime != null) 'create_time': createTime,
-      if (lastUpdateTime != null) 'last_update_time': lastUpdateTime,
-    });
-  }
-
-  CategoriesCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? name,
-      Value<String>? createTime,
-      Value<String>? lastUpdateTime}) {
-    return CategoriesCompanion(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      createTime: createTime ?? this.createTime,
-      lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
-    }
-    if (createTime.present) {
-      map['create_time'] = Variable<String>(createTime.value);
-    }
-    if (lastUpdateTime.present) {
-      map['last_update_time'] = Variable<String>(lastUpdateTime.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('CategoriesCompanion(')
-          ..write('id: $id, ')
-          ..write('name: $name, ')
-          ..write('createTime: $createTime, ')
-          ..write('lastUpdateTime: $lastUpdateTime')
+          ..write('lastUpdateTime: $lastUpdateTime, ')
+          ..write('categoryId: $categoryId')
           ..write(')'))
         .toString();
   }
@@ -2886,8 +3062,8 @@ class PasswordsCompanion extends UpdateCompanion<PasswordEntity> {
 
 abstract class _$AppDb extends GeneratedDatabase {
   _$AppDb(QueryExecutor e) : super(e);
-  late final Notes notes = Notes(this);
   late final Categories categories = Categories(this);
+  late final Notes notes = Notes(this);
   late final Files files = Files(this);
   late final NoteFiles noteFiles = NoteFiles(this);
   late final Checklists checklists = Checklists(this);
@@ -2898,8 +3074,8 @@ abstract class _$AppDb extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-        notes,
         categories,
+        notes,
         files,
         noteFiles,
         checklists,
