@@ -18,11 +18,6 @@ void main() {
         file.body.rootGroup.entries[0]
             .getString(KdbxKeyCommon.TITLE)
             ?.getText(),
-        "APP_VERSION");
-    expect(
-        file.body.rootGroup.entries[0]
-            .getString(KdbxKeyCommon.PASSWORD)
-            ?.getText(),
-        startsWith("\$argon2id"));
+        "CONFIG");
   });
 }

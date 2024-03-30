@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:editing/database/database.dart';
 
+import '../domain/note.dart';
 import '../store/note_item.dart';
 
 class NoteService {
@@ -33,21 +34,27 @@ class NoteService {
     return items.map(convertToViewModel).toList();
   }
 
-  Future<NoteItem> insert(AppDb db, String title, String content) async {
-    final now = DateTime.now().toIso8601String();
-    final id = await db.into(db.notes).insert(NotesCompanion(
-          title: Value(title),
-          content: Value(content),
-          format: Value(1),
-          type: Value(1),
-          encryptionType: Value(1),
-          createTime: Value(now),
-          lastUpdateTime: Value(now),
-        ));
-    final inserted = await (db.select(db.notes)
-          ..where((tbl) => tbl.id.equals(id)))
-        .getSingle();
+  Future<List<Note>> fetchByType(AppDb db, NoteType type) async {
+    final items = await (db.notes.select()
+          ..where((tbl) => tbl.type.isValue(type.value)))
+        .get();
+    final categories = await db.categories.select().get();
+    return items
+        .map(
+          (item) => Note.fromEntity(
+            item,
+            item.categoryId == null
+                ? null
+                : categories.firstWhere((e) => e.id == item.categoryId),
+          ),
+        )
+        .toList();
+  }
 
-    return convertToViewModel(inserted);
+  Future<Note> insertNote(AppDb db, Note item) async {
+    assert(item.id == null);
+    final id = await db.into(db.notes).insert(item.toCompanion());
+    item.id = id;
+    return item;
   }
 }

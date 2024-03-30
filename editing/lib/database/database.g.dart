@@ -21,20 +21,20 @@ class Categories extends Table with TableInfo<Categories, CategoryEntity> {
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
-  static const VerificationMeta _encryptionTypeMeta =
-      const VerificationMeta('encryptionType');
-  late final GeneratedColumn<int> encryptionType = GeneratedColumn<int>(
-      'encryption_type', aliasedName, false,
+  static const VerificationMeta _encryptTypeMeta =
+      const VerificationMeta('encryptType');
+  late final GeneratedColumn<int> encryptType = GeneratedColumn<int>(
+      'encrypt_type', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
-  static const VerificationMeta _encryptionArgumentsMeta =
-      const VerificationMeta('encryptionArguments');
-  late final GeneratedColumn<String> encryptionArguments =
-      GeneratedColumn<String>('encryption_arguments', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  static const VerificationMeta _encryptArgumentsMeta =
+      const VerificationMeta('encryptArguments');
+  late final GeneratedColumn<String> encryptArguments = GeneratedColumn<String>(
+      'encrypt_arguments', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _createTimeMeta =
       const VerificationMeta('createTime');
   late final GeneratedColumn<String> createTime = GeneratedColumn<String>(
@@ -50,14 +50,8 @@ class Categories extends Table with TableInfo<Categories, CategoryEntity> {
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        name,
-        encryptionType,
-        encryptionArguments,
-        createTime,
-        lastUpdateTime
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, name, encryptType, encryptArguments, createTime, lastUpdateTime];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -77,19 +71,19 @@ class Categories extends Table with TableInfo<Categories, CategoryEntity> {
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('encryption_type')) {
+    if (data.containsKey('encrypt_type')) {
       context.handle(
-          _encryptionTypeMeta,
-          encryptionType.isAcceptableOrUnknown(
-              data['encryption_type']!, _encryptionTypeMeta));
+          _encryptTypeMeta,
+          encryptType.isAcceptableOrUnknown(
+              data['encrypt_type']!, _encryptTypeMeta));
     } else if (isInserting) {
-      context.missing(_encryptionTypeMeta);
+      context.missing(_encryptTypeMeta);
     }
-    if (data.containsKey('encryption_arguments')) {
+    if (data.containsKey('encrypt_arguments')) {
       context.handle(
-          _encryptionArgumentsMeta,
-          encryptionArguments.isAcceptableOrUnknown(
-              data['encryption_arguments']!, _encryptionArgumentsMeta));
+          _encryptArgumentsMeta,
+          encryptArguments.isAcceptableOrUnknown(
+              data['encrypt_arguments']!, _encryptArgumentsMeta));
     }
     if (data.containsKey('create_time')) {
       context.handle(
@@ -120,10 +114,10 @@ class Categories extends Table with TableInfo<Categories, CategoryEntity> {
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      encryptionType: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}encryption_type'])!,
-      encryptionArguments: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}encryption_arguments']),
+      encryptType: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}encrypt_type'])!,
+      encryptArguments: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}encrypt_arguments']),
       createTime: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}create_time'])!,
       lastUpdateTime: attachedDatabase.typeMapping.read(
@@ -143,15 +137,15 @@ class Categories extends Table with TableInfo<Categories, CategoryEntity> {
 class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
   final int id;
   final String name;
-  final int encryptionType;
-  final String? encryptionArguments;
+  final int encryptType;
+  final String? encryptArguments;
   final String createTime;
   final String lastUpdateTime;
   const CategoryEntity(
       {required this.id,
       required this.name,
-      required this.encryptionType,
-      this.encryptionArguments,
+      required this.encryptType,
+      this.encryptArguments,
       required this.createTime,
       required this.lastUpdateTime});
   @override
@@ -159,9 +153,9 @@ class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['encryption_type'] = Variable<int>(encryptionType);
-    if (!nullToAbsent || encryptionArguments != null) {
-      map['encryption_arguments'] = Variable<String>(encryptionArguments);
+    map['encrypt_type'] = Variable<int>(encryptType);
+    if (!nullToAbsent || encryptArguments != null) {
+      map['encrypt_arguments'] = Variable<String>(encryptArguments);
     }
     map['create_time'] = Variable<String>(createTime);
     map['last_update_time'] = Variable<String>(lastUpdateTime);
@@ -172,10 +166,10 @@ class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
     return CategoriesCompanion(
       id: Value(id),
       name: Value(name),
-      encryptionType: Value(encryptionType),
-      encryptionArguments: encryptionArguments == null && nullToAbsent
+      encryptType: Value(encryptType),
+      encryptArguments: encryptArguments == null && nullToAbsent
           ? const Value.absent()
-          : Value(encryptionArguments),
+          : Value(encryptArguments),
       createTime: Value(createTime),
       lastUpdateTime: Value(lastUpdateTime),
     );
@@ -187,9 +181,8 @@ class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
     return CategoryEntity(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      encryptionType: serializer.fromJson<int>(json['encryption_type']),
-      encryptionArguments:
-          serializer.fromJson<String?>(json['encryption_arguments']),
+      encryptType: serializer.fromJson<int>(json['encrypt_type']),
+      encryptArguments: serializer.fromJson<String?>(json['encrypt_arguments']),
       createTime: serializer.fromJson<String>(json['create_time']),
       lastUpdateTime: serializer.fromJson<String>(json['last_update_time']),
     );
@@ -200,8 +193,8 @@ class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'encryption_type': serializer.toJson<int>(encryptionType),
-      'encryption_arguments': serializer.toJson<String?>(encryptionArguments),
+      'encrypt_type': serializer.toJson<int>(encryptType),
+      'encrypt_arguments': serializer.toJson<String?>(encryptArguments),
       'create_time': serializer.toJson<String>(createTime),
       'last_update_time': serializer.toJson<String>(lastUpdateTime),
     };
@@ -210,17 +203,17 @@ class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
   CategoryEntity copyWith(
           {int? id,
           String? name,
-          int? encryptionType,
-          Value<String?> encryptionArguments = const Value.absent(),
+          int? encryptType,
+          Value<String?> encryptArguments = const Value.absent(),
           String? createTime,
           String? lastUpdateTime}) =>
       CategoryEntity(
         id: id ?? this.id,
         name: name ?? this.name,
-        encryptionType: encryptionType ?? this.encryptionType,
-        encryptionArguments: encryptionArguments.present
-            ? encryptionArguments.value
-            : this.encryptionArguments,
+        encryptType: encryptType ?? this.encryptType,
+        encryptArguments: encryptArguments.present
+            ? encryptArguments.value
+            : this.encryptArguments,
         createTime: createTime ?? this.createTime,
         lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
       );
@@ -229,8 +222,8 @@ class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
     return (StringBuffer('CategoryEntity(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('encryptionType: $encryptionType, ')
-          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('encryptType: $encryptType, ')
+          ..write('encryptArguments: $encryptArguments, ')
           ..write('createTime: $createTime, ')
           ..write('lastUpdateTime: $lastUpdateTime')
           ..write(')'))
@@ -238,16 +231,16 @@ class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
   }
 
   @override
-  int get hashCode => Object.hash(id, name, encryptionType, encryptionArguments,
-      createTime, lastUpdateTime);
+  int get hashCode => Object.hash(
+      id, name, encryptType, encryptArguments, createTime, lastUpdateTime);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CategoryEntity &&
           other.id == this.id &&
           other.name == this.name &&
-          other.encryptionType == this.encryptionType &&
-          other.encryptionArguments == this.encryptionArguments &&
+          other.encryptType == this.encryptType &&
+          other.encryptArguments == this.encryptArguments &&
           other.createTime == this.createTime &&
           other.lastUpdateTime == this.lastUpdateTime);
 }
@@ -255,43 +248,42 @@ class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
 class CategoriesCompanion extends UpdateCompanion<CategoryEntity> {
   final Value<int> id;
   final Value<String> name;
-  final Value<int> encryptionType;
-  final Value<String?> encryptionArguments;
+  final Value<int> encryptType;
+  final Value<String?> encryptArguments;
   final Value<String> createTime;
   final Value<String> lastUpdateTime;
   const CategoriesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
-    this.encryptionType = const Value.absent(),
-    this.encryptionArguments = const Value.absent(),
+    this.encryptType = const Value.absent(),
+    this.encryptArguments = const Value.absent(),
     this.createTime = const Value.absent(),
     this.lastUpdateTime = const Value.absent(),
   });
   CategoriesCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required int encryptionType,
-    this.encryptionArguments = const Value.absent(),
+    required int encryptType,
+    this.encryptArguments = const Value.absent(),
     required String createTime,
     required String lastUpdateTime,
   })  : name = Value(name),
-        encryptionType = Value(encryptionType),
+        encryptType = Value(encryptType),
         createTime = Value(createTime),
         lastUpdateTime = Value(lastUpdateTime);
   static Insertable<CategoryEntity> custom({
     Expression<int>? id,
     Expression<String>? name,
-    Expression<int>? encryptionType,
-    Expression<String>? encryptionArguments,
+    Expression<int>? encryptType,
+    Expression<String>? encryptArguments,
     Expression<String>? createTime,
     Expression<String>? lastUpdateTime,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
-      if (encryptionType != null) 'encryption_type': encryptionType,
-      if (encryptionArguments != null)
-        'encryption_arguments': encryptionArguments,
+      if (encryptType != null) 'encrypt_type': encryptType,
+      if (encryptArguments != null) 'encrypt_arguments': encryptArguments,
       if (createTime != null) 'create_time': createTime,
       if (lastUpdateTime != null) 'last_update_time': lastUpdateTime,
     });
@@ -300,15 +292,15 @@ class CategoriesCompanion extends UpdateCompanion<CategoryEntity> {
   CategoriesCompanion copyWith(
       {Value<int>? id,
       Value<String>? name,
-      Value<int>? encryptionType,
-      Value<String?>? encryptionArguments,
+      Value<int>? encryptType,
+      Value<String?>? encryptArguments,
       Value<String>? createTime,
       Value<String>? lastUpdateTime}) {
     return CategoriesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
-      encryptionType: encryptionType ?? this.encryptionType,
-      encryptionArguments: encryptionArguments ?? this.encryptionArguments,
+      encryptType: encryptType ?? this.encryptType,
+      encryptArguments: encryptArguments ?? this.encryptArguments,
       createTime: createTime ?? this.createTime,
       lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
     );
@@ -323,11 +315,11 @@ class CategoriesCompanion extends UpdateCompanion<CategoryEntity> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (encryptionType.present) {
-      map['encryption_type'] = Variable<int>(encryptionType.value);
+    if (encryptType.present) {
+      map['encrypt_type'] = Variable<int>(encryptType.value);
     }
-    if (encryptionArguments.present) {
-      map['encryption_arguments'] = Variable<String>(encryptionArguments.value);
+    if (encryptArguments.present) {
+      map['encrypt_arguments'] = Variable<String>(encryptArguments.value);
     }
     if (createTime.present) {
       map['create_time'] = Variable<String>(createTime.value);
@@ -343,8 +335,8 @@ class CategoriesCompanion extends UpdateCompanion<CategoryEntity> {
     return (StringBuffer('CategoriesCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('encryptionType: $encryptionType, ')
-          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('encryptType: $encryptType, ')
+          ..write('encryptArguments: $encryptArguments, ')
           ..write('createTime: $createTime, ')
           ..write('lastUpdateTime: $lastUpdateTime')
           ..write(')'))
@@ -422,20 +414,20 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _encryptionTypeMeta =
-      const VerificationMeta('encryptionType');
-  late final GeneratedColumn<int> encryptionType = GeneratedColumn<int>(
-      'encryption_type', aliasedName, false,
+  static const VerificationMeta _encryptTypeMeta =
+      const VerificationMeta('encryptType');
+  late final GeneratedColumn<int> encryptType = GeneratedColumn<int>(
+      'encrypt_type', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
-  static const VerificationMeta _encryptionArgumentsMeta =
-      const VerificationMeta('encryptionArguments');
-  late final GeneratedColumn<String> encryptionArguments =
-      GeneratedColumn<String>('encryption_arguments', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  static const VerificationMeta _encryptArgumentsMeta =
+      const VerificationMeta('encryptArguments');
+  late final GeneratedColumn<String> encryptArguments = GeneratedColumn<String>(
+      'encrypt_arguments', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _createTimeMeta =
       const VerificationMeta('createTime');
   late final GeneratedColumn<String> createTime = GeneratedColumn<String>(
@@ -469,8 +461,8 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
         location,
         weather,
         mood,
-        encryptionType,
-        encryptionArguments,
+        encryptType,
+        encryptArguments,
         createTime,
         lastUpdateTime,
         categoryId
@@ -532,19 +524,19 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
       context.handle(
           _moodMeta, mood.isAcceptableOrUnknown(data['mood']!, _moodMeta));
     }
-    if (data.containsKey('encryption_type')) {
+    if (data.containsKey('encrypt_type')) {
       context.handle(
-          _encryptionTypeMeta,
-          encryptionType.isAcceptableOrUnknown(
-              data['encryption_type']!, _encryptionTypeMeta));
+          _encryptTypeMeta,
+          encryptType.isAcceptableOrUnknown(
+              data['encrypt_type']!, _encryptTypeMeta));
     } else if (isInserting) {
-      context.missing(_encryptionTypeMeta);
+      context.missing(_encryptTypeMeta);
     }
-    if (data.containsKey('encryption_arguments')) {
+    if (data.containsKey('encrypt_arguments')) {
       context.handle(
-          _encryptionArgumentsMeta,
-          encryptionArguments.isAcceptableOrUnknown(
-              data['encryption_arguments']!, _encryptionArgumentsMeta));
+          _encryptArgumentsMeta,
+          encryptArguments.isAcceptableOrUnknown(
+              data['encrypt_arguments']!, _encryptArgumentsMeta));
     }
     if (data.containsKey('create_time')) {
       context.handle(
@@ -597,10 +589,10 @@ class Notes extends Table with TableInfo<Notes, NoteEntity> {
           .read(DriftSqlType.string, data['${effectivePrefix}weather']),
       mood: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}mood']),
-      encryptionType: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}encryption_type'])!,
-      encryptionArguments: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}encryption_arguments']),
+      encryptType: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}encrypt_type'])!,
+      encryptArguments: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}encrypt_arguments']),
       createTime: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}create_time'])!,
       lastUpdateTime: attachedDatabase.typeMapping.read(
@@ -633,8 +625,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
   final String? location;
   final String? weather;
   final String? mood;
-  final int encryptionType;
-  final String? encryptionArguments;
+  final int encryptType;
+  final String? encryptArguments;
   final String createTime;
   final String lastUpdateTime;
   final int? categoryId;
@@ -649,8 +641,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       this.location,
       this.weather,
       this.mood,
-      required this.encryptionType,
-      this.encryptionArguments,
+      required this.encryptType,
+      this.encryptArguments,
       required this.createTime,
       required this.lastUpdateTime,
       this.categoryId});
@@ -677,9 +669,9 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
     if (!nullToAbsent || mood != null) {
       map['mood'] = Variable<String>(mood);
     }
-    map['encryption_type'] = Variable<int>(encryptionType);
-    if (!nullToAbsent || encryptionArguments != null) {
-      map['encryption_arguments'] = Variable<String>(encryptionArguments);
+    map['encrypt_type'] = Variable<int>(encryptType);
+    if (!nullToAbsent || encryptArguments != null) {
+      map['encrypt_arguments'] = Variable<String>(encryptArguments);
     }
     map['create_time'] = Variable<String>(createTime);
     map['last_update_time'] = Variable<String>(lastUpdateTime);
@@ -707,10 +699,10 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           ? const Value.absent()
           : Value(weather),
       mood: mood == null && nullToAbsent ? const Value.absent() : Value(mood),
-      encryptionType: Value(encryptionType),
-      encryptionArguments: encryptionArguments == null && nullToAbsent
+      encryptType: Value(encryptType),
+      encryptArguments: encryptArguments == null && nullToAbsent
           ? const Value.absent()
-          : Value(encryptionArguments),
+          : Value(encryptArguments),
       createTime: Value(createTime),
       lastUpdateTime: Value(lastUpdateTime),
       categoryId: categoryId == null && nullToAbsent
@@ -733,9 +725,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       location: serializer.fromJson<String?>(json['location']),
       weather: serializer.fromJson<String?>(json['weather']),
       mood: serializer.fromJson<String?>(json['mood']),
-      encryptionType: serializer.fromJson<int>(json['encryption_type']),
-      encryptionArguments:
-          serializer.fromJson<String?>(json['encryption_arguments']),
+      encryptType: serializer.fromJson<int>(json['encrypt_type']),
+      encryptArguments: serializer.fromJson<String?>(json['encrypt_arguments']),
       createTime: serializer.fromJson<String>(json['create_time']),
       lastUpdateTime: serializer.fromJson<String>(json['last_update_time']),
       categoryId: serializer.fromJson<int?>(json['category_id']),
@@ -755,8 +746,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       'location': serializer.toJson<String?>(location),
       'weather': serializer.toJson<String?>(weather),
       'mood': serializer.toJson<String?>(mood),
-      'encryption_type': serializer.toJson<int>(encryptionType),
-      'encryption_arguments': serializer.toJson<String?>(encryptionArguments),
+      'encrypt_type': serializer.toJson<int>(encryptType),
+      'encrypt_arguments': serializer.toJson<String?>(encryptArguments),
       'create_time': serializer.toJson<String>(createTime),
       'last_update_time': serializer.toJson<String>(lastUpdateTime),
       'category_id': serializer.toJson<int?>(categoryId),
@@ -774,8 +765,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           Value<String?> location = const Value.absent(),
           Value<String?> weather = const Value.absent(),
           Value<String?> mood = const Value.absent(),
-          int? encryptionType,
-          Value<String?> encryptionArguments = const Value.absent(),
+          int? encryptType,
+          Value<String?> encryptArguments = const Value.absent(),
           String? createTime,
           String? lastUpdateTime,
           Value<int?> categoryId = const Value.absent()}) =>
@@ -790,10 +781,10 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
         location: location.present ? location.value : this.location,
         weather: weather.present ? weather.value : this.weather,
         mood: mood.present ? mood.value : this.mood,
-        encryptionType: encryptionType ?? this.encryptionType,
-        encryptionArguments: encryptionArguments.present
-            ? encryptionArguments.value
-            : this.encryptionArguments,
+        encryptType: encryptType ?? this.encryptType,
+        encryptArguments: encryptArguments.present
+            ? encryptArguments.value
+            : this.encryptArguments,
         createTime: createTime ?? this.createTime,
         lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
         categoryId: categoryId.present ? categoryId.value : this.categoryId,
@@ -811,8 +802,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           ..write('location: $location, ')
           ..write('weather: $weather, ')
           ..write('mood: $mood, ')
-          ..write('encryptionType: $encryptionType, ')
-          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('encryptType: $encryptType, ')
+          ..write('encryptArguments: $encryptArguments, ')
           ..write('createTime: $createTime, ')
           ..write('lastUpdateTime: $lastUpdateTime, ')
           ..write('categoryId: $categoryId')
@@ -832,8 +823,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
       location,
       weather,
       mood,
-      encryptionType,
-      encryptionArguments,
+      encryptType,
+      encryptArguments,
       createTime,
       lastUpdateTime,
       categoryId);
@@ -851,8 +842,8 @@ class NoteEntity extends DataClass implements Insertable<NoteEntity> {
           other.location == this.location &&
           other.weather == this.weather &&
           other.mood == this.mood &&
-          other.encryptionType == this.encryptionType &&
-          other.encryptionArguments == this.encryptionArguments &&
+          other.encryptType == this.encryptType &&
+          other.encryptArguments == this.encryptArguments &&
           other.createTime == this.createTime &&
           other.lastUpdateTime == this.lastUpdateTime &&
           other.categoryId == this.categoryId);
@@ -869,8 +860,8 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
   final Value<String?> location;
   final Value<String?> weather;
   final Value<String?> mood;
-  final Value<int> encryptionType;
-  final Value<String?> encryptionArguments;
+  final Value<int> encryptType;
+  final Value<String?> encryptArguments;
   final Value<String> createTime;
   final Value<String> lastUpdateTime;
   final Value<int?> categoryId;
@@ -885,8 +876,8 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     this.location = const Value.absent(),
     this.weather = const Value.absent(),
     this.mood = const Value.absent(),
-    this.encryptionType = const Value.absent(),
-    this.encryptionArguments = const Value.absent(),
+    this.encryptType = const Value.absent(),
+    this.encryptArguments = const Value.absent(),
     this.createTime = const Value.absent(),
     this.lastUpdateTime = const Value.absent(),
     this.categoryId = const Value.absent(),
@@ -902,8 +893,8 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     this.location = const Value.absent(),
     this.weather = const Value.absent(),
     this.mood = const Value.absent(),
-    required int encryptionType,
-    this.encryptionArguments = const Value.absent(),
+    required int encryptType,
+    this.encryptArguments = const Value.absent(),
     required String createTime,
     required String lastUpdateTime,
     this.categoryId = const Value.absent(),
@@ -911,7 +902,7 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
         format = Value(format),
         title = Value(title),
         content = Value(content),
-        encryptionType = Value(encryptionType),
+        encryptType = Value(encryptType),
         createTime = Value(createTime),
         lastUpdateTime = Value(lastUpdateTime);
   static Insertable<NoteEntity> custom({
@@ -925,8 +916,8 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     Expression<String>? location,
     Expression<String>? weather,
     Expression<String>? mood,
-    Expression<int>? encryptionType,
-    Expression<String>? encryptionArguments,
+    Expression<int>? encryptType,
+    Expression<String>? encryptArguments,
     Expression<String>? createTime,
     Expression<String>? lastUpdateTime,
     Expression<int>? categoryId,
@@ -942,9 +933,8 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
       if (location != null) 'location': location,
       if (weather != null) 'weather': weather,
       if (mood != null) 'mood': mood,
-      if (encryptionType != null) 'encryption_type': encryptionType,
-      if (encryptionArguments != null)
-        'encryption_arguments': encryptionArguments,
+      if (encryptType != null) 'encrypt_type': encryptType,
+      if (encryptArguments != null) 'encrypt_arguments': encryptArguments,
       if (createTime != null) 'create_time': createTime,
       if (lastUpdateTime != null) 'last_update_time': lastUpdateTime,
       if (categoryId != null) 'category_id': categoryId,
@@ -962,8 +952,8 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
       Value<String?>? location,
       Value<String?>? weather,
       Value<String?>? mood,
-      Value<int>? encryptionType,
-      Value<String?>? encryptionArguments,
+      Value<int>? encryptType,
+      Value<String?>? encryptArguments,
       Value<String>? createTime,
       Value<String>? lastUpdateTime,
       Value<int?>? categoryId}) {
@@ -978,8 +968,8 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
       location: location ?? this.location,
       weather: weather ?? this.weather,
       mood: mood ?? this.mood,
-      encryptionType: encryptionType ?? this.encryptionType,
-      encryptionArguments: encryptionArguments ?? this.encryptionArguments,
+      encryptType: encryptType ?? this.encryptType,
+      encryptArguments: encryptArguments ?? this.encryptArguments,
       createTime: createTime ?? this.createTime,
       lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
       categoryId: categoryId ?? this.categoryId,
@@ -1019,11 +1009,11 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
     if (mood.present) {
       map['mood'] = Variable<String>(mood.value);
     }
-    if (encryptionType.present) {
-      map['encryption_type'] = Variable<int>(encryptionType.value);
+    if (encryptType.present) {
+      map['encrypt_type'] = Variable<int>(encryptType.value);
     }
-    if (encryptionArguments.present) {
-      map['encryption_arguments'] = Variable<String>(encryptionArguments.value);
+    if (encryptArguments.present) {
+      map['encrypt_arguments'] = Variable<String>(encryptArguments.value);
     }
     if (createTime.present) {
       map['create_time'] = Variable<String>(createTime.value);
@@ -1050,8 +1040,8 @@ class NotesCompanion extends UpdateCompanion<NoteEntity> {
           ..write('location: $location, ')
           ..write('weather: $weather, ')
           ..write('mood: $mood, ')
-          ..write('encryptionType: $encryptionType, ')
-          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('encryptType: $encryptType, ')
+          ..write('encryptArguments: $encryptArguments, ')
           ..write('createTime: $createTime, ')
           ..write('lastUpdateTime: $lastUpdateTime, ')
           ..write('categoryId: $categoryId')
@@ -1110,20 +1100,20 @@ class Files extends Table with TableInfo<Files, FileEntity> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
-  static const VerificationMeta _encryptionTypeMeta =
-      const VerificationMeta('encryptionType');
-  late final GeneratedColumn<int> encryptionType = GeneratedColumn<int>(
-      'encryption_type', aliasedName, false,
+  static const VerificationMeta _encryptTypeMeta =
+      const VerificationMeta('encryptType');
+  late final GeneratedColumn<int> encryptType = GeneratedColumn<int>(
+      'encrypt_type', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
-  static const VerificationMeta _encryptionArgumentsMeta =
-      const VerificationMeta('encryptionArguments');
-  late final GeneratedColumn<String> encryptionArguments =
-      GeneratedColumn<String>('encryption_arguments', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  static const VerificationMeta _encryptArgumentsMeta =
+      const VerificationMeta('encryptArguments');
+  late final GeneratedColumn<String> encryptArguments = GeneratedColumn<String>(
+      'encrypt_arguments', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _remarkMeta = const VerificationMeta('remark');
   late final GeneratedColumn<String> remark = GeneratedColumn<String>(
       'remark', aliasedName, true,
@@ -1160,8 +1150,8 @@ class Files extends Table with TableInfo<Files, FileEntity> {
         thumbnailPath,
         format,
         checksum,
-        encryptionType,
-        encryptionArguments,
+        encryptType,
+        encryptArguments,
         remark,
         categoryId,
         createTime,
@@ -1214,19 +1204,19 @@ class Files extends Table with TableInfo<Files, FileEntity> {
       context.handle(_checksumMeta,
           checksum.isAcceptableOrUnknown(data['checksum']!, _checksumMeta));
     }
-    if (data.containsKey('encryption_type')) {
+    if (data.containsKey('encrypt_type')) {
       context.handle(
-          _encryptionTypeMeta,
-          encryptionType.isAcceptableOrUnknown(
-              data['encryption_type']!, _encryptionTypeMeta));
+          _encryptTypeMeta,
+          encryptType.isAcceptableOrUnknown(
+              data['encrypt_type']!, _encryptTypeMeta));
     } else if (isInserting) {
-      context.missing(_encryptionTypeMeta);
+      context.missing(_encryptTypeMeta);
     }
-    if (data.containsKey('encryption_arguments')) {
+    if (data.containsKey('encrypt_arguments')) {
       context.handle(
-          _encryptionArgumentsMeta,
-          encryptionArguments.isAcceptableOrUnknown(
-              data['encryption_arguments']!, _encryptionArgumentsMeta));
+          _encryptArgumentsMeta,
+          encryptArguments.isAcceptableOrUnknown(
+              data['encrypt_arguments']!, _encryptArgumentsMeta));
     }
     if (data.containsKey('remark')) {
       context.handle(_remarkMeta,
@@ -1277,10 +1267,10 @@ class Files extends Table with TableInfo<Files, FileEntity> {
           .read(DriftSqlType.string, data['${effectivePrefix}format'])!,
       checksum: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}checksum']),
-      encryptionType: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}encryption_type'])!,
-      encryptionArguments: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}encryption_arguments']),
+      encryptType: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}encrypt_type'])!,
+      encryptArguments: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}encrypt_arguments']),
       remark: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}remark']),
       categoryId: attachedDatabase.typeMapping
@@ -1312,8 +1302,8 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
   final String? thumbnailPath;
   final String format;
   final String? checksum;
-  final int encryptionType;
-  final String? encryptionArguments;
+  final int encryptType;
+  final String? encryptArguments;
   final String? remark;
   final int? categoryId;
   final String createTime;
@@ -1326,8 +1316,8 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
       this.thumbnailPath,
       required this.format,
       this.checksum,
-      required this.encryptionType,
-      this.encryptionArguments,
+      required this.encryptType,
+      this.encryptArguments,
       this.remark,
       this.categoryId,
       required this.createTime,
@@ -1346,9 +1336,9 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
     if (!nullToAbsent || checksum != null) {
       map['checksum'] = Variable<String>(checksum);
     }
-    map['encryption_type'] = Variable<int>(encryptionType);
-    if (!nullToAbsent || encryptionArguments != null) {
-      map['encryption_arguments'] = Variable<String>(encryptionArguments);
+    map['encrypt_type'] = Variable<int>(encryptType);
+    if (!nullToAbsent || encryptArguments != null) {
+      map['encrypt_arguments'] = Variable<String>(encryptArguments);
     }
     if (!nullToAbsent || remark != null) {
       map['remark'] = Variable<String>(remark);
@@ -1374,10 +1364,10 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
       checksum: checksum == null && nullToAbsent
           ? const Value.absent()
           : Value(checksum),
-      encryptionType: Value(encryptionType),
-      encryptionArguments: encryptionArguments == null && nullToAbsent
+      encryptType: Value(encryptType),
+      encryptArguments: encryptArguments == null && nullToAbsent
           ? const Value.absent()
-          : Value(encryptionArguments),
+          : Value(encryptArguments),
       remark:
           remark == null && nullToAbsent ? const Value.absent() : Value(remark),
       categoryId: categoryId == null && nullToAbsent
@@ -1399,9 +1389,8 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
       thumbnailPath: serializer.fromJson<String?>(json['thumbnail_path']),
       format: serializer.fromJson<String>(json['format']),
       checksum: serializer.fromJson<String?>(json['checksum']),
-      encryptionType: serializer.fromJson<int>(json['encryption_type']),
-      encryptionArguments:
-          serializer.fromJson<String?>(json['encryption_arguments']),
+      encryptType: serializer.fromJson<int>(json['encrypt_type']),
+      encryptArguments: serializer.fromJson<String?>(json['encrypt_arguments']),
       remark: serializer.fromJson<String?>(json['remark']),
       categoryId: serializer.fromJson<int?>(json['category_id']),
       createTime: serializer.fromJson<String>(json['create_time']),
@@ -1419,8 +1408,8 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
       'thumbnail_path': serializer.toJson<String?>(thumbnailPath),
       'format': serializer.toJson<String>(format),
       'checksum': serializer.toJson<String?>(checksum),
-      'encryption_type': serializer.toJson<int>(encryptionType),
-      'encryption_arguments': serializer.toJson<String?>(encryptionArguments),
+      'encrypt_type': serializer.toJson<int>(encryptType),
+      'encrypt_arguments': serializer.toJson<String?>(encryptArguments),
       'remark': serializer.toJson<String?>(remark),
       'category_id': serializer.toJson<int?>(categoryId),
       'create_time': serializer.toJson<String>(createTime),
@@ -1436,8 +1425,8 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
           Value<String?> thumbnailPath = const Value.absent(),
           String? format,
           Value<String?> checksum = const Value.absent(),
-          int? encryptionType,
-          Value<String?> encryptionArguments = const Value.absent(),
+          int? encryptType,
+          Value<String?> encryptArguments = const Value.absent(),
           Value<String?> remark = const Value.absent(),
           Value<int?> categoryId = const Value.absent(),
           String? createTime,
@@ -1451,10 +1440,10 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
             thumbnailPath.present ? thumbnailPath.value : this.thumbnailPath,
         format: format ?? this.format,
         checksum: checksum.present ? checksum.value : this.checksum,
-        encryptionType: encryptionType ?? this.encryptionType,
-        encryptionArguments: encryptionArguments.present
-            ? encryptionArguments.value
-            : this.encryptionArguments,
+        encryptType: encryptType ?? this.encryptType,
+        encryptArguments: encryptArguments.present
+            ? encryptArguments.value
+            : this.encryptArguments,
         remark: remark.present ? remark.value : this.remark,
         categoryId: categoryId.present ? categoryId.value : this.categoryId,
         createTime: createTime ?? this.createTime,
@@ -1470,8 +1459,8 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
           ..write('thumbnailPath: $thumbnailPath, ')
           ..write('format: $format, ')
           ..write('checksum: $checksum, ')
-          ..write('encryptionType: $encryptionType, ')
-          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('encryptType: $encryptType, ')
+          ..write('encryptArguments: $encryptArguments, ')
           ..write('remark: $remark, ')
           ..write('categoryId: $categoryId, ')
           ..write('createTime: $createTime, ')
@@ -1489,8 +1478,8 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
       thumbnailPath,
       format,
       checksum,
-      encryptionType,
-      encryptionArguments,
+      encryptType,
+      encryptArguments,
       remark,
       categoryId,
       createTime,
@@ -1506,8 +1495,8 @@ class FileEntity extends DataClass implements Insertable<FileEntity> {
           other.thumbnailPath == this.thumbnailPath &&
           other.format == this.format &&
           other.checksum == this.checksum &&
-          other.encryptionType == this.encryptionType &&
-          other.encryptionArguments == this.encryptionArguments &&
+          other.encryptType == this.encryptType &&
+          other.encryptArguments == this.encryptArguments &&
           other.remark == this.remark &&
           other.categoryId == this.categoryId &&
           other.createTime == this.createTime &&
@@ -1522,8 +1511,8 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
   final Value<String?> thumbnailPath;
   final Value<String> format;
   final Value<String?> checksum;
-  final Value<int> encryptionType;
-  final Value<String?> encryptionArguments;
+  final Value<int> encryptType;
+  final Value<String?> encryptArguments;
   final Value<String?> remark;
   final Value<int?> categoryId;
   final Value<String> createTime;
@@ -1536,8 +1525,8 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
     this.thumbnailPath = const Value.absent(),
     this.format = const Value.absent(),
     this.checksum = const Value.absent(),
-    this.encryptionType = const Value.absent(),
-    this.encryptionArguments = const Value.absent(),
+    this.encryptType = const Value.absent(),
+    this.encryptArguments = const Value.absent(),
     this.remark = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.createTime = const Value.absent(),
@@ -1551,8 +1540,8 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
     this.thumbnailPath = const Value.absent(),
     required String format,
     this.checksum = const Value.absent(),
-    required int encryptionType,
-    this.encryptionArguments = const Value.absent(),
+    required int encryptType,
+    this.encryptArguments = const Value.absent(),
     this.remark = const Value.absent(),
     this.categoryId = const Value.absent(),
     required String createTime,
@@ -1561,7 +1550,7 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
         name = Value(name),
         path = Value(path),
         format = Value(format),
-        encryptionType = Value(encryptionType),
+        encryptType = Value(encryptType),
         createTime = Value(createTime),
         lastUpdateTime = Value(lastUpdateTime);
   static Insertable<FileEntity> custom({
@@ -1572,8 +1561,8 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
     Expression<String>? thumbnailPath,
     Expression<String>? format,
     Expression<String>? checksum,
-    Expression<int>? encryptionType,
-    Expression<String>? encryptionArguments,
+    Expression<int>? encryptType,
+    Expression<String>? encryptArguments,
     Expression<String>? remark,
     Expression<int>? categoryId,
     Expression<String>? createTime,
@@ -1587,9 +1576,8 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
       if (thumbnailPath != null) 'thumbnail_path': thumbnailPath,
       if (format != null) 'format': format,
       if (checksum != null) 'checksum': checksum,
-      if (encryptionType != null) 'encryption_type': encryptionType,
-      if (encryptionArguments != null)
-        'encryption_arguments': encryptionArguments,
+      if (encryptType != null) 'encrypt_type': encryptType,
+      if (encryptArguments != null) 'encrypt_arguments': encryptArguments,
       if (remark != null) 'remark': remark,
       if (categoryId != null) 'category_id': categoryId,
       if (createTime != null) 'create_time': createTime,
@@ -1605,8 +1593,8 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
       Value<String?>? thumbnailPath,
       Value<String>? format,
       Value<String?>? checksum,
-      Value<int>? encryptionType,
-      Value<String?>? encryptionArguments,
+      Value<int>? encryptType,
+      Value<String?>? encryptArguments,
       Value<String?>? remark,
       Value<int?>? categoryId,
       Value<String>? createTime,
@@ -1619,8 +1607,8 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
       thumbnailPath: thumbnailPath ?? this.thumbnailPath,
       format: format ?? this.format,
       checksum: checksum ?? this.checksum,
-      encryptionType: encryptionType ?? this.encryptionType,
-      encryptionArguments: encryptionArguments ?? this.encryptionArguments,
+      encryptType: encryptType ?? this.encryptType,
+      encryptArguments: encryptArguments ?? this.encryptArguments,
       remark: remark ?? this.remark,
       categoryId: categoryId ?? this.categoryId,
       createTime: createTime ?? this.createTime,
@@ -1652,11 +1640,11 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
     if (checksum.present) {
       map['checksum'] = Variable<String>(checksum.value);
     }
-    if (encryptionType.present) {
-      map['encryption_type'] = Variable<int>(encryptionType.value);
+    if (encryptType.present) {
+      map['encrypt_type'] = Variable<int>(encryptType.value);
     }
-    if (encryptionArguments.present) {
-      map['encryption_arguments'] = Variable<String>(encryptionArguments.value);
+    if (encryptArguments.present) {
+      map['encrypt_arguments'] = Variable<String>(encryptArguments.value);
     }
     if (remark.present) {
       map['remark'] = Variable<String>(remark.value);
@@ -1683,8 +1671,8 @@ class FilesCompanion extends UpdateCompanion<FileEntity> {
           ..write('thumbnailPath: $thumbnailPath, ')
           ..write('format: $format, ')
           ..write('checksum: $checksum, ')
-          ..write('encryptionType: $encryptionType, ')
-          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('encryptType: $encryptType, ')
+          ..write('encryptArguments: $encryptArguments, ')
           ..write('remark: $remark, ')
           ..write('categoryId: $categoryId, ')
           ..write('createTime: $createTime, ')
@@ -2661,20 +2649,20 @@ class Passwords extends Table with TableInfo<Passwords, PasswordEntity> {
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
-  static const VerificationMeta _encryptionTypeMeta =
-      const VerificationMeta('encryptionType');
-  late final GeneratedColumn<int> encryptionType = GeneratedColumn<int>(
-      'encryption_type', aliasedName, false,
+  static const VerificationMeta _encryptTypeMeta =
+      const VerificationMeta('encryptType');
+  late final GeneratedColumn<int> encryptType = GeneratedColumn<int>(
+      'encrypt_type', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
-  static const VerificationMeta _encryptionArgumentsMeta =
-      const VerificationMeta('encryptionArguments');
-  late final GeneratedColumn<String> encryptionArguments =
-      GeneratedColumn<String>('encryption_arguments', aliasedName, true,
-          type: DriftSqlType.string,
-          requiredDuringInsert: false,
-          $customConstraints: '');
+  static const VerificationMeta _encryptArgumentsMeta =
+      const VerificationMeta('encryptArguments');
+  late final GeneratedColumn<String> encryptArguments = GeneratedColumn<String>(
+      'encrypt_arguments', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: '');
   static const VerificationMeta _remarkMeta = const VerificationMeta('remark');
   late final GeneratedColumn<String> remark = GeneratedColumn<String>(
       'remark', aliasedName, true,
@@ -2700,8 +2688,8 @@ class Passwords extends Table with TableInfo<Passwords, PasswordEntity> {
         id,
         title,
         password,
-        encryptionType,
-        encryptionArguments,
+        encryptType,
+        encryptArguments,
         remark,
         createTime,
         lastUpdateTime
@@ -2731,19 +2719,19 @@ class Passwords extends Table with TableInfo<Passwords, PasswordEntity> {
     } else if (isInserting) {
       context.missing(_passwordMeta);
     }
-    if (data.containsKey('encryption_type')) {
+    if (data.containsKey('encrypt_type')) {
       context.handle(
-          _encryptionTypeMeta,
-          encryptionType.isAcceptableOrUnknown(
-              data['encryption_type']!, _encryptionTypeMeta));
+          _encryptTypeMeta,
+          encryptType.isAcceptableOrUnknown(
+              data['encrypt_type']!, _encryptTypeMeta));
     } else if (isInserting) {
-      context.missing(_encryptionTypeMeta);
+      context.missing(_encryptTypeMeta);
     }
-    if (data.containsKey('encryption_arguments')) {
+    if (data.containsKey('encrypt_arguments')) {
       context.handle(
-          _encryptionArgumentsMeta,
-          encryptionArguments.isAcceptableOrUnknown(
-              data['encryption_arguments']!, _encryptionArgumentsMeta));
+          _encryptArgumentsMeta,
+          encryptArguments.isAcceptableOrUnknown(
+              data['encrypt_arguments']!, _encryptArgumentsMeta));
     }
     if (data.containsKey('remark')) {
       context.handle(_remarkMeta,
@@ -2780,10 +2768,10 @@ class Passwords extends Table with TableInfo<Passwords, PasswordEntity> {
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       password: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}password'])!,
-      encryptionType: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}encryption_type'])!,
-      encryptionArguments: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}encryption_arguments']),
+      encryptType: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}encrypt_type'])!,
+      encryptArguments: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}encrypt_arguments']),
       remark: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}remark']),
       createTime: attachedDatabase.typeMapping
@@ -2806,8 +2794,8 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
   final int id;
   final String title;
   final String password;
-  final int encryptionType;
-  final String? encryptionArguments;
+  final int encryptType;
+  final String? encryptArguments;
   final String? remark;
   final String createTime;
   final String lastUpdateTime;
@@ -2815,8 +2803,8 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
       {required this.id,
       required this.title,
       required this.password,
-      required this.encryptionType,
-      this.encryptionArguments,
+      required this.encryptType,
+      this.encryptArguments,
       this.remark,
       required this.createTime,
       required this.lastUpdateTime});
@@ -2826,9 +2814,9 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
     map['id'] = Variable<int>(id);
     map['title'] = Variable<String>(title);
     map['password'] = Variable<String>(password);
-    map['encryption_type'] = Variable<int>(encryptionType);
-    if (!nullToAbsent || encryptionArguments != null) {
-      map['encryption_arguments'] = Variable<String>(encryptionArguments);
+    map['encrypt_type'] = Variable<int>(encryptType);
+    if (!nullToAbsent || encryptArguments != null) {
+      map['encrypt_arguments'] = Variable<String>(encryptArguments);
     }
     if (!nullToAbsent || remark != null) {
       map['remark'] = Variable<String>(remark);
@@ -2843,10 +2831,10 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
       id: Value(id),
       title: Value(title),
       password: Value(password),
-      encryptionType: Value(encryptionType),
-      encryptionArguments: encryptionArguments == null && nullToAbsent
+      encryptType: Value(encryptType),
+      encryptArguments: encryptArguments == null && nullToAbsent
           ? const Value.absent()
-          : Value(encryptionArguments),
+          : Value(encryptArguments),
       remark:
           remark == null && nullToAbsent ? const Value.absent() : Value(remark),
       createTime: Value(createTime),
@@ -2861,9 +2849,8 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       password: serializer.fromJson<String>(json['password']),
-      encryptionType: serializer.fromJson<int>(json['encryption_type']),
-      encryptionArguments:
-          serializer.fromJson<String?>(json['encryption_arguments']),
+      encryptType: serializer.fromJson<int>(json['encrypt_type']),
+      encryptArguments: serializer.fromJson<String?>(json['encrypt_arguments']),
       remark: serializer.fromJson<String?>(json['remark']),
       createTime: serializer.fromJson<String>(json['create_time']),
       lastUpdateTime: serializer.fromJson<String>(json['last_update_time']),
@@ -2876,8 +2863,8 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
       'password': serializer.toJson<String>(password),
-      'encryption_type': serializer.toJson<int>(encryptionType),
-      'encryption_arguments': serializer.toJson<String?>(encryptionArguments),
+      'encrypt_type': serializer.toJson<int>(encryptType),
+      'encrypt_arguments': serializer.toJson<String?>(encryptArguments),
       'remark': serializer.toJson<String?>(remark),
       'create_time': serializer.toJson<String>(createTime),
       'last_update_time': serializer.toJson<String>(lastUpdateTime),
@@ -2888,8 +2875,8 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
           {int? id,
           String? title,
           String? password,
-          int? encryptionType,
-          Value<String?> encryptionArguments = const Value.absent(),
+          int? encryptType,
+          Value<String?> encryptArguments = const Value.absent(),
           Value<String?> remark = const Value.absent(),
           String? createTime,
           String? lastUpdateTime}) =>
@@ -2897,10 +2884,10 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
         id: id ?? this.id,
         title: title ?? this.title,
         password: password ?? this.password,
-        encryptionType: encryptionType ?? this.encryptionType,
-        encryptionArguments: encryptionArguments.present
-            ? encryptionArguments.value
-            : this.encryptionArguments,
+        encryptType: encryptType ?? this.encryptType,
+        encryptArguments: encryptArguments.present
+            ? encryptArguments.value
+            : this.encryptArguments,
         remark: remark.present ? remark.value : this.remark,
         createTime: createTime ?? this.createTime,
         lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
@@ -2911,8 +2898,8 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('password: $password, ')
-          ..write('encryptionType: $encryptionType, ')
-          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('encryptType: $encryptType, ')
+          ..write('encryptArguments: $encryptArguments, ')
           ..write('remark: $remark, ')
           ..write('createTime: $createTime, ')
           ..write('lastUpdateTime: $lastUpdateTime')
@@ -2921,8 +2908,8 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
   }
 
   @override
-  int get hashCode => Object.hash(id, title, password, encryptionType,
-      encryptionArguments, remark, createTime, lastUpdateTime);
+  int get hashCode => Object.hash(id, title, password, encryptType,
+      encryptArguments, remark, createTime, lastUpdateTime);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2930,8 +2917,8 @@ class PasswordEntity extends DataClass implements Insertable<PasswordEntity> {
           other.id == this.id &&
           other.title == this.title &&
           other.password == this.password &&
-          other.encryptionType == this.encryptionType &&
-          other.encryptionArguments == this.encryptionArguments &&
+          other.encryptType == this.encryptType &&
+          other.encryptArguments == this.encryptArguments &&
           other.remark == this.remark &&
           other.createTime == this.createTime &&
           other.lastUpdateTime == this.lastUpdateTime);
@@ -2941,8 +2928,8 @@ class PasswordsCompanion extends UpdateCompanion<PasswordEntity> {
   final Value<int> id;
   final Value<String> title;
   final Value<String> password;
-  final Value<int> encryptionType;
-  final Value<String?> encryptionArguments;
+  final Value<int> encryptType;
+  final Value<String?> encryptArguments;
   final Value<String?> remark;
   final Value<String> createTime;
   final Value<String> lastUpdateTime;
@@ -2950,8 +2937,8 @@ class PasswordsCompanion extends UpdateCompanion<PasswordEntity> {
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.password = const Value.absent(),
-    this.encryptionType = const Value.absent(),
-    this.encryptionArguments = const Value.absent(),
+    this.encryptType = const Value.absent(),
+    this.encryptArguments = const Value.absent(),
     this.remark = const Value.absent(),
     this.createTime = const Value.absent(),
     this.lastUpdateTime = const Value.absent(),
@@ -2960,22 +2947,22 @@ class PasswordsCompanion extends UpdateCompanion<PasswordEntity> {
     this.id = const Value.absent(),
     required String title,
     required String password,
-    required int encryptionType,
-    this.encryptionArguments = const Value.absent(),
+    required int encryptType,
+    this.encryptArguments = const Value.absent(),
     this.remark = const Value.absent(),
     required String createTime,
     required String lastUpdateTime,
   })  : title = Value(title),
         password = Value(password),
-        encryptionType = Value(encryptionType),
+        encryptType = Value(encryptType),
         createTime = Value(createTime),
         lastUpdateTime = Value(lastUpdateTime);
   static Insertable<PasswordEntity> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<String>? password,
-    Expression<int>? encryptionType,
-    Expression<String>? encryptionArguments,
+    Expression<int>? encryptType,
+    Expression<String>? encryptArguments,
     Expression<String>? remark,
     Expression<String>? createTime,
     Expression<String>? lastUpdateTime,
@@ -2984,9 +2971,8 @@ class PasswordsCompanion extends UpdateCompanion<PasswordEntity> {
       if (id != null) 'id': id,
       if (title != null) 'title': title,
       if (password != null) 'password': password,
-      if (encryptionType != null) 'encryption_type': encryptionType,
-      if (encryptionArguments != null)
-        'encryption_arguments': encryptionArguments,
+      if (encryptType != null) 'encrypt_type': encryptType,
+      if (encryptArguments != null) 'encrypt_arguments': encryptArguments,
       if (remark != null) 'remark': remark,
       if (createTime != null) 'create_time': createTime,
       if (lastUpdateTime != null) 'last_update_time': lastUpdateTime,
@@ -2997,8 +2983,8 @@ class PasswordsCompanion extends UpdateCompanion<PasswordEntity> {
       {Value<int>? id,
       Value<String>? title,
       Value<String>? password,
-      Value<int>? encryptionType,
-      Value<String?>? encryptionArguments,
+      Value<int>? encryptType,
+      Value<String?>? encryptArguments,
       Value<String?>? remark,
       Value<String>? createTime,
       Value<String>? lastUpdateTime}) {
@@ -3006,8 +2992,8 @@ class PasswordsCompanion extends UpdateCompanion<PasswordEntity> {
       id: id ?? this.id,
       title: title ?? this.title,
       password: password ?? this.password,
-      encryptionType: encryptionType ?? this.encryptionType,
-      encryptionArguments: encryptionArguments ?? this.encryptionArguments,
+      encryptType: encryptType ?? this.encryptType,
+      encryptArguments: encryptArguments ?? this.encryptArguments,
       remark: remark ?? this.remark,
       createTime: createTime ?? this.createTime,
       lastUpdateTime: lastUpdateTime ?? this.lastUpdateTime,
@@ -3026,11 +3012,11 @@ class PasswordsCompanion extends UpdateCompanion<PasswordEntity> {
     if (password.present) {
       map['password'] = Variable<String>(password.value);
     }
-    if (encryptionType.present) {
-      map['encryption_type'] = Variable<int>(encryptionType.value);
+    if (encryptType.present) {
+      map['encrypt_type'] = Variable<int>(encryptType.value);
     }
-    if (encryptionArguments.present) {
-      map['encryption_arguments'] = Variable<String>(encryptionArguments.value);
+    if (encryptArguments.present) {
+      map['encrypt_arguments'] = Variable<String>(encryptArguments.value);
     }
     if (remark.present) {
       map['remark'] = Variable<String>(remark.value);
@@ -3050,8 +3036,8 @@ class PasswordsCompanion extends UpdateCompanion<PasswordEntity> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('password: $password, ')
-          ..write('encryptionType: $encryptionType, ')
-          ..write('encryptionArguments: $encryptionArguments, ')
+          ..write('encryptType: $encryptType, ')
+          ..write('encryptArguments: $encryptArguments, ')
           ..write('remark: $remark, ')
           ..write('createTime: $createTime, ')
           ..write('lastUpdateTime: $lastUpdateTime')

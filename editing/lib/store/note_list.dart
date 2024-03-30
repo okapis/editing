@@ -36,7 +36,5 @@ abstract class NoteListBase with Store {
   @action
   Future<void> insert() async {
     final db = getDb();
-    final inserted = await _noteService.insert(db, "hello", "world");
-    list.add(inserted);
   }
 }
