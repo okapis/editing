@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:editing/database/database.dart';
 import 'package:editing/store/note_list.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:kdbx/kdbx.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
+import '../domain/note.dart';
 import '../service/app_service.dart';
 import '../store/app.dart';
 
@@ -41,44 +44,60 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
   Widget build(BuildContext context) {
     AppStore _appStore = Provider.of<AppStore>(context);
     NoteListStore _noteStore = Provider.of<NoteListStore>(context);
+
+    void onSave() async {
+      final data = _controller.document.toDelta().toJson();
+      print(data);
+      await _noteStore.createNote(NoteType.journal, "note",
+          _controller.document.toPlainText(), jsonEncode(data));
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("New Journal"),
+        title: Text("Create Note"),
         actions: [
           IconButton(
             icon: const Icon(Icons.check_outlined),
             tooltip: 'Save',
-            onPressed: () async {
-              final data = _controller.document.toDelta().toJson();
-              print(data);
-              await _noteStore.insert();
-              if (context.mounted) {
-                Navigator.of(context).pop();
-              }
-            },
+            onPressed: onSave,
           ),
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          QuillToolbar.simple(
-            configurations: QuillSimpleToolbarConfigurations(
-              toolbarIconAlignment: WrapAlignment.start,
-              controller: _controller,
-              sharedConfigurations: const QuillSharedConfigurations(
-                locale: Locale('en'),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20),
+        child: Column(
+          children: <Widget>[
+            TextField(
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: 'Note title',
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: QuillEditor.basic(
-              configurations: QuillEditorConfigurations(
+            QuillToolbar.simple(
+              configurations: QuillSimpleToolbarConfigurations(
+                toolbarIconAlignment: WrapAlignment.start,
                 controller: _controller,
-                readOnly: _isReadOnly,
+                sharedConfigurations: const QuillSharedConfigurations(
+                  locale: Locale('en'),
+                ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: QuillEditor.basic(
+                configurations: QuillEditorConfigurations(
+                  controller: _controller,
+                  readOnly: _isReadOnly,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -12,13 +12,13 @@ mixin _$NoteListStore on NoteListBase, Store {
   late final _$listAtom = Atom(name: 'NoteListBase.list', context: context);
 
   @override
-  ObservableList<NoteItem> get list {
+  ObservableList<Note> get list {
     _$listAtom.reportRead();
     return super.list;
   }
 
   @override
-  set list(ObservableList<NoteItem> value) {
+  set list(ObservableList<Note> value) {
     _$listAtom.reportWrite(value, super.list, () {
       super.list = value;
     });
@@ -43,16 +43,18 @@ mixin _$NoteListStore on NoteListBase, Store {
       AsyncAction('NoteListBase.fetch', context: context);
 
   @override
-  Future<void> fetch() {
-    return _$fetchAsyncAction.run(() => super.fetch());
+  Future<void> fetch(NoteType type) {
+    return _$fetchAsyncAction.run(() => super.fetch(type));
   }
 
-  late final _$insertAsyncAction =
-      AsyncAction('NoteListBase.insert', context: context);
+  late final _$createNoteAsyncAction =
+      AsyncAction('NoteListBase.createNote', context: context);
 
   @override
-  Future<void> insert() {
-    return _$insertAsyncAction.run(() => super.insert());
+  Future<void> createNote(
+      NoteType type, String title, String? abstract, String content) {
+    return _$createNoteAsyncAction
+        .run(() => super.createNote(type, title, abstract, content));
   }
 
   @override

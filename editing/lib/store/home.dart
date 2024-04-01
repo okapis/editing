@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 
+import '../domain/note.dart';
 import '../ui/pages/file_list.dart';
 import '../ui/pages/note_list.dart';
 
@@ -14,7 +15,7 @@ abstract class HomeBase with Store {
   int pageIndex = 0;
 
   @observable
-  NoteType noteType = NoteType.jounral;
+  NoteType noteType = NoteType.journal;
 
   @observable
   FileType fileType = FileType.photo;

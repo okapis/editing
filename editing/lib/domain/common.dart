@@ -1,5 +1,5 @@
 enum EncryptType {
-  plain(0),
+  none(0),
   aes(1);
 
   final int value;

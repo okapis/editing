@@ -7,9 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
+import '../../domain/note.dart';
 import '../widgets/journal.dart';
-
-enum NoteType { jounral, note, idea, checklist }
 
 class NoteListPage extends StatefulWidget {
   final NoteType type;
@@ -24,16 +23,7 @@ class _NoteListPageState extends State<NoteListPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<NoteListStore>(context, listen: false).fetch();
-  }
-
-  Widget _renderListItem() {
-    return Note(
-      title: 'C++ 11笔记',
-      createTime: DateTime.now(),
-      location: 'Wuhan, Hubei',
-      content: 'C++11是最新的内容',
-    );
+    Provider.of<NoteListStore>(context, listen: false).fetch(NoteType.journal);
   }
 
   @override
@@ -48,11 +38,11 @@ class _NoteListPageState extends State<NoteListPage> {
               itemCount: noteListStore.list.length,
               itemBuilder: (_, index) {
                 final note = noteListStore.list[index];
-                return Note(
+                return NoteListItem(
                     title: note.title,
                     createTime: note.createTime,
                     location: "",
-                    content: note.content);
+                    content: note.abstract ?? "");
               },
             ),
           ),

@@ -3055,6 +3055,16 @@ abstract class _$AppDb extends GeneratedDatabase {
   late final Checklists checklists = Checklists(this);
   late final NoteChecklists noteChecklists = NoteChecklists(this);
   late final Passwords passwords = Passwords(this);
+  Selectable<NoteEntity> fetchNotesByType(int var1) {
+    return customSelect('SELECT * FROM notes WHERE type = ?1 ORDER BY id DESC',
+        variables: [
+          Variable<int>(var1)
+        ],
+        readsFrom: {
+          notes,
+        }).asyncMap(notes.mapFromRow);
+  }
+
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

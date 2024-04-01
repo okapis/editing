@@ -5,14 +5,14 @@ import 'package:flutter/widgets.dart';
 import '../../common/responsive_util.dart';
 import 'tag.dart';
 
-class Note extends StatelessWidget {
+class NoteListItem extends StatelessWidget {
   final String title;
   final DateTime createTime;
   final String location;
   final String content;
   final List<String>? images;
 
-  const Note({
+  const NoteListItem({
     super.key,
     required this.title,
     required this.createTime,
@@ -39,9 +39,9 @@ class Note extends StatelessWidget {
               title,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text("25th Jan"),
+            Text(title),
             Text(
-              "Today was a day filled with unexpected surprises and a whirlwind of emotions. As I woke up to the sound of raindrops gently tapping on my window, I couldn't help but feel a sense of tranquility and coziness. It was the perfect setting to start my day.",
+              content,
             )
           ],
         ),

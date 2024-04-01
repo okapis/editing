@@ -1,6 +1,8 @@
 import 'package:editing/database/database.dart';
 import 'package:editing/service/note_service.dart';
+import 'package:editing/ui/pages/note_list.dart';
 import 'package:mobx/mobx.dart';
+import '../domain/note.dart';
 import 'note_item.dart';
 import 'app.dart';
 
@@ -13,7 +15,7 @@ abstract class NoteListBase with Store {
   final NoteService _noteService;
 
   @observable
-  ObservableList<NoteItem> list = ObservableList();
+  ObservableList<Note> list = ObservableList();
 
   @observable
   String? error;
@@ -26,15 +28,19 @@ abstract class NoteListBase with Store {
   }
 
   @action
-  Future<void> fetch() async {
+  Future<void> fetch(NoteType type) async {
     final db = getDb();
-    final notes = await _noteService.fetch(db);
+    final notes = await _noteService.fetchByType(db, type);
     list.clear();
     list.addAll(notes);
   }
 
   @action
-  Future<void> insert() async {
+  Future<void> createNote(
+      NoteType type, String title, String? abstract, String content) async {
     final db = getDb();
+    final note =
+        await _noteService.createNote(db, title, content, abstract, type);
+    list.insert(0, note);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:editing/domain/note.dart';
 import 'package:editing/service/note_service.dart';
 import 'package:editing/store/note_list.dart';
 import 'package:editing/ui/widgets/checklist.dart';
@@ -24,7 +25,7 @@ class _NoteListPageState extends State<FileListPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<NoteListStore>(context, listen: false).fetch();
+    Provider.of<NoteListStore>(context, listen: false).fetch(NoteType.journal);
   }
 
   @override
@@ -39,7 +40,7 @@ class _NoteListPageState extends State<FileListPage> {
               itemCount: noteListStore.list.length,
               itemBuilder: (_, index) {
                 final note = noteListStore.list[index];
-                return Note(
+                return NoteListItem(
                     title: "file-${widget.type}",
                     createTime: note.createTime,
                     location: "",

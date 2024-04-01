@@ -5,6 +5,7 @@ import 'package:editing/ui/pages/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import '../domain/note.dart';
 import 'pages/note_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,9 +30,9 @@ const titles = {
 };
 
 const noteTypes = {
-  "Journals": NoteType.jounral,
+  "Journals": NoteType.journal,
   "Notes": NoteType.note,
-  "Todos": NoteType.checklist,
+  "Todos": NoteType.todo,
   "Ideas": NoteType.idea,
 };
 
