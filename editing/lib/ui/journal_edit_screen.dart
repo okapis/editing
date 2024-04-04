@@ -23,6 +23,7 @@ class JournalEditScreen extends StatefulWidget {
 
 class _JournalEditScreenState extends State<JournalEditScreen> {
   final _controller = QuillController.basic();
+  final _titleController = TextEditingController();
   final _editorFocusNode = FocusNode();
   final _editorScrollController = ScrollController();
   var _isReadOnly = false;
@@ -48,8 +49,8 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
     void onSave() async {
       final data = _controller.document.toDelta().toJson();
       print(data);
-      await _noteStore.createNote(NoteType.journal, "note",
-          _controller.document.toPlainText(), jsonEncode(data));
+      await _noteStore.createNote(
+          NoteType.journal, _titleController.text, _controller.document);
       if (context.mounted) {
         Navigator.of(context).pop();
       }
@@ -72,6 +73,7 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
           children: <Widget>[
             TextField(
               autofocus: true,
+              controller: _titleController,
               decoration: InputDecoration(
                 hintText: 'Note title',
                 border: UnderlineInputBorder(

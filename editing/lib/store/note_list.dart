@@ -1,6 +1,7 @@
 import 'package:editing/database/database.dart';
 import 'package:editing/service/note_service.dart';
 import 'package:editing/ui/pages/note_list.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:mobx/mobx.dart';
 import '../domain/note.dart';
 import 'note_item.dart';
@@ -37,10 +38,9 @@ abstract class NoteListBase with Store {
 
   @action
   Future<void> createNote(
-      NoteType type, String title, String? abstract, String content) async {
+      NoteType type, String title, Document document) async {
     final db = getDb();
-    final note =
-        await _noteService.createNote(db, title, content, abstract, type);
+    final note = await _noteService.createQuillNote(db, title, document, type);
     list.insert(0, note);
   }
 }

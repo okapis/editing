@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:editing/database/database.dart';
 import 'package:editing/domain/common.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 
 import '../domain/note.dart';
 import '../store/note_item.dart';
@@ -55,6 +58,13 @@ class NoteService {
     final id = await db.into(db.notes).insert(item.toCompanion());
     item.id = id;
     return item;
+  }
+
+  Future<Note> createQuillNote(
+      AppDb db, String title, Document document, NoteType type) async {
+    final content = jsonEncode(document.toDelta().toJson());
+    final abstract = document.toPlainText().substring(0, 100);
+    return createNote(db, title, content, abstract, type);
   }
 
   Future<Note> createNote(AppDb db, String title, String content,

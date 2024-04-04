@@ -39,7 +39,6 @@ class NoteListItem extends StatelessWidget {
               title,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text(title),
             Text(
               content,
             )

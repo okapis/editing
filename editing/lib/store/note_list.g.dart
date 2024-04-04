@@ -51,10 +51,9 @@ mixin _$NoteListStore on NoteListBase, Store {
       AsyncAction('NoteListBase.createNote', context: context);
 
   @override
-  Future<void> createNote(
-      NoteType type, String title, String? abstract, String content) {
+  Future<void> createNote(NoteType type, String title, Document document) {
     return _$createNoteAsyncAction
-        .run(() => super.createNote(type, title, abstract, content));
+        .run(() => super.createNote(type, title, document));
   }
 
   @override
