@@ -15,7 +15,9 @@ import '../service/app_service.dart';
 import '../store/app.dart';
 
 class JournalEditScreen extends StatefulWidget {
-  const JournalEditScreen({super.key});
+  final bool viewOnly;
+  final int? id;
+  const JournalEditScreen({super.key, this.id, this.viewOnly = true});
 
   @override
   State<JournalEditScreen> createState() => _JournalEditScreenState();
@@ -26,7 +28,6 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
   final _titleController = TextEditingController();
   final _editorFocusNode = FocusNode();
   final _editorScrollController = ScrollController();
-  var _isReadOnly = false;
 
   @override
   void initState() {
@@ -94,7 +95,7 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
               child: QuillEditor.basic(
                 configurations: QuillEditorConfigurations(
                   controller: _controller,
-                  readOnly: _isReadOnly,
+                  readOnly: widget.viewOnly,
                 ),
               ),
             ),

@@ -6,6 +6,7 @@ import '../../common/responsive_util.dart';
 import 'tag.dart';
 
 class NoteListItem extends StatelessWidget {
+  final int id;
   final String title;
   final DateTime createTime;
   final String location;
@@ -14,6 +15,7 @@ class NoteListItem extends StatelessWidget {
 
   const NoteListItem({
     super.key,
+    required this.id,
     required this.title,
     required this.createTime,
     required this.location,
@@ -35,12 +37,21 @@ class NoteListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (images != null) ImageGrid(imageFiles: images!),
-            Text(
-              title,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            Padding(
+              padding: EdgeInsets.only(bottom: 5),
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             Text(
               content,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.black87),
             )
           ],
         ),

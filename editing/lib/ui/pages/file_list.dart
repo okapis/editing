@@ -41,6 +41,7 @@ class _NoteListPageState extends State<FileListPage> {
               itemBuilder: (_, index) {
                 final note = noteListStore.list[index];
                 return NoteListItem(
+                    id: -1,
                     title: "file-${widget.type}",
                     createTime: note.createTime,
                     location: "",

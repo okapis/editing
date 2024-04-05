@@ -1,5 +1,5 @@
 import 'package:editing/ui/home_screen.dart';
-import 'package:editing/ui/journal_edit_screen.dart';
+import 'package:editing/ui/note_edit_screen.dart';
 import 'package:editing/ui/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,10 +31,19 @@ class _EditingAppState extends State<EditingApp> {
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case "/journal/edit":
+            {
+              int id = settings.arguments as int;
+              return MaterialPageRoute(
+                  builder: (context) => JournalEditScreen(
+                        id: id,
+                      ));
+            }
           case "/journal/add":
             {
               return MaterialPageRoute(
-                  builder: (context) => JournalEditScreen());
+                  builder: (context) => JournalEditScreen(
+                        viewOnly: true,
+                      ));
             }
           default:
             break;
