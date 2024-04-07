@@ -35,12 +35,4 @@ abstract class NoteListBase with Store {
     list.clear();
     list.addAll(notes);
   }
-
-  @action
-  Future<void> createNote(
-      NoteType type, String title, Document document) async {
-    final db = getDb();
-    final note = await _noteService.createQuillNote(db, title, document, type);
-    list.insert(0, note);
-  }
 }

@@ -53,6 +53,18 @@ class NoteService {
         .toList();
   }
 
+  Future<Note> fetchById(AppDb db, int id) async {
+    final item = await (db.notes.select()..where((tbl) => tbl.id.equals(id)))
+        .getSingle();
+    CategoryEntity? category;
+    if (item.categoryId != null) {
+      category = await (db.categories.select()
+            ..where((tbl) => tbl.id.equals(item.categoryId!)))
+          .getSingle();
+    }
+    return Note.fromEntity(item, category);
+  }
+
   Future<Note> insertNote(AppDb db, Note item) async {
     assert(item.id == null);
     final id = await db.into(db.notes).insert(item.toCompanion());

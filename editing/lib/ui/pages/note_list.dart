@@ -36,7 +36,7 @@ class _NoteListPageState extends State<NoteListPage> {
   }
 
   Future<void> onItemClicked(int id) async {
-    Navigator.of(context).pushNamed("/journal/add", arguments: id);
+    Navigator.of(context).pushNamed("/note/detail", arguments: id);
   }
 
   @override

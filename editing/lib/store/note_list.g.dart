@@ -47,15 +47,6 @@ mixin _$NoteListStore on NoteListBase, Store {
     return _$fetchAsyncAction.run(() => super.fetch(type));
   }
 
-  late final _$createNoteAsyncAction =
-      AsyncAction('NoteListBase.createNote', context: context);
-
-  @override
-  Future<void> createNote(NoteType type, String title, Document document) {
-    return _$createNoteAsyncAction
-        .run(() => super.createNote(type, title, document));
-  }
-
   @override
   String toString() {
     return '''

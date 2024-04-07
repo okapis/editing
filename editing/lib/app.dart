@@ -1,10 +1,8 @@
 import 'package:editing/ui/home_screen.dart';
+import 'package:editing/ui/note_detail.dart';
 import 'package:editing/ui/note_edit_screen.dart';
 import 'package:editing/ui/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'store/note_list.dart';
 import 'ui/pages/onboarding.dart';
 
 class EditingApp extends StatefulWidget {
@@ -30,15 +28,13 @@ class _EditingAppState extends State<EditingApp> {
       initialRoute: widget.isFirstRun ? "/onboard" : "/login",
       onGenerateRoute: (settings) {
         switch (settings.name) {
-          case "/journal/edit":
+          case "/note/detail":
             {
               int id = settings.arguments as int;
               return MaterialPageRoute(
-                  builder: (context) => JournalEditScreen(
-                        id: id,
-                      ));
+                  builder: (context) => NoteDetailScreen(id: id));
             }
-          case "/journal/add":
+          case "/note/add":
             {
               return MaterialPageRoute(
                   builder: (context) => JournalEditScreen(
