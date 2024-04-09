@@ -6,45 +6,48 @@ import 'package:editing/domain/common.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
 import '../domain/note.dart';
-import '../store/note_item.dart';
 
 class NoteService {
-  NoteItem convertToViewModel(NoteEntity x) {
-    return NoteItem(
-      id: x.id,
-      title: x.title,
-      content: x.content,
-      tags: x.tags?.split(","),
-      location: x.location,
-      createTime: DateTime.parse(x.createTime),
-      lastUpdateTime: DateTime.parse(x.lastUpdateTime),
-    );
-  }
-
-  NotesCompanion convertToDbModel(NoteItem x) {
-    return NotesCompanion(
-      format: const Value(1),
-      title: Value(x.title),
-      content: Value(x.content),
-      tags: Value(x.tags?.join(",")),
-      location: Value(x.location),
-      createTime: Value(x.createTime.toIso8601String()),
-      lastUpdateTime: Value(x.lastUpdateTime.toIso8601String()),
-    );
-  }
-
-  Future<List<NoteItem>> fetch(AppDb db) async {
-    final items = await db.notes.select().get();
-    return items.map(convertToViewModel).toList();
-  }
-
-  Future<List<Note>> fetchByType(AppDb db, NoteType type) async {
-    final items = await db.fetchNotesByType(type.value).get();
+  Future<List<Note>> fetchAll(AppDb db) async {
+    final items = await db.fetchNoteBasics().get();
     final categories = await db.categories.select().get();
     return items
         .map(
           (item) => Note.fromEntity(
-            item,
+            NoteEntity(
+                id: item.id,
+                type: item.type,
+                format: item.format,
+                title: item.title,
+                content: "",
+                abstract: item.abstract,
+                encryptType: item.encryptType,
+                createTime: item.createTime,
+                lastUpdateTime: item.lastUpdateTime),
+            item.categoryId == null
+                ? null
+                : categories.firstWhere((e) => e.id == item.categoryId),
+          ),
+        )
+        .toList();
+  }
+
+  Future<List<Note>> fetchByType(AppDb db, NoteType type) async {
+    final items = await db.fetchNoteBasicsByType(type.value).get();
+    final categories = await db.categories.select().get();
+    return items
+        .map(
+          (item) => Note.fromEntity(
+            NoteEntity(
+                id: item.id,
+                type: item.type,
+                format: item.format,
+                title: item.title,
+                content: "",
+                abstract: item.abstract,
+                encryptType: item.encryptType,
+                createTime: item.createTime,
+                lastUpdateTime: item.lastUpdateTime),
             item.categoryId == null
                 ? null
                 : categories.firstWhere((e) => e.id == item.categoryId),

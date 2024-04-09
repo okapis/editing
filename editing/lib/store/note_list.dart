@@ -4,7 +4,6 @@ import 'package:editing/ui/pages/note_list.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:mobx/mobx.dart';
 import '../domain/note.dart';
-import 'note_item.dart';
 import 'app.dart';
 
 part 'note_list.g.dart';
@@ -16,7 +15,7 @@ abstract class NoteListBase with Store {
   final NoteService _noteService;
 
   @observable
-  ObservableList<Note> list = ObservableList();
+  ObservableMap<NoteType, ObservableList<Note>> notes = ObservableMap();
 
   @observable
   String? error;
@@ -29,10 +28,12 @@ abstract class NoteListBase with Store {
   }
 
   @action
-  Future<void> fetch(NoteType type) async {
+  Future<void> fetchByType(NoteType type) async {
     final db = getDb();
-    final notes = await _noteService.fetchByType(db, type);
+    final result = await _noteService.fetchByType(db, type);
+    notes.putIfAbsent(type, () => ObservableList<Note>());
+    final ObservableList<Note> list = notes[type]!;
     list.clear();
-    list.addAll(notes);
+    list.addAll(result);
   }
 }

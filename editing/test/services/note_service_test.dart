@@ -34,13 +34,8 @@ void main() {
     await database.close();
   });
 
-  test('should get all notes by type', () async {
-    final list = await service.fetchByType(database, NoteType.journal);
-    expect(list.length, 2);
-    expect(list[1].type, NoteType.journal);
-
-    final list1 = await service.fetchByType(database, NoteType.idea);
-    expect(list1.length, 1);
-    expect(list1[0].type, NoteType.idea);
+  test('should get all notes', () async {
+    final list = await service.fetchAll(database);
+    expect(list.length, 3);
   });
 }

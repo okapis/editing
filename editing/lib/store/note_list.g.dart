@@ -9,18 +9,18 @@ part of 'note_list.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$NoteListStore on NoteListBase, Store {
-  late final _$listAtom = Atom(name: 'NoteListBase.list', context: context);
+  late final _$notesAtom = Atom(name: 'NoteListBase.notes', context: context);
 
   @override
-  ObservableList<Note> get list {
-    _$listAtom.reportRead();
-    return super.list;
+  ObservableMap<NoteType, ObservableList<Note>> get notes {
+    _$notesAtom.reportRead();
+    return super.notes;
   }
 
   @override
-  set list(ObservableList<Note> value) {
-    _$listAtom.reportWrite(value, super.list, () {
-      super.list = value;
+  set notes(ObservableMap<NoteType, ObservableList<Note>> value) {
+    _$notesAtom.reportWrite(value, super.notes, () {
+      super.notes = value;
     });
   }
 
@@ -39,18 +39,18 @@ mixin _$NoteListStore on NoteListBase, Store {
     });
   }
 
-  late final _$fetchAsyncAction =
-      AsyncAction('NoteListBase.fetch', context: context);
+  late final _$fetchByTypeAsyncAction =
+      AsyncAction('NoteListBase.fetchByType', context: context);
 
   @override
-  Future<void> fetch(NoteType type) {
-    return _$fetchAsyncAction.run(() => super.fetch(type));
+  Future<void> fetchByType(NoteType type) {
+    return _$fetchByTypeAsyncAction.run(() => super.fetchByType(type));
   }
 
   @override
   String toString() {
     return '''
-list: ${list},
+notes: ${notes},
 error: ${error}
     ''';
   }

@@ -29,33 +29,27 @@ class NoteListItem extends StatelessWidget {
     //   return Text("desktop");
     // else if (ResponsiveUtils.isTablet(context)) return Text("tablet");
     // return Text("mobile");
-    return Card(
-      clipBehavior: Clip.hardEdge,
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (images != null) ImageGrid(imageFiles: images!),
-            Padding(
-              padding: EdgeInsets.only(bottom: 5),
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (images != null) ImageGrid(imageFiles: images!),
+        Padding(
+          padding: EdgeInsets.only(bottom: 5),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
-            Text(
-              content,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.black87),
-            )
-          ],
+          ),
         ),
-      ),
+        Text(
+          content,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(color: Colors.black87),
+        )
+      ],
     );
   }
 }

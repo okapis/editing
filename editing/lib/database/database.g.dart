@@ -3055,14 +3055,50 @@ abstract class _$AppDb extends GeneratedDatabase {
   late final Checklists checklists = Checklists(this);
   late final NoteChecklists noteChecklists = NoteChecklists(this);
   late final Passwords passwords = Passwords(this);
-  Selectable<NoteEntity> fetchNotesByType(int var1) {
-    return customSelect('SELECT * FROM notes WHERE type = ?1 ORDER BY id DESC',
+  Selectable<FetchNoteBasicsResult> fetchNoteBasics() {
+    return customSelect(
+        'SELECT id, type, format, title, abstract, tags, location, mood, encrypt_type, category_id, create_time, last_update_time FROM notes ORDER BY id DESC',
+        variables: [],
+        readsFrom: {
+          notes,
+        }).map((QueryRow row) => FetchNoteBasicsResult(
+          id: row.read<int>('id'),
+          type: row.read<int>('type'),
+          format: row.read<int>('format'),
+          title: row.read<String>('title'),
+          abstract: row.readNullable<String>('abstract'),
+          tags: row.readNullable<String>('tags'),
+          location: row.readNullable<String>('location'),
+          mood: row.readNullable<String>('mood'),
+          encryptType: row.read<int>('encrypt_type'),
+          categoryId: row.readNullable<int>('category_id'),
+          createTime: row.read<String>('create_time'),
+          lastUpdateTime: row.read<String>('last_update_time'),
+        ));
+  }
+
+  Selectable<FetchNoteBasicsByTypeResult> fetchNoteBasicsByType(int var1) {
+    return customSelect(
+        'SELECT id, type, format, title, abstract, tags, location, mood, encrypt_type, category_id, create_time, last_update_time FROM notes WHERE type = ?1 ORDER BY id DESC',
         variables: [
           Variable<int>(var1)
         ],
         readsFrom: {
           notes,
-        }).asyncMap(notes.mapFromRow);
+        }).map((QueryRow row) => FetchNoteBasicsByTypeResult(
+          id: row.read<int>('id'),
+          type: row.read<int>('type'),
+          format: row.read<int>('format'),
+          title: row.read<String>('title'),
+          abstract: row.readNullable<String>('abstract'),
+          tags: row.readNullable<String>('tags'),
+          location: row.readNullable<String>('location'),
+          mood: row.readNullable<String>('mood'),
+          encryptType: row.read<int>('encrypt_type'),
+          categoryId: row.readNullable<int>('category_id'),
+          createTime: row.read<String>('create_time'),
+          lastUpdateTime: row.read<String>('last_update_time'),
+        ));
   }
 
   @override
@@ -3078,4 +3114,62 @@ abstract class _$AppDb extends GeneratedDatabase {
         noteChecklists,
         passwords
       ];
+}
+
+class FetchNoteBasicsResult {
+  final int id;
+  final int type;
+  final int format;
+  final String title;
+  final String? abstract;
+  final String? tags;
+  final String? location;
+  final String? mood;
+  final int encryptType;
+  final int? categoryId;
+  final String createTime;
+  final String lastUpdateTime;
+  FetchNoteBasicsResult({
+    required this.id,
+    required this.type,
+    required this.format,
+    required this.title,
+    this.abstract,
+    this.tags,
+    this.location,
+    this.mood,
+    required this.encryptType,
+    this.categoryId,
+    required this.createTime,
+    required this.lastUpdateTime,
+  });
+}
+
+class FetchNoteBasicsByTypeResult {
+  final int id;
+  final int type;
+  final int format;
+  final String title;
+  final String? abstract;
+  final String? tags;
+  final String? location;
+  final String? mood;
+  final int encryptType;
+  final int? categoryId;
+  final String createTime;
+  final String lastUpdateTime;
+  FetchNoteBasicsByTypeResult({
+    required this.id,
+    required this.type,
+    required this.format,
+    required this.title,
+    this.abstract,
+    this.tags,
+    this.location,
+    this.mood,
+    required this.encryptType,
+    this.categoryId,
+    required this.createTime,
+    required this.lastUpdateTime,
+  });
 }

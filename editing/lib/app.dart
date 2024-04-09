@@ -1,5 +1,5 @@
 import 'package:editing/ui/home_screen.dart';
-import 'package:editing/ui/note_detail.dart';
+import 'package:editing/ui/note_detail_screen.dart';
 import 'package:editing/ui/note_edit_screen.dart';
 import 'package:editing/ui/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +37,7 @@ class _EditingAppState extends State<EditingApp> {
           case "/note/add":
             {
               return MaterialPageRoute(
-                  builder: (context) => JournalEditScreen(
-                        viewOnly: true,
-                      ));
+                  builder: (context) => JournalEditScreen());
             }
           default:
             break;

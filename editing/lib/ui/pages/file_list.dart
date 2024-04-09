@@ -25,7 +25,7 @@ class _NoteListPageState extends State<FileListPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<NoteListStore>(context, listen: false).fetch(NoteType.journal);
+    // Provider.of<NoteListStore>(context, listen: false).fetchAll();
   }
 
   @override
@@ -35,20 +35,7 @@ class _NoteListPageState extends State<FileListPage> {
     return Row(
       children: [
         Observer(
-          builder: (_) => Expanded(
-            child: ListView.builder(
-              itemCount: noteListStore.list.length,
-              itemBuilder: (_, index) {
-                final note = noteListStore.list[index];
-                return NoteListItem(
-                    id: -1,
-                    title: "file-${widget.type}",
-                    createTime: note.createTime,
-                    location: "",
-                    content: note.content);
-              },
-            ),
-          ),
+          builder: (_) => Placeholder(),
         ),
       ],
     );

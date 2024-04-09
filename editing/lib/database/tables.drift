@@ -17,7 +17,18 @@ CREATE TABLE notes (
     FOREIGN KEY(category_id) REFERENCES categories(id)
 ) As NoteEntity;
 
-fetchNotesByType: SELECT * FROM notes WHERE type=? ORDER BY id DESC;
+fetchNoteBasics: SELECT id, type, format, title, abstract, 
+tags, location,mood, encrypt_type, category_id,
+create_time, last_update_time
+FROM notes 
+ORDER BY id DESC;
+
+fetchNoteBasicsByType: SELECT id, type, format, title, abstract, 
+tags, location,mood, encrypt_type, category_id,
+create_time, last_update_time
+FROM notes 
+WHERE type=?
+ORDER BY id DESC;
 
 CREATE TABLE categories (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

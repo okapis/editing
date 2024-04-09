@@ -19,7 +19,10 @@ class ListItemWrapper extends StatelessWidget {
             constraints: new BoxConstraints(
               minHeight: 70.0,
             ),
-            child: child,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: child,
+            ),
           ),
         ),
       ),

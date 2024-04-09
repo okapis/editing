@@ -32,7 +32,7 @@ class _NoteListPageState extends State<NoteListPage> {
 
   Future<void> onRefresh() async {
     return Provider.of<NoteListStore>(context, listen: false)
-        .fetch(NoteType.journal);
+        .fetchByType(widget.type);
   }
 
   Future<void> onItemClicked(int id) async {
@@ -51,9 +51,11 @@ class _NoteListPageState extends State<NoteListPage> {
           Observer(
             builder: (_) => Expanded(
               child: ListView.builder(
-                itemCount: noteListStore.list.length,
+                itemCount: noteListStore.notes[widget.type]?.length ?? 0,
                 itemBuilder: (_, index) {
-                  final note = noteListStore.list[index];
+                  final list = noteListStore.notes[widget.type];
+                  if (list == null) return null;
+                  final note = list[index];
                   final id = note.id!;
                   return ListItemWrapper(
                       onClick: () => onItemClicked(id),
