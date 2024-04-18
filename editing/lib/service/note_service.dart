@@ -98,4 +98,20 @@ class NoteService {
     );
     return insertNote(db, item);
   }
+
+  Future<Note> updateNote(
+      AppDb db, int id, String title, Document document) async {
+    final content = jsonEncode(document.toDelta().toJson());
+    final plain = document.toPlainText();
+    final abstract = plain.length > 100 ? plain.substring(0, 100) : plain;
+    final updated = await (db.notes.update()..where((t) => t.id.equals(id)))
+        .write(NotesCompanion(
+      title: Value(title),
+      content: Value(content),
+      abstract: Value.absentIfNull(abstract),
+      lastUpdateTime: Value(DateTime.now().toIso8601String()),
+    ));
+    assert(updated == 1);
+    return fetchById(db, id);
+  }
 }

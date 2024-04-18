@@ -9,6 +9,22 @@ part of 'note_edit.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$NoteEditStore on NoteEditBase, Store {
+  late final _$isEditingAtom =
+      Atom(name: 'NoteEditBase.isEditing', context: context);
+
+  @override
+  bool get isEditing {
+    _$isEditingAtom.reportRead();
+    return super.isEditing;
+  }
+
+  @override
+  set isEditing(bool value) {
+    _$isEditingAtom.reportWrite(value, super.isEditing, () {
+      super.isEditing = value;
+    });
+  }
+
   late final _$idAtom = Atom(name: 'NoteEditBase.id', context: context);
 
   @override
@@ -43,22 +59,30 @@ mixin _$NoteEditStore on NoteEditBase, Store {
       AsyncAction('NoteEditBase.fetch', context: context);
 
   @override
-  Future<void> fetch() {
+  Future<Note?> fetch() {
     return _$fetchAsyncAction.run(() => super.fetch());
   }
 
-  late final _$createNoteAsyncAction =
-      AsyncAction('NoteEditBase.createNote', context: context);
+  late final _$createAsyncAction =
+      AsyncAction('NoteEditBase.create', context: context);
 
   @override
-  Future<void> createNote(NoteType type, String title, Document document) {
-    return _$createNoteAsyncAction
-        .run(() => super.createNote(type, title, document));
+  Future<void> create(NoteType type, String title, Document document) {
+    return _$createAsyncAction.run(() => super.create(type, title, document));
+  }
+
+  late final _$updateAsyncAction =
+      AsyncAction('NoteEditBase.update', context: context);
+
+  @override
+  Future<void> update(String title, Document document) {
+    return _$updateAsyncAction.run(() => super.update(title, document));
   }
 
   @override
   String toString() {
     return '''
+isEditing: ${isEditing},
 id: ${id},
 item: ${item}
     ''';

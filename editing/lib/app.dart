@@ -35,9 +35,11 @@ class _EditingAppState extends State<EditingApp> {
                   builder: (context) => NoteDetailScreen(id: id));
             }
           case "/note/add":
+          case "/note/edit":
             {
+              int? id = settings.arguments as int?;
               return MaterialPageRoute(
-                  builder: (context) => JournalEditScreen());
+                  builder: (context) => NoteEditScreen(id: id));
             }
           default:
             break;

@@ -10,19 +10,18 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
 
 import '../store/app.dart';
-import '../store/note_detail.dart';
 
-class JournalEditScreen extends StatefulWidget {
+class NoteEditScreen extends StatefulWidget {
   final int? id;
-  const JournalEditScreen({super.key, this.id});
+  const NoteEditScreen({super.key, this.id});
 
   @override
-  State<JournalEditScreen> createState() => _JournalEditScreenState();
+  State<NoteEditScreen> createState() => _NoteEditScreenState();
 }
 
-class _JournalEditScreenState extends State<JournalEditScreen> {
+class _NoteEditScreenState extends State<NoteEditScreen> {
   final _controller = QuillController.basic();
-  final _titleController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
   final _editorFocusNode = FocusNode();
   final _editorScrollController = ScrollController();
 
@@ -44,7 +43,11 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
     NoteListStore listStore = Provider.of<NoteListStore>(context);
     NoteService service = Provider.of<NoteService>(context);
     _store = NoteEditStore(appStore, listStore, service, widget.id);
-    _store.fetch();
+    _store.fetch().then((value) {
+      _titleController.text = value?.title ?? "";
+      _controller.document =
+          Document.fromJson(jsonDecode(value?.content ?? ""));
+    });
   }
 
   Widget _reanderEditor() {
@@ -94,8 +97,14 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
             icon: const Icon(Icons.check_outlined),
             tooltip: 'Save',
             onPressed: () async {
-              await _store.createNote(NoteType.journal, _titleController.text,
-                  _controller.document);
+              if (widget.id != null) {
+                await _store.update(
+                    _titleController.text, _controller.document);
+              } else {
+                await _store.create(NoteType.journal, _titleController.text,
+                    _controller.document);
+              }
+
               if (context.mounted) {
                 Navigator.of(context).pop();
               }

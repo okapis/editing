@@ -19,6 +19,9 @@ abstract class NoteEditBase with Store {
   final NoteService _noteService;
 
   @observable
+  bool isEditing = false;
+
+  @observable
   int? id;
 
   @observable
@@ -30,17 +33,28 @@ abstract class NoteEditBase with Store {
   }
 
   @action
-  Future<void> fetch() async {
-    if (id == null) return;
+  Future<Note?> fetch() async {
+    if (id == null) return null;
     final db = getDb();
-    item = await _noteService.fetchById(db, id!);
+    final detail = await _noteService.fetchById(db, id!);
+    item = detail;
+    return detail;
   }
 
   @action
-  Future<void> createNote(
-      NoteType type, String title, Document document) async {
+  Future<void> create(NoteType type, String title, Document document) async {
     final db = getDb();
-    await _noteService.createQuillNote(db, title, document, type);
+    item = await _noteService.createQuillNote(db, title, document, type);
     await _noteListStore.fetchByType(type);
+  }
+
+  @action
+  Future<void> update(String title, Document document) async {
+    assert(id != null);
+    assert(item != null);
+
+    final db = getDb();
+    item = await _noteService.updateNote(db, id!, title, document);
+    await _noteListStore.fetchByType(item!.type);
   }
 }
