@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:editing/service/app_service.dart';
 import 'package:editing/service/kdbx_service.dart';
 import 'package:editing/service/note_service.dart';
+import 'package:editing/service/password_service.dart';
 import 'package:editing/store/app.dart';
 import 'package:editing/store/note_list.dart';
 import 'package:editing/store/onboarding.dart';
+import 'package:editing/store/password_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -32,12 +33,16 @@ Future<void> main() async {
         Provider<KdbxService>.value(value: kdbxService),
         Provider<AppService>.value(value: appService),
         Provider<NoteService>.value(value: NoteService()),
+        Provider<PasswordService>.value(value: PasswordService()),
         Provider<OnboardingStore>.value(value: OnboardingStore()),
         Provider<AppStore>.value(value: AppStore()),
         Provider<HomeStore>.value(value: HomeStore()),
         ProxyProvider2<AppStore, NoteService, NoteListStore>(
             update: (_, appStore, noteService, previous) =>
                 NoteListStore(appStore, noteService)),
+        ProxyProvider2<AppStore, PasswordService, PasswordListStore>(
+            update: (_, appStore, passwordService, previous) =>
+                PasswordListStore(appStore, passwordService)),
       ],
       child: EditingApp(
         isFirstRun: !hasOnboarded,
