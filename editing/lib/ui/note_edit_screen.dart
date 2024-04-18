@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:editing/domain/note.dart';
 import 'package:editing/service/note_service.dart';
+import 'package:editing/store/note_edit.dart';
 import 'package:editing/store/note_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -21,7 +25,8 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
   final _titleController = TextEditingController();
   final _editorFocusNode = FocusNode();
   final _editorScrollController = ScrollController();
-  late NoteDetailStore detailStore;
+
+  late NoteEditStore _store;
 
   @override
   void dispose() {
@@ -29,6 +34,17 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
     _editorFocusNode.dispose();
     _editorScrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    AppStore appStore = Provider.of<AppStore>(context);
+    NoteListStore listStore = Provider.of<NoteListStore>(context);
+    NoteService service = Provider.of<NoteService>(context);
+    _store = NoteEditStore(appStore, listStore, service, widget.id);
+    _store.fetch();
   }
 
   Widget _reanderEditor() {
@@ -68,23 +84,22 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppStore appStore = Provider.of<AppStore>(context);
-    NoteService service = Provider.of<NoteService>(context);
-    detailStore = NoteDetailStore(appStore, service, widget.id);
-    detailStore.fetch();
-
     return Scaffold(
       appBar: AppBar(
-        title: Observer(
-          builder: (_) => Text(
-            detailStore.item?.title ?? "",
-          ),
+        title: Text(
+          widget.id == null ? "Create Note" : "Edit Note",
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.check_outlined),
             tooltip: 'Save',
-            onPressed: () {},
+            onPressed: () async {
+              await _store.createNote(NoteType.journal, _titleController.text,
+                  _controller.document);
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
+            },
           ),
         ],
       ),

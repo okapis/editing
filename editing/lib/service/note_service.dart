@@ -78,7 +78,8 @@ class NoteService {
   Future<Note> createQuillNote(
       AppDb db, String title, Document document, NoteType type) async {
     final content = jsonEncode(document.toDelta().toJson());
-    final abstract = document.toPlainText().substring(0, 100);
+    final plain = document.toPlainText();
+    final abstract = plain.length > 100 ? plain.substring(0, 100) : plain;
     return createNote(db, title, content, abstract, type);
   }
 

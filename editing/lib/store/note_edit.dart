@@ -1,3 +1,4 @@
+import 'package:editing/store/note_list.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:mobx/mobx.dart';
 
@@ -11,9 +12,10 @@ part 'note_edit.g.dart';
 class NoteEditStore = NoteEditBase with _$NoteEditStore;
 
 abstract class NoteEditBase with Store {
-  NoteEditBase(this._appStore, this._noteService, this.id);
+  NoteEditBase(this._appStore, this._noteListStore, this._noteService, this.id);
 
   final AppStore _appStore;
+  final NoteListStore _noteListStore;
   final NoteService _noteService;
 
   @observable
@@ -38,6 +40,7 @@ abstract class NoteEditBase with Store {
   Future<void> createNote(
       NoteType type, String title, Document document) async {
     final db = getDb();
-    final note = await _noteService.createQuillNote(db, title, document, type);
+    await _noteService.createQuillNote(db, title, document, type);
+    await _noteListStore.fetchByType(type);
   }
 }
