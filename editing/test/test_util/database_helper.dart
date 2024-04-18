@@ -32,4 +32,14 @@ class DatabaseHelper {
     ];
     return database.executor.runInsert(sql, objs);
   }
+
+  Future<int> createPassword(int id, String title, String value) async {
+    const sql = """
+    insert into passwords(id, title, value, encrypt_type, create_time, last_update_time, category_id)
+    values
+    (?, ?, ?, ?, '2024-03-30T17:27:20.933', '2024-03-30T17:27:20.933', null);
+    """;
+    final List<Object> objs = [id, title, value, 0];
+    return database.executor.runInsert(sql, objs);
+  }
 }
