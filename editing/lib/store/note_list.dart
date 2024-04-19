@@ -36,4 +36,11 @@ abstract class NoteListBase with Store {
     list.clear();
     list.addAll(result);
   }
+
+  @action
+  Future<void> delete(int id) async {
+    final db = getDb();
+    final deleted = await _noteService.deleteNote(db, id);
+    notes[deleted.type]?.removeWhere((element) => element.id == id);
+  }
 }

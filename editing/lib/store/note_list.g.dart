@@ -47,6 +47,14 @@ mixin _$NoteListStore on NoteListBase, Store {
     return _$fetchByTypeAsyncAction.run(() => super.fetchByType(type));
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('NoteListBase.delete', context: context);
+
+  @override
+  Future<void> delete(int id) {
+    return _$deleteAsyncAction.run(() => super.delete(id));
+  }
+
   @override
   String toString() {
     return '''

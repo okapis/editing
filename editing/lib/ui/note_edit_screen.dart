@@ -47,8 +47,11 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
         appStore, listStore, service, widget.id, !widget.readonly);
     _store.fetch().then((value) {
       _titleController.text = value?.title ?? "";
-      _controller.document =
-          Document.fromJson(jsonDecode(value?.content ?? ""));
+
+      if (value != null) {
+        final json = jsonDecode(value.content);
+        _controller.document = Document.fromJson(json);
+      }
     });
   }
 
@@ -109,7 +112,12 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               IconButton(
                 icon: const Icon(Icons.delete_outline),
                 tooltip: 'Delete',
-                onPressed: () {},
+                onPressed: () async {
+                  await _store.delete();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
               ),
             if (_store.isEditing)
               IconButton(

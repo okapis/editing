@@ -58,4 +58,10 @@ abstract class NoteEditBase with Store {
     item = await _noteService.updateNote(db, id!, title, document);
     await _noteListStore.fetchByType(item!.type);
   }
+
+  @action
+  Future<void> delete() async {
+    assert(id != null);
+    await _noteListStore.delete(id!);
+  }
 }

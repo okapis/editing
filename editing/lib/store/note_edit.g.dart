@@ -79,6 +79,14 @@ mixin _$NoteEditStore on NoteEditBase, Store {
     return _$updateAsyncAction.run(() => super.update(title, document));
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('NoteEditBase.delete', context: context);
+
+  @override
+  Future<void> delete() {
+    return _$deleteAsyncAction.run(() => super.delete());
+  }
+
   @override
   String toString() {
     return '''

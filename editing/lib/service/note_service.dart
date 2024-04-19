@@ -114,4 +114,12 @@ class NoteService {
     assert(updated == 1);
     return fetchById(db, id);
   }
+
+  Future<Note> deleteNote(AppDb db, int id) async {
+    final item = await fetchById(db, id);
+    final deleted =
+        await (db.notes.delete()..where((t) => t.id.equals(id))).go();
+    assert(deleted == 1);
+    return item;
+  }
 }
