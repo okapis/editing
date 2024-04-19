@@ -12,14 +12,15 @@ part 'note_edit.g.dart';
 class NoteEditStore = NoteEditBase with _$NoteEditStore;
 
 abstract class NoteEditBase with Store {
-  NoteEditBase(this._appStore, this._noteListStore, this._noteService, this.id);
+  NoteEditBase(this._appStore, this._noteListStore, this._noteService, this.id,
+      this.isEditing);
 
   final AppStore _appStore;
   final NoteListStore _noteListStore;
   final NoteService _noteService;
 
   @observable
-  bool isEditing = false;
+  bool isEditing;
 
   @observable
   int? id;

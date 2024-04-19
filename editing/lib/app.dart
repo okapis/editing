@@ -1,5 +1,4 @@
 import 'package:editing/ui/home_screen.dart';
-import 'package:editing/ui/note_detail_screen.dart';
 import 'package:editing/ui/note_edit_screen.dart';
 import 'package:editing/ui/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,17 +28,16 @@ class _EditingAppState extends State<EditingApp> {
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case "/note/detail":
-            {
-              int id = settings.arguments as int;
-              return MaterialPageRoute(
-                  builder: (context) => NoteDetailScreen(id: id));
-            }
           case "/note/add":
           case "/note/edit":
             {
+              final readonly = settings.name == "/note/detail";
               int? id = settings.arguments as int?;
               return MaterialPageRoute(
-                  builder: (context) => NoteEditScreen(id: id));
+                  builder: (context) => NoteEditScreen(
+                        id: id,
+                        readonly: readonly,
+                      ));
             }
           default:
             break;

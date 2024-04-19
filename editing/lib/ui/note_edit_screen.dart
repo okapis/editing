@@ -13,7 +13,8 @@ import '../store/app.dart';
 
 class NoteEditScreen extends StatefulWidget {
   final int? id;
-  const NoteEditScreen({super.key, this.id});
+  final bool readonly;
+  const NoteEditScreen({super.key, this.id, required this.readonly});
 
   @override
   State<NoteEditScreen> createState() => _NoteEditScreenState();
@@ -42,7 +43,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
     AppStore appStore = Provider.of<AppStore>(context);
     NoteListStore listStore = Provider.of<NoteListStore>(context);
     NoteService service = Provider.of<NoteService>(context);
-    _store = NoteEditStore(appStore, listStore, service, widget.id);
+    _store = NoteEditStore(
+        appStore, listStore, service, widget.id, !widget.readonly);
     _store.fetch().then((value) {
       _titleController.text = value?.title ?? "";
       _controller.document =
@@ -51,19 +53,31 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   }
 
   Widget _reanderEditor() {
-    return Observer(
-      builder: (_) => Column(
-        children: <Widget>[
-          TextField(
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: TextField(
             autofocus: true,
+            readOnly: !_store.isEditing,
             controller: _titleController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Note title',
               border: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
             ),
           ),
+        ),
+        Expanded(
+          child: QuillEditor.basic(
+            configurations: QuillEditorConfigurations(
+              controller: _controller,
+              readOnly: !_store.isEditing,
+            ),
+          ),
+        ),
+        if (_store.isEditing)
           QuillToolbar.simple(
             configurations: QuillSimpleToolbarConfigurations(
               toolbarIconAlignment: WrapAlignment.start,
@@ -73,48 +87,69 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               ),
             ),
           ),
-          Expanded(
-            child: QuillEditor.basic(
-              configurations: QuillEditorConfigurations(
-                controller: _controller,
-              ),
-            ),
-          ),
-        ],
-      ),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.id == null ? "Create Note" : "Edit Note",
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.check_outlined),
-            tooltip: 'Save',
-            onPressed: () async {
-              if (widget.id != null) {
-                await _store.update(
-                    _titleController.text, _controller.document);
-              } else {
-                await _store.create(NoteType.journal, _titleController.text,
-                    _controller.document);
-              }
+    return Observer(
+      builder: (_) => Scaffold(
+        appBar: AppBar(
+          actions: [
+            if (!_store.isEditing)
+              IconButton(
+                icon: const Icon(Icons.edit_outlined),
+                tooltip: 'Edit',
+                onPressed: () {
+                  _store.isEditing = true;
+                },
+              ),
+            if (!_store.isEditing)
+              IconButton(
+                icon: const Icon(Icons.delete_outline),
+                tooltip: 'Delete',
+                onPressed: () {},
+              ),
+            if (_store.isEditing)
+              IconButton(
+                icon: const Icon(Icons.cancel_outlined),
+                tooltip: 'Cancel',
+                onPressed: () async {
+                  _store.isEditing = false;
+                  if (widget.id != null) {
+                    await _store.fetch();
+                  } else {
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  }
+                },
+              ),
+            if (_store.isEditing)
+              IconButton(
+                icon: const Icon(Icons.check_outlined),
+                tooltip: 'Save',
+                onPressed: () async {
+                  if (widget.id != null) {
+                    await _store.update(
+                        _titleController.text, _controller.document);
+                  } else {
+                    await _store.create(NoteType.journal, _titleController.text,
+                        _controller.document);
+                  }
 
-              if (context.mounted) {
-                Navigator.of(context).pop();
-              }
-            },
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        child: _reanderEditor(),
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: _reanderEditor(),
+        ),
       ),
     );
   }
