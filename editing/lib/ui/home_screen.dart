@@ -127,7 +127,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return FloatingActionButton(
       child: Icon(iconData),
       onPressed: () {
-        Navigator.of(context).pushNamed("/note/add");
+        if (homeStore.pageIndex == pageNotes) {
+          Navigator.of(context).pushNamed("/note/add");
+        } else if (homeStore.pageIndex == pagePasswords) {
+          Navigator.of(context).pushNamed("/password/add");
+        }
       },
     );
   }

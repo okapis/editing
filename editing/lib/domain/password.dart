@@ -41,6 +41,8 @@ class Password {
     return PasswordsCompanion(
       id: Value.absentIfNull(id),
       title: Value(title),
+      value: Value(value.getText()),
+      remark: Value.absentIfNull(remark),
       url: Value.absentIfNull(url),
       username: Value.absentIfNull(username),
       tip: Value.absentIfNull(tip),
@@ -63,6 +65,7 @@ class Password {
       title: entity.title,
       url: entity.url,
       username: entity.username,
+      remark: entity.remark,
       tip: entity.tip,
       email: entity.email,
       expireTime:

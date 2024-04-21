@@ -33,4 +33,11 @@ abstract class PasswordListBase with Store {
     passwords.clear();
     passwords.addAll(result);
   }
+
+  @action
+  Future<void> delete(int id) async {
+    final db = getDb();
+    await _passwordService.deletePassword(db, id);
+    passwords.removeWhere((element) => element.id == id);
+  }
 }

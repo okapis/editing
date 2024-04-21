@@ -21,8 +21,8 @@ Future<void> main() async {
 
   if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
     await windowManager.setTitle("Curator");
-    await windowManager.setMinimumSize(Size(400, 600));
-    await windowManager.setMaximumSize(Size(600, 800));
+    await windowManager.setMinimumSize(const Size(400, 600));
+    await windowManager.setMaximumSize(const Size(600, 800));
   }
   final KdbxService kdbxService = KdbxService();
   final AppService appService = AppService(kdbxService);

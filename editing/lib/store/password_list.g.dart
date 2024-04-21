@@ -49,6 +49,14 @@ mixin _$PasswordListStore on PasswordListBase, Store {
     return _$fetchAllAsyncAction.run(() => super.fetchAll());
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('PasswordListBase.delete', context: context);
+
+  @override
+  Future<void> delete(int id) {
+    return _$deleteAsyncAction.run(() => super.delete(id));
+  }
+
   @override
   String toString() {
     return '''

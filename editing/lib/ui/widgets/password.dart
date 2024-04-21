@@ -35,7 +35,7 @@ class PasswordListItem extends StatelessWidget {
           ),
         ),
         Text(
-          title,
+          remark ?? "",
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(color: Colors.black87),

@@ -1,6 +1,7 @@
 import 'package:editing/ui/home_screen.dart';
 import 'package:editing/ui/note_edit_screen.dart';
 import 'package:editing/ui/login_screen.dart';
+import 'package:editing/ui/password_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'ui/pages/onboarding.dart';
 
@@ -35,6 +36,18 @@ class _EditingAppState extends State<EditingApp> {
               int? id = settings.arguments as int?;
               return MaterialPageRoute(
                   builder: (context) => NoteEditScreen(
+                        id: id,
+                        readonly: readonly,
+                      ));
+            }
+          case "/password/detail":
+          case "/password/add":
+          case "/password/edit":
+            {
+              final readonly = settings.name == "/password/detail";
+              int? id = settings.arguments as int?;
+              return MaterialPageRoute(
+                  builder: (context) => PasswordEditScreen(
                         id: id,
                         readonly: readonly,
                       ));

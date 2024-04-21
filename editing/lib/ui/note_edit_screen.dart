@@ -31,6 +31,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _titleController.dispose();
     _editorFocusNode.dispose();
     _editorScrollController.dispose();
     super.dispose();
@@ -77,6 +78,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
             configurations: QuillEditorConfigurations(
               controller: _controller,
               readOnly: !_store.isEditing,
+              placeholder: "Input your content here",
             ),
           ),
         ),
